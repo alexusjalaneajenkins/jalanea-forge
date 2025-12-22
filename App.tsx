@@ -78,7 +78,7 @@ const initialState: ProjectState = {
 
 // --- Components ---
 
-const SidebarLink = ({ item, isActive }: { item: NavItem, isActive: boolean }) => {
+const SidebarLink = ({ item, isActive, isComplete }: { item: NavItem, isActive: boolean, isComplete?: boolean }) => {
   return (
     <div
       className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group border ${isActive
@@ -88,7 +88,10 @@ const SidebarLink = ({ item, isActive }: { item: NavItem, isActive: boolean }) =
     >
       <item.icon className={`w-5 h-5 ${isActive ? 'text-forge-accent' : 'text-forge-600 group-hover:text-forge-text'}`} />
       <span className="font-medium text-sm">{item.label}</span>
-      {isActive && <ChevronRight className="w-4 h-4 ml-auto text-forge-400" />}
+      <div className="ml-auto flex items-center gap-2">
+        {isComplete && <Check className="w-4 h-4 text-emerald-500" />}
+        {isActive && <ChevronRight className="w-4 h-4 text-forge-400" />}
+      </div>
     </div>
   );
 };
@@ -1018,12 +1021,8 @@ const Layout = () => {
                 <SidebarLink
                   item={item}
                   isActive={location.pathname === item.path}
+                  isComplete={isComplete}
                 />
-                {isComplete && (
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                )}
               </div>
             );
           })}
