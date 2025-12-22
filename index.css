@@ -73,3 +73,50 @@
 ::-webkit-scrollbar-thumb:hover {
   background: theme('colors.forge.600');
 }
+
+@media print {
+  /* Hide UI elements */
+  header, 
+  aside,
+  button,
+  .no-print,
+  a[href^="mailto"],
+  a[href^="https://jalanea.com"] {
+    display: none !important;
+  }
+
+  /* Reset layout for print */
+  body, 
+  #root, 
+  main, 
+  div {
+    background: white !important;
+    color: black !important;
+    height: auto !important;
+    overflow: visible !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    display: block !important;
+  }
+
+  /* Target the content area */
+  .prose, 
+  .markdown-content {
+    max-width: 100% !important;
+    padding: 2cm !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Ensure page breaks */
+  h1, h2 {
+    page-break-before: auto;
+    page-break-after: avoid;
+  }
+  
+  pre, blockquote {
+    page-break-inside: avoid;
+  }
+}

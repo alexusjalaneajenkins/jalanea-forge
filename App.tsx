@@ -26,7 +26,8 @@ import {
   Moon,
   Sun,
   Check,
-  Database
+  Database,
+  ArrowDownToLine
 } from 'lucide-react';
 import { ProjectState, ProjectStep, ResearchDocument, NavItem, ProjectMetadata } from './types';
 import * as GeminiService from './services/geminiService';
@@ -131,7 +132,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm"
+      className="p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm no-print"
       title="Toggle Theme"
     >
       <div className="relative w-5 h-5">
@@ -190,7 +191,13 @@ const Header = () => {
               </div>
             )}
           </div>
-          <p className="text-xs text-forge-500 font-medium mt-0.5">AI Product Designer</p>
+          <div className="flex items-center gap-2">
+            <p className="text-xs text-forge-500 font-medium mt-0.5">AI Product Designer</p>
+            <span className="text-forge-700 text-xs mt-0.5">•</span>
+            <p className="text-xs text-forge-accent font-semibold mt-0.5">
+              Step {(Object.values(ProjectStep).indexOf(state.currentStep) + 1)} of 6
+            </p>
+          </div>
         </div>
       </div>
       <div className="flex items-center gap-4">
@@ -542,12 +549,19 @@ const PrdPage = () => {
   const navigate = useNavigate();
 
   const handleGenerate = async () => {
+    if (state.prdOutput && !confirm("This will regenerate the PRD and overwrite your current version. Are you sure?")) {
+      return;
+    }
     await generateArtifact(ProjectStep.PRD);
+  };
+
+  const handlePrint = () => {
+    window.print();
   };
 
   return (
     <div className="max-w-5xl mx-auto h-full flex flex-col animate-fade-in">
-      <div className="mb-6 flex items-end justify-between">
+      <div className="mb-6 flex items-end justify-between no-print">
         <div>
           <h2 className="text-3xl font-bold text-forge-text mb-2">Product Requirements</h2>
           <p className="text-forge-muted">Synthesize your Idea and Research into a structured PRD.</p>
@@ -562,25 +576,37 @@ const PrdPage = () => {
         </button>
       </div>
 
-      <div className="bg-forge-950 border border-forge-700 rounded-xl flex flex-col flex-1 min-h-0 overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-forge-700 bg-forge-900/30 flex items-center justify-between">
+      <div className="bg-forge-950 border border-forge-700 rounded-xl flex flex-col flex-1 min-h-0 overflow-hidden shadow-sm print:border-0 print:bg-white">
+        <div className="p-4 border-b border-forge-700 bg-forge-900/30 flex items-center justify-between no-print">
           <span className="text-sm font-semibold text-forge-500 uppercase tracking-wider flex items-center gap-2">
             <FileText className="w-4 h-4" />
             PRD Document
           </span>
-          {state.prdOutput && (
-            <CopyButton
-              text={state.prdOutput}
-              className="hover:text-forge-text"
-              title="Copy PRD (Paste into Google Docs for best formatting)"
-            />
-          )}
+          <div className="flex gap-2">
+            {state.prdOutput && (
+              <>
+                <button
+                  onClick={handlePrint}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-forge-800 text-forge-text hover:bg-forge-700 transition-colors border border-forge-700"
+                  title="Print or Save as PDF"
+                >
+                  <ArrowDownToLine className="w-3.5 h-3.5" />
+                  Save as PDF
+                </button>
+                <CopyButton
+                  text={state.prdOutput}
+                  className="hover:text-forge-text"
+                  title="Copy PRD (Paste into Google Docs)"
+                />
+              </>
+            )}
+          </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
+        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white print:p-0 print:overflow-visible">
           {state.prdOutput ? (
             <MarkdownRenderer content={state.prdOutput} />
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-forge-muted">
+            <div className="h-full flex flex-col items-center justify-center text-forge-muted no-print">
               <div className="relative">
                 <Brain className="w-16 h-16 mb-4 text-forge-300" />
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-forge-accent rounded-full animate-pulse"></div>
@@ -939,6 +965,7 @@ const CodePage = () => {
 const Layout = () => {
   const location = useLocation();
   const { user } = useAuth();
+  const { state } = useProject();
 
   const navItems: NavItem[] = [
     { label: 'Idea', step: ProjectStep.IDEA, icon: Lightbulb, path: '/' },
@@ -976,14 +1003,30 @@ const Layout = () => {
       <div className="flex flex-1 overflow-hidden">
         <aside className="w-64 border-r border-forge-700 bg-forge-950 p-6 flex flex-col gap-2 hidden md:flex">
           <div className="text-xs font-bold text-forge-500 uppercase tracking-widest mb-4 px-4">Workflow</div>
-          {navItems.map((item) => (
-            <div key={item.path} onClick={() => window.location.hash = item.path} className="cursor-pointer">
-              <SidebarLink
-                item={item}
-                isActive={location.pathname === item.path}
-              />
-            </div>
-          ))}
+          {navItems.map((item) => {
+            // Determine completion status
+            let isComplete = false;
+            if (item.step === ProjectStep.IDEA && state.synthesizedIdea) isComplete = true;
+            if (item.step === ProjectStep.RESEARCH && state.research.length > 0) isComplete = true;
+            if (item.step === ProjectStep.PRD && state.prdOutput) isComplete = true;
+            if (item.step === ProjectStep.PLANNING && state.roadmapOutput) isComplete = true;
+            if (item.step === ProjectStep.DESIGN && state.stitchPrompt) isComplete = true;
+            if (item.step === ProjectStep.CODE && state.antigravityPrompt) isComplete = true;
+
+            return (
+              <div key={item.path} onClick={() => window.location.hash = item.path} className="cursor-pointer group relative">
+                <SidebarLink
+                  item={item}
+                  isActive={location.pathname === item.path}
+                />
+                {isComplete && (
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500">
+                    <Check className="w-3.5 h-3.5" />
+                  </div>
+                )}
+              </div>
+            );
+          })}
 
           <div className="mt-auto pt-6 border-t border-forge-700">
             <div className="bg-forge-800/50 p-4 rounded-xl border border-forge-700">
