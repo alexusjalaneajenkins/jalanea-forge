@@ -1266,9 +1266,10 @@ const ProjectProvider = () => {
         const result = await GeminiService.generateCodePrompt(state);
         setState(prev => ({ ...prev, antigravityPrompt: result, codePromptOutput: result }));
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Generation failed:", error);
-      alert("Failed to generate content. Please check your API key and try again.");
+      const errorMessage = error.message || "Unknown error";
+      alert(`Failed to generate content: ${errorMessage}\n\nPlease check the console for more details.`);
     } finally {
       setState(prev => ({ ...prev, isGenerating: false }));
     }
@@ -1283,9 +1284,10 @@ const ProjectProvider = () => {
         researchMissionPrompt: mission,
         reportGenerationPrompt: report
       }));
-    } catch (error) {
+    } catch (error: any) {
       console.error("Research prompt generation failed:", error);
-      alert("Failed to generate research prompt.");
+      const errorMessage = error.message || "Unknown error";
+      alert(`Failed to generate research prompt: ${errorMessage}`);
     } finally {
       setState(prev => ({ ...prev, isGenerating: false }));
     }

@@ -32,6 +32,8 @@ const generateContentWithRetry = async (
       // Check for 429 (Resource Exhausted) or 503 (Service Unavailable)
       const isRateLimit = error.message?.includes('429') || error.status === 429 || error.code === 429;
 
+      console.error(`Gemini API Error (Attempt ${attempt + 1}/${maxRetries}):`, error.message || error);
+
       if (isRateLimit && attempt < maxRetries - 1) {
         let waitTime = Math.pow(2, attempt) * 1000; // Default: 1s, 2s, 4s...
 
@@ -83,7 +85,7 @@ export const refineIdea = async (rawInput: string): Promise<string> => {
 
   const response = await generateContentWithRetry(
     ai,
-    'gemini-2.5-flash',
+    'gemini-1.5-flash',
     prompt, // Pass string directly
     {
       systemInstruction: "You are a Chief Product Officer. Your goal is to clarify and elevate raw ideas into actionable product visions.",
@@ -115,7 +117,7 @@ export const generateResearchPrompt = async (synthesizedIdea: string): Promise<{
 
   const missionResponse = await generateContentWithRetry(
     ai,
-    'gemini-2.5-flash',
+    'gemini-1.5-flash',
     missionPrompt,
     {
       temperature: 0.7,
@@ -193,7 +195,7 @@ export const generatePRD = async (idea: string, research: ResearchDocument[]): P
 
   const response = await generateContentWithRetry(
     ai,
-    'gemini-2.5-flash',
+    'gemini-1.5-flash',
     { parts }, // Pass object with parts
     {
       systemInstruction: "You are a world-class Product Manager. You are strict, detailed, and focus on viability and user value.",
@@ -230,7 +232,7 @@ export const generatePlan = async (prd: string): Promise<string> => {
 
   const response = await generateContentWithRetry(
     ai,
-    'gemini-2.5-flash',
+    'gemini-1.5-flash',
     prompt,
     {
       systemInstruction: "You are a Technical Project Manager. Break down complex goals into achievable tasks. Return raw JSON.",
@@ -279,8 +281,8 @@ export const generateDesignPrompts = async (prd: string, plan: string): Promise<
   `;
 
   const [stitchRes, opalRes] = await Promise.all([
-    generateContentWithRetry(ai, 'gemini-2.5-flash', stitchPrompt, { temperature: 0.7 }),
-    generateContentWithRetry(ai, 'gemini-2.5-flash', opalPrompt, { temperature: 0.7 })
+    generateContentWithRetry(ai, 'gemini-1.5-flash', stitchPrompt, { temperature: 0.7 }),
+    generateContentWithRetry(ai, 'gemini-1.5-flash', opalPrompt, { temperature: 0.7 })
   ]);
 
   return {
@@ -323,7 +325,7 @@ export const generateCodePrompt = async (projectState: ProjectState): Promise<st
 
   const response = await generateContentWithRetry(
     ai,
-    'gemini-2.5-flash',
+    'gemini-1.5-flash',
     prompt,
     {
       systemInstruction: "You are a Lead Software Engineer. You write precise, technical specifications for other developers.",
