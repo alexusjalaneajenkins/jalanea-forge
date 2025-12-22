@@ -92,7 +92,7 @@ const SidebarLink = ({ item, isActive }: { item: NavItem, isActive: boolean }) =
   );
 };
 
-const CopyButton = ({ text, className = "", title = "Copy to Clipboard" }: { text: string, className?: string, title?: string }) => {
+const CopyButton = ({ text, className = "", title = "Copy to Clipboard", variant = "dark" }: { text: string, className?: string, title?: string, variant?: "dark" | "light" }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -101,20 +101,23 @@ const CopyButton = ({ text, className = "", title = "Copy to Clipboard" }: { tex
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const baseStyles = variant === "light"
+    ? "bg-white/80 backdrop-blur-sm border-gray-200 text-gray-500 hover:text-gray-900 hover:border-gray-300 hover:bg-white"
+    : "bg-forge-800 border-forge-700 text-forge-400 hover:text-forge-text hover:border-forge-500";
+
+  const copiedStyles = "bg-emerald-500/10 border-emerald-500/30 text-emerald-600";
+
   return (
     <button
       onClick={handleCopy}
-      className={`relative p-2 rounded-md transition-all shadow-sm border ${copied
-        ? 'bg-orange-500/10 border-orange-500/20 text-orange-500'
-        : 'bg-forge-800 border-forge-700 text-forge-400 hover:text-forge-text hover:border-forge-500'
-        } ${className}`}
+      className={`relative p-2 rounded-lg transition-all duration-200 shadow-sm border group ${copied ? copiedStyles : baseStyles} ${className}`}
       title={copied ? "Copied!" : title}
     >
       <div className="relative w-4 h-4">
-        <div className={`absolute inset-0 transition-all duration-300 ${copied ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}>
+        <div className={`absolute inset-0 transition-all duration-300 ${copied ? 'scale-0 opacity-0 rotate-45' : 'scale-100 opacity-100 rotate-0'}`}>
           <Copy className="w-4 h-4" />
         </div>
-        <div className={`absolute inset-0 transition-all duration-300 ${copied ? 'scale-100 opacity-100' : 'scale-0 opacity-0 rotate-90'}`}>
+        <div className={`absolute inset-0 transition-all duration-300 ${copied ? 'scale-100 opacity-100 rotate-0' : 'scale-0 opacity-0 -rotate-45'}`}>
           <Check className="w-4 h-4" />
         </div>
       </div>
@@ -632,9 +635,19 @@ const PlanningPage = () => {
         <button
           onClick={() => generateArtifact(ProjectStep.PLANNING)}
           disabled={state.isGenerating || !state.prdOutput}
-          className="bg-forge-accent hover:bg-orange-600 disabled:opacity-50 text-white font-semibold px-6 py-3 rounded-lg shadow-lg shadow-orange-500/20 transition-all flex items-center gap-2"
+          className="bg-forge-accent hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-orange-500/20 transition-all flex items-center gap-2 group"
         >
-          {state.isGenerating ? "Thinking..." : "Generate Roadmap"}
+          {state.isGenerating ? (
+            <>
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              Generating...
+            </>
+          ) : (
+            <>
+              <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+              Generate Roadmap
+            </>
+          )}
         </button>
       </div>
 
@@ -658,26 +671,28 @@ const PlanningPage = () => {
             roadmapPhases ? (
               <div className="space-y-6">
                 {roadmapPhases.map((phase: any, index: number) => (
-                  <div key={index} className="border border-gray-200 rounded-xl p-6 bg-slate-50 hover:border-orange-200 transition-colors">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-900">{phase.phaseName}</h3>
-                        <p className="text-gray-600 text-sm mt-1">{phase.description}</p>
-                      </div>
-                      <div className="flex flex-col items-end gap-2">
-                        <span className="text-xs font-mono text-gray-400 bg-white px-2 py-1 rounded border">Phase {index + 1}</span>
+                  <div key={index} className="border border-gray-200 rounded-2xl p-6 bg-gradient-to-br from-slate-50 to-white hover:border-orange-300 hover:shadow-md transition-all duration-200 group">
+                    <div className="flex justify-between items-start mb-5">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                            {index + 1}
+                          </div>
+                          <h3 className="text-lg font-bold text-gray-900">{phase.phaseName}</h3>
+                        </div>
+                        <p className="text-gray-600 text-sm leading-relaxed ml-11">{phase.description}</p>
                       </div>
                     </div>
 
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <label className="text-xs font-semibold text-orange-600 uppercase tracking-wide flex items-center gap-1">
-                          <Terminal className="w-3 h-3" />
-                          Gemini Prompt
+                    <div className="bg-white border border-gray-100 rounded-xl p-4 shadow-inner">
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="text-xs font-bold text-orange-600 uppercase tracking-wide flex items-center gap-2">
+                          <Terminal className="w-3.5 h-3.5" />
+                          Gemini Execution Prompt
                         </label>
-                        <CopyButton text={phase.executionPrompt} className="hover:bg-gray-100 text-gray-500" title="Copy Phase Prompt" />
+                        <CopyButton text={phase.executionPrompt} variant="light" title="Copy Phase Prompt" />
                       </div>
-                      <p className="text-xs text-gray-500 font-mono line-clamp-2">{phase.executionPrompt}</p>
+                      <p className="text-xs text-gray-500 font-mono line-clamp-3 leading-relaxed">{phase.executionPrompt}</p>
                     </div>
                   </div>
                 ))}
@@ -698,9 +713,10 @@ const PlanningPage = () => {
           <div className="p-4 border-t border-forge-700 bg-forge-900/30 flex justify-end">
             <button
               onClick={() => navigate('/design')}
-              className="text-white bg-forge-text hover:bg-slate-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
+              className="text-white bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all shadow-md group"
             >
-              Proceed to Design <ChevronRight className="w-4 h-4" />
+              Proceed to Design
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
         )}
@@ -789,9 +805,10 @@ const DesignPage = () => {
         <div className="mt-6 flex justify-end">
           <button
             onClick={() => navigate('/code')}
-            className="text-white bg-forge-text hover:bg-slate-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
+            className="text-white bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all shadow-md group"
           >
-            Proceed to Integration <ChevronRight className="w-4 h-4" />
+            Proceed to Realization
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
       )}
@@ -851,9 +868,19 @@ const CodePage = () => {
             <button
               onClick={() => generateArtifact(ProjectStep.CODE)}
               disabled={state.isGenerating || !state.stitchPrompt}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold py-3 rounded-lg shadow-lg shadow-blue-500/20 transition-all flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 group"
             >
-              {state.isGenerating ? "Compiling..." : "Generate Gemini Master Prompt"}
+              {state.isGenerating ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Compiling...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                  Generate Gemini Master Prompt
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -893,9 +920,9 @@ const CodePage = () => {
             <div className="mt-auto">
               <a
                 href="mailto:contact@jalanea.com?subject=Project Inquiry from Jalanea Forge"
-                className="block w-full text-center bg-forge-accent hover:bg-orange-600 text-white font-semibold py-4 rounded-lg shadow-lg shadow-orange-500/20 transition-all mb-3"
+                className="block w-full text-center bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] mb-3"
               >
-                Book a Consultation
+                Book a Consultation →
               </a>
               <p className="text-center text-xs text-forge-600">Limited availability for new partnerships.</p>
             </div>
