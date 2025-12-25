@@ -27,7 +27,9 @@ import {
   Sun,
   Check,
   Database,
-  ArrowDownToLine
+  ArrowDownToLine,
+  Info,
+  Volume2
 } from 'lucide-react';
 import { ProjectState, ProjectStep, ResearchDocument, NavItem, ProjectMetadata } from './types';
 import * as GeminiService from './services/geminiService';
@@ -727,6 +729,29 @@ const PlanningPage = () => {
                           <h3 className="text-lg font-bold text-gray-900">{phase.phaseName}</h3>
                         </div>
                         <p className="text-gray-600 text-sm leading-relaxed ml-11">{phase.description}</p>
+
+                        {/* Technical Report / Audio Brief */}
+                        {phase.technicalBrief && (
+                          <div className="mt-4 ml-11 bg-slate-50 border border-slate-200 rounded-xl p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-2">
+                                <Info className="w-3.5 h-3.5" /> Technical Explanation
+                              </h4>
+                              <button
+                                onClick={() => {
+                                  window.speechSynthesis.cancel(); // Stop overlap
+                                  const u = new SpeechSynthesisUtterance(phase.technicalBrief);
+                                  window.speechSynthesis.speak(u);
+                                }}
+                                className="text-[10px] font-semibold bg-white text-slate-600 px-2.5 py-1 rounded border border-slate-200 hover:bg-slate-100 flex items-center gap-1.5 transition-colors cursor-pointer"
+                                title="Listen to Audio Report"
+                              >
+                                <Volume2 className="w-3 h-3" /> Listen
+                              </button>
+                            </div>
+                            <p className="text-sm text-slate-800 leading-relaxed">{phase.technicalBrief}</p>
+                          </div>
+                        )}
                       </div>
                     </div>
 

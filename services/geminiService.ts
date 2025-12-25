@@ -229,16 +229,18 @@ export const generatePlan = async (prd: string): Promise<string> => {
     Each object must have:
     - "phaseName": string (e.g., "Phase 1: MVP")
     - "description": string (Summary of goals)
-    - "executionPrompt": string (A detailed prompt for an AI coding assistant. It MUST include:
-        1. Context from the PRD.
-        2. Specific coding tasks.
-        3. **Technical Guardrails**: Specific instructions on safety, data handling (e.g., "Use Firebase Security Rules", "Do not expose API keys client-side").
-        4. **User Testing Protocol**: A step-by-step guide for the user to manually verify the features work (e.g., "Create a user, check Firestore console, try logging in with wrong password").
+    - "technicalBrief": string (A clear, non-technical explanation of what this phase achieves and WHY specific technical choices like Firebase Rules or API keys are used. This helps the user understand the 'why' behind the 'what'.)
+    - "executionPrompt": string (A highly detailed, self-contained prompt for an AI coding assistant. It MUST include:
+        1. **Project Context**: Start with "PROJECT VISION: [Insert 1-2 sentence summary of the project goal based on PRD]".
+        2. **Technical Stack**: Explicitly list the stack (React, Tailwind, Firebase, etc.).
+        3. **Phase Task**: Specific coding instructions for this phase.
+        4. **Technical Guardrails**: Specific instructions on safety, data handling (e.g., "Use Firebase Security Rules", "Do not expose API keys client-side").
+        5. **User Testing Protocol**: A step-by-step guide for the user to manually verify the features work (e.g., "Create a user, check Firestore console, try logging in with wrong password").
     )
 
     Example Output Structure:
     [
-      { "phaseName": "...", "description": "...", "executionPrompt": "..." }
+      { "phaseName": "...", "description": "...", "technicalBrief": "...", "executionPrompt": "..." }
     ]
   `;
 
