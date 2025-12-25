@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Mail, Bug, Sparkles, Loader2, Copy, Check } from 'lucide-react';
 import * as GeminiService from '../services/geminiService';
-import { useProject } from '../App';
+import { useProject } from '../contexts/ProjectContext';
 
 interface SupportModalProps {
     isOpen: boolean;
