@@ -736,9 +736,16 @@ const PlanningPage = () => {
                           <Terminal className="w-3.5 h-3.5" />
                           Gemini Execution Prompt
                         </label>
-                        <CopyButton text={phase.executionPrompt} variant="light" title="Copy Phase Prompt" />
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+                            <Check className="w-3 h-3" /> Includes Tests & Safety
+                          </span>
+                          <CopyButton text={phase.executionPrompt} variant="light" title="Copy Phase Prompt" />
+                        </div>
                       </div>
-                      <p className="text-xs text-gray-500 font-mono line-clamp-3 leading-relaxed">{phase.executionPrompt}</p>
+                      <p className="text-xs text-gray-500 font-mono leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto custom-scrollbar border border-gray-50 rounded p-2 bg-gray-50/50">
+                        {phase.executionPrompt}
+                      </p>
                     </div>
                   </div>
                 ))}

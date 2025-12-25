@@ -229,7 +229,12 @@ export const generatePlan = async (prd: string): Promise<string> => {
     Each object must have:
     - "phaseName": string (e.g., "Phase 1: MVP")
     - "description": string (Summary of goals)
-    - "executionPrompt": string (A specific, copy-pasteable prompt to give to an AI coding assistant like Google Gemini to BUILD this specific phase. It should include context from the PRD relevant to this phase.)
+    - "executionPrompt": string (A detailed prompt for an AI coding assistant. It MUST include:
+        1. Context from the PRD.
+        2. Specific coding tasks.
+        3. **Technical Guardrails**: Specific instructions on safety, data handling (e.g., "Use Firebase Security Rules", "Do not expose API keys client-side").
+        4. **User Testing Protocol**: A step-by-step guide for the user to manually verify the features work (e.g., "Create a user, check Firestore console, try logging in with wrong password").
+    )
 
     Example Output Structure:
     [
@@ -242,7 +247,7 @@ export const generatePlan = async (prd: string): Promise<string> => {
     'gemini-3-flash-preview',
     prompt,
     {
-      systemInstruction: "You are a Technical Project Manager. Break down complex goals into achievable tasks. Return raw JSON.",
+      systemInstruction: "You are a Technical Project Manager. Break down complex goals into achievable tasks with a strong focus on security, testing, and verification protocols. Return raw JSON.",
     }
   );
 
