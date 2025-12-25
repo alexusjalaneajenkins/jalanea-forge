@@ -358,8 +358,8 @@ const IdeaPage = () => {
                   </button>
                 </div>
               </div>
-              <div className="flex-1 overflow-y-auto p-8 custom-scrollbar text-gray-900 prose prose-sm max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-li:text-gray-700">
-                <MarkdownRenderer content={state.synthesizedIdea} />
+              <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                <MarkdownRenderer content={state.synthesizedIdea} variant="paper" />
               </div>
             </div>
 
