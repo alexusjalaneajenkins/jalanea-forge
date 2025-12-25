@@ -85,7 +85,7 @@ export const refineIdea = async (rawInput: string): Promise<string> => {
 
   const response = await generateContentWithRetry(
     ai,
-    'gemini-2.0-flash-001',
+    'gemini-3-flash-preview',
     prompt, // Pass string directly
     {
       systemInstruction: "You are a Chief Product Officer. Your goal is to clarify and elevate raw ideas into actionable product visions.",
@@ -117,7 +117,7 @@ export const generateResearchPrompt = async (synthesizedIdea: string): Promise<{
 
   const missionResponse = await generateContentWithRetry(
     ai,
-    'gemini-2.0-flash-001',
+    'gemini-3-flash-preview',
     missionPrompt,
     {
       temperature: 0.7,
@@ -195,7 +195,7 @@ export const generatePRD = async (idea: string, research: ResearchDocument[]): P
 
   const response = await generateContentWithRetry(
     ai,
-    'gemini-2.0-flash-001',
+    'gemini-3-flash-preview',
     { parts }, // Pass object with parts
     {
       systemInstruction: "You are a world-class Product Manager. You are strict, detailed, and focus on viability and user value.",
@@ -232,7 +232,7 @@ export const generatePlan = async (prd: string): Promise<string> => {
 
   const response = await generateContentWithRetry(
     ai,
-    'gemini-2.0-flash-001',
+    'gemini-3-flash-preview',
     prompt,
     {
       systemInstruction: "You are a Technical Project Manager. Break down complex goals into achievable tasks. Return raw JSON.",
@@ -281,8 +281,8 @@ export const generateDesignPrompts = async (prd: string, plan: string): Promise<
   `;
 
   const [stitchRes, opalRes] = await Promise.all([
-    generateContentWithRetry(ai, 'gemini-2.0-flash-001', stitchPrompt, { temperature: 0.7 }),
-    generateContentWithRetry(ai, 'gemini-2.0-flash-001', opalPrompt, { temperature: 0.7 })
+    generateContentWithRetry(ai, 'gemini-3-flash-preview', stitchPrompt, { temperature: 0.7 }),
+    generateContentWithRetry(ai, 'gemini-3-flash-preview', opalPrompt, { temperature: 0.7 })
   ]);
 
   return {
@@ -325,7 +325,7 @@ export const generateCodePrompt = async (projectState: ProjectState): Promise<st
 
   const response = await generateContentWithRetry(
     ai,
-    'gemini-2.0-flash-001',
+    'gemini-3-flash-preview',
     prompt,
     {
       systemInstruction: "You are a Lead Software Engineer. You write precise, technical specifications for other developers.",
