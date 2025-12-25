@@ -1,10 +1,17 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 import { ProjectState, ResearchDocument } from "../types";
 
+export const MISSING_API_KEY_ERROR = "MISSING_API_KEY";
+
 const getClient = () => {
+  const storedKey = localStorage.getItem('jalanea_gemini_key');
+  if (storedKey) {
+    return new GoogleGenAI({ apiKey: storedKey });
+  }
+
   const apiKey = import.meta.env.VITE_API_KEY || process.env.API_KEY;
   if (!apiKey) {
-    throw new Error("API Key not found in environment variables");
+    throw new Error(MISSING_API_KEY_ERROR);
   }
   return new GoogleGenAI({ apiKey });
 };

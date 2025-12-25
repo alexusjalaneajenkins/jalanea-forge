@@ -36,6 +36,8 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { saveProject, loadProject, createProject, getUserProjects, deleteProject } from './services/firebase';
 import { ProjectListDialog } from './components/ProjectListDialog';
+import { SettingsModal } from './components/SettingsModal';
+import { MISSING_API_KEY_ERROR } from './services/geminiService';
 
 // --- Context Definition ---
 
@@ -48,6 +50,7 @@ interface ProjectContextType {
   generateResearchPrompt: () => Promise<void>;
   resetProject: () => void;
   openProjectList: () => void;
+  openSettings: () => void;
   currentProjectId?: string;
 }
 
@@ -204,6 +207,20 @@ const Header = () => {
         </div>
       </div>
       <div className="flex items-center gap-4">
+        <button
+          onClick={() => openProjectList()}
+          className="p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm md:hidden"
+          title="My Projects"
+        >
+          <FolderOpen className="w-5 h-5" />
+        </button>
+        <button
+          onClick={() => (useProject() as any).openSettings()} // Cast for now or update Header context usage
+          className="p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm"
+          title="AI Settings"
+        >
+          <Settings className="w-5 h-5" />
+        </button>
         <ThemeToggle />
         {loading ? (
           <div className="h-8 w-8 rounded-full bg-forge-800 animate-pulse"></div>
@@ -1094,6 +1111,7 @@ const ProjectProvider = () => {
   const [projects, setProjects] = useState<ProjectMetadata[]>([]);
   const [currentProjectId, setCurrentProjectId] = useState<string | undefined>(undefined);
   const [showProjectDialog, setShowProjectDialog] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [isLoadingProjects, setIsLoadingProjects] = useState(false);
 
   const { user } = useAuth();
@@ -1268,8 +1286,12 @@ const ProjectProvider = () => {
       }
     } catch (error: any) {
       console.error("Generation failed:", error);
-      const errorMessage = error.message || "Unknown error";
-      alert(`Failed to generate content: ${errorMessage}\n\nPlease check the console for more details.`);
+      if (error.message === MISSING_API_KEY_ERROR) {
+        setShowSettings(true);
+      } else {
+        const errorMessage = error.message || "Unknown error";
+        alert(`Failed to generate content: ${errorMessage}\n\nPlease check the console for more details.`);
+      }
     } finally {
       setState(prev => ({ ...prev, isGenerating: false }));
     }
@@ -1286,8 +1308,12 @@ const ProjectProvider = () => {
       }));
     } catch (error: any) {
       console.error("Research prompt generation failed:", error);
-      const errorMessage = error.message || "Unknown error";
-      alert(`Failed to generate research prompt: ${errorMessage}`);
+      if (error.message === MISSING_API_KEY_ERROR) {
+        setShowSettings(true);
+      } else {
+        const errorMessage = error.message || "Unknown error";
+        alert(`Failed to generate research prompt: ${errorMessage}`);
+      }
     } finally {
       setState(prev => ({ ...prev, isGenerating: false }));
     }
@@ -1311,8 +1337,13 @@ const ProjectProvider = () => {
       generateResearchPrompt,
       resetProject,
       openProjectList: () => setShowProjectDialog(true),
+      openSettings: () => setShowSettings(true),
       currentProjectId
     }}>
+      <SettingsModal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
       <ProjectListDialog
         isOpen={showProjectDialog}
         onClose={() => setShowProjectDialog(false)}
