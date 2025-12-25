@@ -34,6 +34,7 @@ export interface ProjectState {
   stitchPrompt?: string; // For Stitch (Frontend)
   opalPrompt?: string; // For Opal (Backend)
   antigravityPrompt?: string; // For Antigravity (Integration)
+  bugReportPrompt?: string;
   isGenerating: boolean;
 }
 
@@ -41,6 +42,19 @@ export interface ProjectMetadata {
   id: string;
   title: string;
   updatedAt: number;
+}
+
+export interface RoadmapStep {
+  stepName: string;
+  description: string;
+  technicalBrief: string;
+  prompt: string;
+}
+
+export interface RoadmapPhase {
+  phaseName: string;
+  description: string;
+  steps: RoadmapStep[];
 }
 
 export interface GenerationRequest {

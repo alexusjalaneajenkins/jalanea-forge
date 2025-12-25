@@ -229,18 +229,21 @@ export const generatePlan = async (prd: string): Promise<string> => {
     Each object must have:
     - "phaseName": string (e.g., "Phase 1: MVP")
     - "description": string (Summary of goals)
-    - "technicalBrief": string (A clear, non-technical explanation of what this phase achieves and WHY specific technical choices like Firebase Rules or API keys are used. This helps the user understand the 'why' behind the 'what'.)
-    - "executionPrompt": string (A highly detailed, self-contained prompt for an AI coding assistant. It MUST include:
-        1. **Project Context**: Start with "PROJECT VISION: [Insert 1-2 sentence summary of the project goal based on PRD]".
-        2. **Technical Stack**: Explicitly list the stack (React, Tailwind, Firebase, etc.).
-        3. **Phase Task**: Specific coding instructions for this phase.
-        4. **Technical Guardrails**: Specific instructions on safety, data handling (e.g., "Use Firebase Security Rules", "Do not expose API keys client-side").
-        5. **User Testing Protocol**: A step-by-step guide for the user to manually verify the features work (e.g., "Create a user, check Firestore console, try logging in with wrong password").
-    )
+    - "steps": array of objects, where each object has:
+        - "stepName": string (e.g., "Setup Authentication")
+        - "description": string (User-facing summary)
+        - "technicalBrief": string (Explanation of 'why' this tech is used, e.g., "Firebase Auth is secure...")
+        - "prompt": string (The actual prompt to copy. MUST include "PROJECT VISION:...", "TECH STACK:...", and specific coding task.)
 
     Example Output Structure:
     [
-      { "phaseName": "...", "description": "...", "technicalBrief": "...", "executionPrompt": "..." }
+      { 
+        "phaseName": "...", 
+        "description": "...", 
+        "steps": [
+           { "stepName": "...", "description": "...", "technicalBrief": "...", "prompt": "..." }
+        ]
+      }
     ]
   `;
 
@@ -249,7 +252,7 @@ export const generatePlan = async (prd: string): Promise<string> => {
     'gemini-3-flash-preview',
     prompt,
     {
-      systemInstruction: "You are a Technical Project Manager. Break down complex goals into achievable tasks with a strong focus on security, testing, and verification protocols. Return raw JSON.",
+      systemInstruction: "You are a Technical Project Manager. Break down complex goals into granular, actionable steps. Focus on educational clarity for the user and security in the code prompts. Return raw JSON.",
     }
   );
 
@@ -257,6 +260,43 @@ export const generatePlan = async (prd: string): Promise<string> => {
   // Clean markdown if present
   text = text.replace(/```json/g, '').replace(/```/g, '').trim();
   return text;
+};
+
+export const refineBugReport = async (error: string, context: string): Promise<{ subject: string, body: string }> => {
+  const ai = getClient();
+  const prompt = `
+    Analyze the following error report from a user building an AI app.
+    
+    PROJECT CONTEXT:
+    ${context}
+
+    USER ERROR LOG / FEEDBACK:
+    ${error}
+
+    TASK:
+    Create a professional email bug report that the user can send to the developer (Me).
+    1. "subject": A concise subject line (e.g., "Bug Report: Firebase Config Error").
+    2. "body": A clear email body explaining the issue, potential causes, and suggested solutions based on the error.
+
+    OUTPUT FORMAT:
+    Strict valid JSON: { "subject": "...", "body": "..." }
+  `;
+
+  const response = await generateContentWithRetry(
+    ai,
+    'gemini-3-flash-preview',
+    prompt,
+    {
+      systemInstruction: "You are a Senior Support Engineer. Translate user errors into actionable technical bug reports. Return raw JSON."
+    }
+  );
+
+  const text = (response.text || "{}").replace(/```json/g, '').replace(/```/g, '').trim();
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    return { subject: "Bug Report", body: `Error parsing AI response. Original error: ${error}` };
+  }
 };
 
 export const generateDesignPrompts = async (prd: string, plan: string): Promise<{ stitch: string, opal: string }> => {
