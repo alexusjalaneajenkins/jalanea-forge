@@ -1065,7 +1065,7 @@ const Layout = () => {
 
         <main className="flex-1 overflow-auto bg-forge-900 p-8 relative">
           {/* Mobile Nav Placeholder - hidden on md+ */}
-          <div className="md:hidden mb-6 flex overflow-x-auto gap-2 pb-2">
+          <div className="md:hidden mb-6 flex overflow-x-auto gap-2 pb-2 no-print">
             {navItems.map((item) => (
               <div key={item.path} onClick={() => window.location.hash = item.path} className={`
                    flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2

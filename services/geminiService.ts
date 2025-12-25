@@ -205,7 +205,7 @@ export const generatePRD = async (idea: string, research: ResearchDocument[]): P
     'gemini-3-flash-preview',
     { parts }, // Pass object with parts
     {
-      systemInstruction: "You are a world-class Product Manager. You are strict, detailed, and focus on viability and user value.",
+      systemInstruction: `You are a world-class Product Manager. You are strict, detailed, and focus on viability and user value. Current Date: ${new Date().toLocaleDateString()}`,
       temperature: 0.7,
     }
   );
