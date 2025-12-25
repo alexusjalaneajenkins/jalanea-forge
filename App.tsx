@@ -152,7 +152,7 @@ const ThemeToggle = () => {
 
 const Header = () => {
   const { user, signIn, logOut, loading } = useAuth();
-  const { openProjectList, state, updateTitle } = useProject();
+  const { openProjectList, state, updateTitle, openSettings } = useProject();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
 
@@ -208,14 +208,14 @@ const Header = () => {
       </div>
       <div className="flex items-center gap-4">
         <button
-          onClick={() => openProjectList()}
+          onClick={openProjectList}
           className="p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm md:hidden"
           title="My Projects"
         >
           <FolderOpen className="w-5 h-5" />
         </button>
         <button
-          onClick={() => (useProject() as any).openSettings()} // Cast for now or update Header context usage
+          onClick={openSettings}
           className="p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm"
           title="AI Settings"
         >
