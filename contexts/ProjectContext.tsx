@@ -19,6 +19,7 @@ interface ProjectContextType {
     openProjectList: () => void;
     openSettings: () => void;
     openSupport: () => void;
+    setCurrentStep: (step: ProjectStep) => void;
     currentProjectId?: string;
 }
 
@@ -159,6 +160,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
                         // Remove "data:application/pdf;base64," prefix
                         resolve(result.split(',')[1]);
                     } else {
+                        console.error("Failed to read file", e);
                         reject(new Error("Failed to read file"));
                     }
                 };
@@ -186,6 +188,10 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     const updateTitle = (title: string) => {
         setState(prev => ({ ...prev, title }));
+    };
+
+    const setCurrentStep = (step: ProjectStep) => {
+        setState(prev => ({ ...prev, currentStep: step }));
     };
 
     const generateArtifact = async (step: ProjectStep) => {
@@ -271,6 +277,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
             openProjectList: () => setShowProjectDialog(true),
             openSettings: () => setShowSettings(true),
             openSupport: () => setShowSupportModal(true),
+            setCurrentStep,
             currentProjectId
         }}>
             <SettingsModal

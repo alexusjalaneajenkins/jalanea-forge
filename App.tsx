@@ -1025,7 +1025,7 @@ const CodePage = () => {
 const Layout = () => {
   const location = useLocation();
   const { user } = useAuth();
-  const { state, openSupport } = useProject();
+  const { state, openSupport, setCurrentStep } = useProject();
 
   const navItems: NavItem[] = [
     { label: 'Idea', step: ProjectStep.IDEA, icon: Lightbulb, path: '/' },
@@ -1045,6 +1045,14 @@ const Layout = () => {
     }
   }, [error, clearError]);
 
+  // Sync current step with route
+  useEffect(() => {
+    const item = navItems.find(i => i.path === location.pathname);
+    if (item && item.step !== state.currentStep) {
+      setCurrentStep(item.step);
+    }
+  }, [location.pathname, state.currentStep, setCurrentStep]);
+
   return (
     <div className="min-h-screen flex flex-col bg-forge-900 text-forge-text selection:bg-orange-100 selection:text-orange-900">
       <Header />
@@ -1061,8 +1069,8 @@ const Layout = () => {
       )}
 
       <div className="flex flex-1 overflow-hidden">
-        <aside className="w-64 border-r border-forge-700 bg-forge-950 p-6 flex flex-col gap-2 hidden md:flex">
-          <div className="text-xs font-bold text-forge-500 uppercase tracking-widest mb-4 px-4">Workflow</div>
+        <aside className="w-64 border-r border-forge-700 bg-forge-950 p-6 flex flex-col gap-2 hidden md:flex overflow-y-auto custom-scrollbar">
+          <div className="text-xs font-bold text-forge-500 uppercase tracking-widest mb-4 px-4 flex-shrink-0">Workflow</div>
           {navItems.map((item) => {
             // Determine completion status
             let isComplete = false;
