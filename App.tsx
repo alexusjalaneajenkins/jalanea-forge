@@ -383,6 +383,61 @@ const IdeaPage = () => {
             </div>
           </div>
 
+          {/* NotebookLM Worflow Prompts */}
+          {state.researchMissionPrompt && (
+            <div className="mt-8 animate-fade-in-up delay-100">
+               <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                 <div className="p-1 bg-white/10 rounded"><BookOpen className="w-4 h-4 text-orange-400" /></div>
+                 NotebookLM Workflow Prep
+               </h3>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 {/* Step 1 */}
+                 <GlassCard className="p-5 flex flex-col">
+                   <div className="flex justify-between items-start mb-3">
+                     <div>
+                       <span className="text-[10px] font-bold text-purple-400 bg-purple-400/10 px-2 py-1 rounded border border-purple-400/20">STEP 1</span>
+                       <h4 className="font-bold text-white mt-2">Context Prompt</h4>
+                     </div>
+                     <button 
+                       onClick={() => navigator.clipboard.writeText(state.researchMissionPrompt || "")}
+                       className="p-2 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+                       title="Copy Source Text"
+                     >
+                       <Copy className="w-4 h-4" />
+                     </button>
+                   </div>
+                   <p className="text-xs text-slate-400 mb-3 flex-1">Paste this as a SOURCE in NotebookLM.</p>
+                   <div className="bg-black/30 p-3 rounded border border-white/5 font-mono text-[10px] text-slate-300 h-24 overflow-y-auto custom-scrollbar">
+                     {state.researchMissionPrompt}
+                   </div>
+                 </GlassCard>
+
+                 {/* Step 2 */}
+                 {state.reportGenerationPrompt && (
+                   <GlassCard className="p-5 flex flex-col">
+                     <div className="flex justify-between items-start mb-3">
+                       <div>
+                         <span className="text-[10px] font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded border border-blue-400/20">STEP 2</span>
+                         <h4 className="font-bold text-white mt-2">Report Prompt</h4>
+                       </div>
+                       <button 
+                         onClick={() => navigator.clipboard.writeText(state.reportGenerationPrompt || "")}
+                         className="p-2 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+                         title="Copy Chat Prompt"
+                       >
+                         <Copy className="w-4 h-4" />
+                       </button>
+                     </div>
+                     <p className="text-xs text-slate-400 mb-3 flex-1">Paste this in CHAT to generate the report.</p>
+                     <div className="bg-black/30 p-3 rounded border border-white/5 font-mono text-[10px] text-slate-300 h-24 overflow-y-auto custom-scrollbar">
+                       {state.reportGenerationPrompt}
+                     </div>
+                   </GlassCard>
+                 )}
+               </div>
+            </div>
+          )}
+
           <div className="mt-6 flex justify-end">
             <button
               onClick={() => navigate('/research')}

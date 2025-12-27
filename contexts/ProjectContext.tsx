@@ -201,6 +201,14 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
                 // Synthesize Idea Step
                 const result = await GeminiService.refineIdea(state.ideaInput);
                 setState(prev => ({ ...prev, synthesizedIdea: result }));
+
+                // Auto-generate Research Prompts for NotebookLM immediately
+                const { mission, report } = await GeminiService.generateResearchPrompt(result);
+                setState(prev => ({
+                    ...prev,
+                    researchMissionPrompt: mission,
+                    reportGenerationPrompt: report
+                }));
             } else if (step === ProjectStep.PRD) {
                 // Use synthesized idea if available, otherwise raw
                 const inputIdea = state.synthesizedIdea || state.ideaInput;
