@@ -34,7 +34,7 @@ export const LoadingState: React.FC<LoadingStateProps> = ({
         </div>
       </div>
       
-      <h3 className="text-2xl font-bold font-serif text-white mb-2 tracking-tight">{message}</h3>
+      <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">{message}</h3>
       <p className="text-slate-400 text-sm max-w-xs text-center leading-relaxed">{subMessage}</p>
     </div>
   );

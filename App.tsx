@@ -419,7 +419,7 @@ const ResearchPage = () => {
     <PageBackground glowColor="purple">
       <div className="max-w-6xl mx-auto h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10">
         <div className="mb-10 text-center">
-          <h2 className="text-4xl font-bold text-white mb-3 tracking-tight font-serif">Research & Context</h2>
+          <h2 className="text-4xl font-bold text-white mb-3 tracking-tight">Research & Context</h2>
           <p className="text-forge-muted text-lg max-w-2xl mx-auto">
             Ground the AI in your specific domain. Upload documents or review the automated research mission.
           </p>
@@ -548,7 +548,7 @@ const PrdPage = () => {
         {/* Header */}
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 no-print">
           <div>
-            <h2 className="text-4xl font-bold text-white mb-2 tracking-tight font-serif">Product Requirements</h2>
+            <h2 className="text-4xl font-bold text-white mb-2 tracking-tight">Product Requirements</h2>
             <p className="text-forge-muted text-lg">Synthesize your Idea and Research into a structured PRD.</p>
           </div>
           <button
@@ -671,7 +671,7 @@ const RealizationPage = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h2 className="text-4xl font-bold text-white mb-2 tracking-tight font-serif">Realization & Roadmap</h2>
+            <h2 className="text-4xl font-bold text-white mb-2 tracking-tight">Realization & Roadmap</h2>
             <p className="text-forge-muted text-lg">Your step-by-step plan to build this vision.</p>
           </div>
           {!state.roadmapOutput && (
@@ -703,7 +703,7 @@ const RealizationPage = () => {
           <GlassCard className="flex-1 flex flex-col justify-center items-center p-12 text-center border-dashed border-2 border-white/10 bg-white/5">
              <div className="max-w-md w-full text-left space-y-8">
                 <div>
-                   <h3 className="text-2xl font-bold text-white mb-4 font-serif">Ready to Build?</h3>
+                   <h3 className="text-2xl font-bold text-white mb-4">Ready to Build?</h3>
                    <ul className="space-y-4">
                      {[
                        "Save 20+ hours of dev time",
@@ -901,7 +901,7 @@ const Layout = () => {
           </div>
         </aside>
 
-        <main className="flex-1 overflow-auto bg-forge-900 p-8 relative">
+        <main className="flex-1 overflow-auto bg-forge-900 relative">
           {/* Mobile Nav Placeholder - hidden on md+ */}
           <div className="md:hidden mb-6 flex overflow-x-auto gap-2 pb-2 no-print">
             {navItems.map((item) => (
