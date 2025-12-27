@@ -415,13 +415,11 @@ const IdeaPage = () => {
                        <span className="text-[10px] font-bold text-purple-400 bg-purple-400/10 px-2 py-1 rounded border border-purple-400/20">STEP 1: SOURCE</span>
                        <h4 className="font-bold text-white mt-2">Context Prompt</h4>
                      </div>
-                     <button 
-                       onClick={() => navigator.clipboard.writeText(state.researchMissionPrompt || "")}
-                       className="p-2 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+                     <CopyButton 
+                       text={state.researchMissionPrompt || ""}
+                       className="text-slate-400 hover:text-white hover:bg-white/10"
                        title="Copy Source Text"
-                     >
-                       <Copy className="w-4 h-4" />
-                     </button>
+                     />
                    </div>
                    <p className="text-xs text-slate-400 mb-3 flex-1 leading-relaxed">
                      Create a new Notebook. Click <span className="text-white font-medium">Add Source &gt; Paste Text</span>. Paste this entire block to ground the AI.
@@ -440,13 +438,11 @@ const IdeaPage = () => {
                          <span className="text-[10px] font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded border border-blue-400/20">STEP 2: CHAT</span>
                          <h4 className="font-bold text-white mt-2">Report Prompt</h4>
                        </div>
-                       <button 
-                         onClick={() => navigator.clipboard.writeText(state.reportGenerationPrompt || "")}
-                         className="p-2 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+                       <CopyButton 
+                         text={state.reportGenerationPrompt || ""}
+                         className="text-slate-400 hover:text-white hover:bg-white/10"
                          title="Copy Chat Prompt"
-                       >
-                         <Copy className="w-4 h-4" />
-                       </button>
+                       />
                      </div>
                      <p className="text-xs text-slate-400 mb-3 flex-1 leading-relaxed">
                        Once sources are processed, paste this into the <span className="text-white font-medium">Chat Box</span> to generate your research report.
