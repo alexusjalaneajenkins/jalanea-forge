@@ -965,30 +965,58 @@ const RealizationPage = () => {
                );
             })}
 
-            {/* Global Hire CTA (Always visible at bottom OR sticky) */}
-            <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/30 relative overflow-hidden">
-               <div className="absolute top-0 right-0 p-32 bg-orange-500/5 rounded-full blur-3xl pointer-events-none"></div>
-               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-                  <div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Need to move faster?</h3>
-                    <p className="text-slate-300 max-w-lg">
-                      Skip the DIY learning curve. Use the "Fast Track" to hire Jalanea experts for the remaining phases.
-                    </p>
-                  </div>
-                  <a href="mailto:contact@jalanea.com?subject=Fast%20Track%20Build" className="bg-white hover:bg-slate-100 text-black font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 whitespace-nowrap">
-                    Get a Quote
-                  </a>
-               </div>
-            </div>
+                     {/* GLOBAL HIRE CTA - Footer */}
+             <div className="mt-12 pt-8 border-t border-white/10 pb-20">
+                <GlassCard className="p-8 md:p-10 border-orange-500/30 bg-gradient-to-br from-orange-500/10 to-amber-500/10 relative overflow-hidden group">
+                   <div className="absolute inset-0 bg-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                   
+                   {/* Background Glows */}
+                   <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/20 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+                   <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2"></div>
 
-          </div>
+                   <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                     <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-orange-500 text-white uppercase tracking-widest shadow-lg shadow-orange-500/30">Premium</span>
+                          <span className="text-xs font-bold text-orange-300 uppercase tracking-widest">Done For You</span>
+                        </div>
+                        <h3 className="text-3xl font-bold text-white mb-3">Fast Track Your Launch</h3>
+                        <p className="text-slate-300 leading-relaxed mb-6 max-w-xl">
+                           Skip the DIY learning curve. Instead of building from scratch, let our expert team handle the technical heavy lifting so you can focus on scale.
+                        </p>
+                        <ul className="text-sm text-slate-400 space-y-2 mb-2">
+                           <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500" /> Professional Implementation</li>
+                           <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500" /> Scalable Architecture</li>
+                           <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500" /> 14-Day Delivery Guarantee</li>
+                        </ul>
+                     </div>
+                     <div>
+                        <a 
+                          href="mailto:contact@jalanea.com?subject=Fast%20Track%20Build%20Quote&body=I%20am%20interested%20in%20fast-tracking%20my%20project." 
+                          className="group/btn relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-orange-600 font-lg rounded-2xl focus:outline-none hover:bg-orange-500 hover:scale-[1.03] hover:shadow-2xl hover:shadow-orange-500/40 border border-orange-400/20"
+                        >
+                           <span className="relative z-10 flex items-center gap-2">
+                             Get a Quote <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                           </span>
+                         </a>
+                      </div>
+                   </div>
+                </GlassCard>
+             </div>
+           </div>
         )}
 
-        {/* Floating Fast Track Toggle (Sticky) */}
+        {/* Floating Fast Track Toggle (Sticky) - Hidden when scrolling near bottom? Simple logic: Always bottom right but with backdrop */}
         {!state.isGenerating && state.roadmapOutput && (
-          <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-1000">
-             <a href="mailto:contact@jalanea.com" className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-6 py-3 rounded-full shadow-2xl hover:scale-105 transition-transform flex items-center gap-2 border border-white/20">
-               <Sparkles className="w-4 h-4 fill-white" /> Fast Track
+          <div className="fixed bottom-8 right-8 z-50 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-1000">
+             <a 
+               href="mailto:contact@jalanea.com" 
+               className="group relative flex items-center gap-3 bg-slate-900/80 backdrop-blur-md border border-orange-500/50 text-white pl-4 pr-2 py-2 rounded-full shadow-2xl hover:scale-105 transition-all hover:border-orange-400 hover:shadow-orange-500/20"
+             >
+               <span className="text-sm font-bold text-orange-400 group-hover:text-amber-300 transition-colors">Stuck?</span>
+               <span className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-4 py-2 rounded-full shadow-lg">
+                  Fast Track ⚡️
+               </span>
              </a>
           </div>
         )}
