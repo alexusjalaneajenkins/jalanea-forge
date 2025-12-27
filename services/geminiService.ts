@@ -234,7 +234,7 @@ export const generatePlan = async (prd: string): Promise<string> => {
         - "stepName": string (e.g., "Setup Authentication")
         - "description": string (User-facing summary)
         - "technicalBrief": string (Explanation of complexity)
-        - "diyPrompt": string (A DIRECT, COPY-PASTEABLE COMMAND for an AI agent (like Cursor/Replit) to write the code. MUST start with "Act as a Senior Engineer. Create [File Names]..." and include exact technical requirements, libraries to use, and step-by-step implementation logic. Do NOT describe *what* to do; command the AI *to do it*.)
+        - "diyPrompt": string (A COMPREHENSIVE COMMAND for an AI agent. It MUST have two parts: 1. "CONTEXT": A summary of the App Name, Idea, and Tech Stack (from the PRD). 2. "TASK": The specific coding instruction starting with "Act as a Senior Engineer...". This ensures the AI know exactly WHAT it is building.)
         - "hirePitch": string (A concise reason to hire an expert, e.g., "Authentication security errors can cost $10k+ to fix.")
 
     Example Output Structure:
@@ -247,7 +247,7 @@ export const generatePlan = async (prd: string): Promise<string> => {
              "stepName": "Setup Next.js", 
              "description": "Initialize the app repo.", 
              "technicalBrief": "...", 
-             "diyPrompt": "Act as a Senior React Engineer. Initialize a new Next.js 14 project using App Router and TypeScript. Install TailwindCSS, Lucide React, and Supabase Client. Create a layout.tsx with a dark mode theme provider...", 
+             "diyPrompt": "## PROJECT CONTEXT\nApp: DogWalkerAI\nStack: Next.js 14, Supabase, Tailwind.\nGoal: An Uber-like app for dog walkers.\n\n## TASK\nAct as a Senior React Engineer. Initialize a new Next.js 14 project...", 
              "hirePitch": "..." 
            }
         ]
