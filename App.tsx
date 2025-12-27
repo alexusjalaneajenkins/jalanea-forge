@@ -786,11 +786,44 @@ const RealizationPage = () => {
               <h2 className="text-4xl font-bold text-white mb-2 tracking-tight">Realization Engine</h2>
               <p className="text-forge-muted text-lg">Execute your plan: Task by task.</p>
             </div>
-            {!state.roadmapOutput && (
-               <button onClick={() => generateArtifact(ProjectStep.CODE)} disabled={state.isGenerating || !state.prdOutput} className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:scale-[1.02] flex items-center gap-2">
-                 <Sparkles className="w-5 h-5" /> Generate Roadmap
-               </button>
-            )}
+            
+            {/* Actions: Generate or Regenerate */}
+            <div className="flex items-center gap-3">
+               {/* Show 'Regenerate' if output exists (Secondary action) */}
+               {state.roadmapOutput && !state.isGenerating && (
+                 <button
+                   onClick={() => {
+                     if (window.confirm("Regenerating the roadmap will overwrite your current progress and tasks. Are you sure?")) {
+                       generateArtifact(ProjectStep.CODE);
+                     }
+                   }}
+                   className="text-slate-400 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-colors text-sm font-medium flex items-center gap-2"
+                 >
+                   <RefreshCw className="w-4 h-4" /> Regenerate Plan
+                 </button>
+               )}
+               
+               {/* Show Primary 'Generate' if no output (Header version) */}
+               {!state.roadmapOutput && (
+                 <button
+                   onClick={() => generateArtifact(ProjectStep.CODE)}
+                   disabled={state.isGenerating || !state.prdOutput}
+                   className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] flex items-center gap-2 group"
+                 >
+                   {state.isGenerating ? (
+                     <>
+                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                       Generating Plan...
+                     </>
+                   ) : (
+                     <>
+                       <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                       Generate Roadmap
+                     </>
+                   )}
+                 </button>
+               )}
+            </div>
           </div>
 
           {/* Progress Bar (Gamification) */}
@@ -821,10 +854,29 @@ const RealizationPage = () => {
         {state.isGenerating ? (
           <LoadingState type="code" message="Architecting Solution" subMessage="Breaking down the plan into DIY modules vs Expert tasks..." />
         ) : !state.roadmapOutput ? (
-           <div className="flex-1 flex flex-col items-center justify-center text-slate-500 py-12 border-2 border-dashed border-white/5 rounded-2xl bg-white/5">
-             <Map className="w-16 h-16 text-slate-600 mb-4" />
-             <p className="text-lg font-medium">No roadmap generated yet.</p>
-             <p className="text-sm">Finish your PRD to unlock the execution plan.</p>
+           <div className="flex-1 flex flex-col items-center justify-center text-slate-500 py-16 border-2 border-dashed border-white/5 rounded-2xl bg-white/5 group hover:border-blue-500/20 transition-colors">
+             <div className="p-6 bg-slate-900 rounded-full mb-6 group-hover:scale-110 transition-transform duration-500 ring-1 ring-white/10 shadow-2xl">
+                <Map className="w-12 h-12 text-blue-500" />
+             </div>
+             <h3 className="text-2xl font-bold text-white mb-2">Ready to Build?</h3>
+             <p className="text-slate-400 max-w-md text-center mb-8">
+               Transform your PRD into a step-by-step technical roadmap. 
+               The AI will break down every feature into copy-pasteable code tasks.
+             </p>
+             
+             <button
+               onClick={() => generateArtifact(ProjectStep.CODE)}
+               disabled={!state.prdOutput}
+               className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 disabled:grayscale text-white font-bold px-10 py-4 rounded-xl shadow-xl shadow-blue-500/25 transition-all hover:-translate-y-1 flex items-center gap-3"
+             >
+                <Sparkles className="w-5 h-5" /> Initialize Realization Engine
+             </button>
+             
+             {!state.prdOutput && (
+               <p className="mt-4 text-xs text-red-400 bg-red-900/20 px-3 py-1 rounded-full border border-red-500/20">
+                 ⚠️ Complete the PRD phase first
+               </p>
+             )}
            </div>
         ) : (
           <div className="space-y-4">
