@@ -857,7 +857,6 @@ const RealizationPage = () => {
                 </GlassCard>
              </div>
            </div>
-          </div>
         )}
       </div>
     </PageBackground>
