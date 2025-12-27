@@ -400,7 +400,7 @@ const IdeaPage = () => {
 
 
 const ResearchPage = () => {
-  const { state, addResearch } = useProject();
+  const { state, addResearch, generateResearchPrompt } = useProject();
   const [isDragging, setIsDragging] = useState(false);
   const navigate = useNavigate();
 
@@ -462,9 +462,20 @@ const ResearchPage = () => {
                    <BookOpen className="w-5 h-5 text-purple-400" />
                    Active Sources
                  </h3>
-                 <span className="text-xs font-mono text-purple-400/80 bg-purple-400/10 px-2 py-1 rounded">
-                   {state.research.length} FILES
-                 </span>
+                 <div className="flex items-center gap-2">
+                    {!state.researchMissionPrompt && (
+                      <button 
+                        onClick={() => generateResearchPrompt()}
+                        disabled={state.isGenerating}
+                        className="text-xs bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 disabled:opacity-50"
+                      >
+                         {state.isGenerating ? 'Thinking...' : 'Generate Mission'}
+                      </button>
+                    )}
+                    <span className="text-xs font-mono text-purple-400/80 bg-purple-400/10 px-2 py-1 rounded">
+                      {state.research.length} FILES
+                    </span>
+                 </div>
               </div>
               
               <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2">
