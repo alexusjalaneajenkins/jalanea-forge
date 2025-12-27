@@ -417,8 +417,8 @@ const ResearchPage = () => {
 
   return (
     <PageBackground glowColor="purple">
-      <div className="max-w-5xl mx-auto h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10">
-        <div className="mb-10 text-center">
+      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10">
+        <div className="mb-10 text-center mt-auto md:mt-0">
           <h2 className="text-4xl font-bold text-white mb-3 tracking-tight">Research & Context</h2>
           <p className="text-forge-muted text-lg max-w-2xl mx-auto">
             Ground the AI in your specific domain. Upload documents or review the automated research mission.
@@ -543,7 +543,7 @@ const PrdPage = () => {
 
   return (
     <PageBackground glowColor="orange">
-      <div className="max-w-5xl mx-auto h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10">
+      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10">
         
         {/* Header */}
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 no-print">
@@ -666,7 +666,7 @@ const RealizationPage = () => {
 
   return (
     <PageBackground glowColor="blue">
-      <div className="max-w-5xl mx-auto h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10 gap-8">
+      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10 gap-8">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
