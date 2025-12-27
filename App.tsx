@@ -204,7 +204,7 @@ const Header = () => {
             <p className="text-xs text-forge-500 font-medium mt-0.5">AI Product Designer</p>
             <span className="text-forge-700 text-xs mt-0.5">•</span>
             <p className="text-xs text-forge-accent font-semibold mt-0.5">
-              Step {(Object.values(ProjectStep).indexOf(state.currentStep) + 1)} of 6
+              Step {(Object.values(ProjectStep).indexOf(state.currentStep) + 1)} of 4
             </p>
           </div>
         </div>
