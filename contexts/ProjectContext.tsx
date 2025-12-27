@@ -206,40 +206,20 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
                 const inputIdea = state.synthesizedIdea || state.ideaInput;
                 const result = await GeminiService.generatePRD(inputIdea, state.research);
                 setState(prev => ({ ...prev, prdOutput: result }));
-            } else if (step === ProjectStep.PLANNING) {
-                const result = await GeminiService.generatePlan(state.prdOutput);
-                setState(prev => ({ ...prev, roadmapOutput: result }));
-            } else if (step === ProjectStep.DESIGN) {
-                const result = await GeminiService.generateDesignPrompts(state.prdOutput, state.roadmapOutput);
-                setState(prev => ({
-                    ...prev,
-                    stitchPrompt: result.stitch,
-                    opalPrompt: result.opal,
-                    // Deprecate legacy designSystemOutput or reuse it if needed, but for now we focus on the prompts
-                    designSystemOutput: result.stitch + "\n\n" + result.opal
-                }));
             } else if (step === ProjectStep.CODE) {
-                // Combined Realization Flow: Generate Design Prompts first, then Code Prompt
-                const designResult = await GeminiService.generateDesignPrompts(state.prdOutput, state.roadmapOutput);
+                // Realization Flow: Generate Roadmap (Plan) which includes DIY Prompts
+                // Use synthesized idea if available, otherwise raw
+                const inputIdea = state.synthesizedIdea || state.ideaInput;
 
-                // Create temp state with new design prompts for code generation
-                const tempState = {
-                    ...state,
-                    stitchPrompt: designResult.stitch,
-                    opalPrompt: designResult.opal
-                };
+                // Ensure PRD exists
+                if (!state.prdOutput) {
+                    const prdResult = await GeminiService.generatePRD(inputIdea, state.research);
+                    setState(prev => ({ ...prev, prdOutput: prdResult }));
+                }
 
-                const codeResult = await GeminiService.generateCodePrompt(tempState);
-
-                setState(prev => ({
-                    ...prev,
-                    stitchPrompt: designResult.stitch,
-                    opalPrompt: designResult.opal,
-                    // Legacy support
-                    designSystemOutput: designResult.stitch + "\n\n" + designResult.opal,
-                    antigravityPrompt: codeResult,
-                    codePromptOutput: codeResult
-                }));
+                // Generate Roadmap (which returns JSON with DIY prompts)
+                const result = await GeminiService.generatePlan(state.prdOutput || "");
+                setState(prev => ({ ...prev, roadmapOutput: result }));
             }
         } catch (error: any) {
             console.error("Generation failed:", error);

@@ -9,7 +9,7 @@ const getClient = () => {
     return new GoogleGenAI({ apiKey: storedKey });
   }
 
-  const apiKey = import.meta.env.VITE_API_KEY || process.env.API_KEY;
+  const apiKey = (import.meta as any).env.VITE_API_KEY || process.env.API_KEY;
   if (!apiKey) {
     throw new Error(MISSING_API_KEY_ERROR);
   }

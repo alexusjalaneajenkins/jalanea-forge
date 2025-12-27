@@ -7,7 +7,7 @@ interface ProjectListDialogProps {
     onClose: () => void;
     projects: ProjectMetadata[];
     onSelect: (projectId: string) => void;
-    onSelect: (projectId: string) => void;
+
     onCreate: (title: string) => void;
     onDelete: (projectId: string) => void;
     isLoading: boolean;

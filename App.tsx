@@ -57,9 +57,9 @@ const exportToPDF = (elementId: string, filename: string) => {
   const opt = {
     margin: 10,
     filename: filename,
-    image: { type: 'jpeg', quality: 0.98 },
+    image: { type: 'jpeg' as any, quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true, logging: false },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
   };
   html2pdf().set(opt).from(element).save();
 };
