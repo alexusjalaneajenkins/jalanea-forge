@@ -781,15 +781,15 @@ const RealizationPage = () => {
                     <h3 className="text-xl font-bold text-white">{phase.phaseName || phase.title}</h3>
                  </div>
                  
-                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                     {/* DIY OPTION */}
+                 <div className="flex flex-col gap-4">
+                     {/* DIY CONTENT - Full Width */}
                      <GlassCard className="flex flex-col p-6 hover:border-blue-500/30 transition-colors group">
                         <div className="flex items-center justify-between mb-4">
                            <div className="flex items-center gap-2">
                               <div className="p-2 rounded bg-blue-500/10 text-blue-400"><Code2 className="w-5 h-5" /></div>
                               <div>
-                                <h4 className="font-bold text-white">DIY Route</h4>
-                                <p className="text-xs text-slate-400">Use AI to build this yourself</p>
+                                <h4 className="font-bold text-white">DIY Instructions</h4>
+                                <p className="text-xs text-slate-400">Step-by-step AI implementation guide</p>
                               </div>
                            </div>
                            <a 
@@ -819,41 +819,44 @@ const RealizationPage = () => {
                           ))}
                         </div>
                      </GlassCard>
+                  </div>
+               </div>
+             ))}
 
-                    {/* HIRE OPTION */}
-                    <GlassCard className="flex flex-col p-6 border-orange-500/20 bg-orange-500/5 hover:bg-orange-500/10 transition-colors">
-                       <div className="flex items-center gap-2 mb-4">
-                          <div className="p-2 rounded bg-orange-500/10 text-orange-400"><Sparkles className="w-5 h-5" /></div>
-                          <div>
-                            <h4 className="font-bold text-white">Hire Expert</h4>
-                            <p className="text-xs text-slate-400">Save time & ensure quality</p>
-                          </div>
-                       </div>
-                       
-                       <div className="flex-1 mb-6">
-                          <p className="text-sm text-slate-300 italic mb-4">
-                            "{phase.steps?.[0]?.hirePitch || "Accelerate your launch by having our senior engineers handle this complex phase."}"
-                          </p>
-                          <ul className="space-y-2">
-                             <li className="flex items-center gap-2 text-xs text-slate-400"><Check className="w-3.5 h-3.5 text-orange-500" /> Done-for-you implementation</li>
-                             <li className="flex items-center gap-2 text-xs text-slate-400"><Check className="w-3.5 h-3.5 text-orange-500" /> Best-practice security & scale</li>
-                             <li className="flex items-center gap-2 text-xs text-slate-400"><Check className="w-3.5 h-3.5 text-orange-500" /> 14-day delivery guarantee</li>
-                          </ul>
-                       </div>
-
-                       <a
-                         href={`mailto:contact@jalanea.com?subject=Hire Request: ${phase.phaseName}&body=I want to hire you for ${phase.phaseName}`}
-                         className="group relative w-full py-4 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-bold rounded-xl text-center shadow-lg shadow-orange-500/20 transition-all active:scale-95 border border-orange-400/20 flex items-center justify-center gap-2 overflow-hidden"
-                       >
-                         <span className="relative z-10 flex items-center gap-2">
-                           Hire for This Phase <ExternalLink className="w-4 h-4 ml-1" />
-                         </span>
-                         <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-amber-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                       </a>
-                    </GlassCard>
-                 </div>
-              </div>
-            ))}
+             {/* GLOBAL HIRE CTA - Footer */}
+             <div className="mt-12 pt-8 border-t border-white/10">
+                <GlassCard className="p-8 md:p-10 border-orange-500/30 bg-gradient-to-br from-orange-500/5 to-amber-500/5 relative overflow-hidden group">
+                   <div className="absolute inset-0 bg-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                   <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                      <div className="flex-1 text-center md:text-left">
+                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold mb-4">
+                            <Sparkles className="w-3 h-3" /> FAST TRACK
+                         </div>
+                         <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Skip the Build. Launch Faster.</h3>
+                         <p className="text-slate-300 text-lg leading-relaxed max-w-xl">
+                            Don't want to spend weeks coding? Let our expert team handle the technical execution so you can focus on marketing, branding, and business growth.
+                         </p>
+                         <ul className="mt-6 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                            <li className="flex items-center gap-2 text-sm text-slate-400"><Check className="w-4 h-4 text-orange-500" /> Professional Implementation</li>
+                            <li className="flex items-center gap-2 text-sm text-slate-400"><Check className="w-4 h-4 text-orange-500" /> Scalable Architecture</li>
+                            <li className="flex items-center gap-2 text-sm text-slate-400"><Check className="w-4 h-4 text-orange-500" /> 14-Day Delivery</li>
+                         </ul>
+                      </div>
+                      <div className="w-full md:w-auto flex-shrink-0">
+                         <a
+                           href="mailto:contact@jalanea.com?subject=Project Inquiry&body=I have my roadmap and I would like to discuss hiring your team to build it."
+                           className="group/btn relative inline-flex w-full md:w-auto items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-lg rounded-2xl shadow-xl shadow-orange-500/25 transition-all transform hover:scale-105 active:scale-95 border border-orange-400/20 overflow-hidden"
+                         >
+                           <span className="relative z-10 flex items-center gap-2">
+                             Get a Quote for Full Build <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                           </span>
+                           <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-amber-400 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                         </a>
+                      </div>
+                   </div>
+                </GlassCard>
+             </div>
+           </div>
           </div>
         )}
       </div>
