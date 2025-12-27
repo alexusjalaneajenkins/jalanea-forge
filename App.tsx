@@ -44,6 +44,25 @@ import { SettingsModal } from './components/SettingsModal';
 import { SupportModal } from './components/SupportModal';
 import { MISSING_API_KEY_ERROR } from './services/geminiService';
 import { ProjectProvider, useProject } from './contexts/ProjectContext';
+import { PageBackground } from './components/PageBackground';
+import { GlassCard } from './components/GlassCard';
+import { LoadingState } from './components/LoadingState';
+import html2pdf from 'html2pdf.js';
+
+// --- Utils ---
+
+const exportToPDF = (elementId: string, filename: string) => {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  const opt = {
+    margin: 10,
+    filename: filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, logging: false },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save();
+};
 
 // --- Initial State ---
 
@@ -392,87 +411,122 @@ const ResearchPage = () => {
   };
 
   const formatFileSize = (bytes: number, isBase64: boolean) => {
-    // Base64 is approx 1.33x larger than binary. Adjust if needed for display.
     const realBytes = isBase64 ? bytes * 0.75 : bytes;
     return (realBytes / 1024).toFixed(1) + ' KB';
   };
 
   return (
-    <div className="max-w-4xl mx-auto h-full flex flex-col animate-fade-in">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-forge-text mb-2">Research & Context</h2>
-        <p className="text-forge-muted text-lg leading-relaxed">
-          Upload knowledge (NotebookLM exports, PDFs, API docs) to ground the AI in your specific domain.
-        </p>
-      </div>
-
-      {/* Research Prompt Generator Section (Moved back to Idea Page) */}
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 flex-1 min-h-0">
-        <div
-          className={`col-span-2 border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center transition-all bg-white ${isDragging ? 'border-forge-accent bg-orange-50' : 'border-forge-300 hover:border-forge-400 hover:bg-forge-50'}`}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={async (e) => {
-            e.preventDefault();
-            setIsDragging(false);
-            if (e.dataTransfer.files[0]) await addResearch(e.dataTransfer.files[0]);
-          }}
-        >
-          <div className="w-16 h-16 bg-forge-800 rounded-full flex items-center justify-center mb-4 border border-forge-700 shadow-sm">
-            <Upload className="w-8 h-8 text-forge-accent" />
-          </div>
-          <h3 className="text-forge-text font-medium mb-1">Upload Research Files</h3>
-          <p className="text-forge-muted text-sm text-center max-w-xs mb-6">
-            Supports .pdf, .txt, .md, .json. <br /> Excellent for NotebookLM exports.
+    <PageBackground glowColor="purple">
+      <div className="max-w-6xl mx-auto h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10">
+        <div className="mb-10 text-center">
+          <h2 className="text-4xl font-bold text-white mb-3 tracking-tight font-serif">Research & Context</h2>
+          <p className="text-forge-muted text-lg max-w-2xl mx-auto">
+            Ground the AI in your specific domain. Upload documents or review the automated research mission.
           </p>
-          <label className="cursor-pointer bg-forge-900 hover:bg-forge-800 text-forge-text border border-forge-700 px-6 py-2.5 rounded-lg font-medium transition-colors shadow-sm">
-            Browse Files
-            <input type="file" className="hidden" accept=".pdf,.txt,.md,.json" onChange={handleFileChange} />
-          </label>
         </div>
 
-        <div className="bg-forge-950 border border-forge-700 rounded-xl p-6 flex flex-col shadow-sm">
-          <h3 className="text-forge-text font-medium mb-4 flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-forge-accent" />
-            Active Sources
-          </h3>
-          <div className="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
-            {state.research.length === 0 ? (
-              <div className="text-forge-500 text-sm text-center mt-10 italic">
-                No files uploaded yet.<br />
-                Using only your idea input.
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 flex-1 min-h-0">
+          
+          {/* Upload Area */}
+          <GlassCard className="flex flex-col p-8 transition-colors" hoverEffect={true}>
+             <div 
+               className={`flex-1 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-8 transition-all duration-300
+                 ${isDragging ? 'border-purple-500 bg-purple-500/10' : 'border-white/10 hover:border-purple-500/50 hover:bg-white/5'}`}
+               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+               onDragLeave={() => setIsDragging(false)}
+               onDrop={async (e) => {
+                 e.preventDefault();
+                 setIsDragging(false);
+                 if (e.dataTransfer.files[0]) await addResearch(e.dataTransfer.files[0]);
+               }}
+             >
+               <div className="w-20 h-20 rounded-full bg-purple-500/20 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+                 <Upload className="w-8 h-8 text-purple-400" />
+               </div>
+               <h3 className="text-xl font-medium text-white mb-2">Upload Knowledge</h3>
+               <p className="text-slate-400 text-sm text-center mb-8 max-w-xs leading-relaxed">
+                 Drag & drop PDFs, TXT, MD, JSON files here. <br/> Perfect for adding NotebookLM exports.
+               </p>
+               <label className="cursor-pointer group relative overflow-hidden rounded-xl bg-purple-600 px-8 py-3 transition-all hover:bg-purple-500 shadow-lg shadow-purple-500/25">
+                 <span className="relative font-semibold text-white">Browse Files</span>
+                 <input type="file" className="hidden" accept=".pdf,.txt,.md,.json" onChange={handleFileChange} />
+               </label>
+             </div>
+          </GlassCard>
+
+          {/* Active Sources & Mission */}
+          <div className="flex flex-col gap-6">
+            <GlassCard className="flex-1 flex flex-col p-6 min-h-[300px]">
+              <div className="flex items-center justify-between mb-6">
+                 <h3 className="font-semibold text-white flex items-center gap-2">
+                   <BookOpen className="w-5 h-5 text-purple-400" />
+                   Active Sources
+                 </h3>
+                 <span className="text-xs font-mono text-purple-400/80 bg-purple-400/10 px-2 py-1 rounded">
+                   {state.research.length} FILES
+                 </span>
               </div>
-            ) : (
-              state.research.map((doc) => (
-                <div key={doc.id} className="bg-forge-900 border border-forge-700 p-3 rounded-lg flex items-center justify-between group hover:border-forge-500 transition-colors">
-                  <div className="flex items-center gap-3 overflow-hidden">
-                    <div className="w-8 h-8 rounded bg-white border border-forge-700 flex items-center justify-center text-xs font-bold text-forge-500 uppercase">
-                      {doc.mimeType === 'application/pdf' ? <FileIcon className="w-4 h-4" /> : 'TXT'}
-                    </div>
-                    <div className="flex flex-col truncate">
-                      <span className="text-sm text-forge-text truncate w-32 font-medium">{doc.name}</span>
-                      <span className="text-xs text-forge-500">
-                        {formatFileSize(doc.content.length, doc.mimeType === 'application/pdf')}
-                      </span>
-                    </div>
+              
+              <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2">
+                {state.research.length === 0 ? (
+                  <div className="h-full flex flex-col items-center justify-center text-slate-500 italic text-sm border-2 border-dashed border-white/5 rounded-xl">
+                    <p>No sources yet.</p>
+                    <p className="text-xs opacity-60 mt-1">Using base knowledge only.</p>
                   </div>
-                </div>
-              ))
-            )}
+                ) : (
+                  state.research.map((doc) => (
+                    <div key={doc.id} className="group flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all">
+                      <div className="w-10 h-10 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-xs font-bold text-slate-400">
+                        {doc.mimeType === 'application/pdf' ? 'PDF' : 'TXT'}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-slate-200 truncate">{doc.name}</div>
+                        <div className="text-xs text-slate-500">{formatFileSize(doc.content.length, doc.mimeType === 'application/pdf')}</div>
+                      </div>
+                      <button 
+                         className="opacity-0 group-hover:opacity-100 p-2 hover:text-red-400 transition-all"
+                         title="Remove (Not implemented in demo)"
+                      >
+                         <div className="w-1.5 h-1.5 rounded-full bg-red-400/50"></div>
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </GlassCard>
+
+            {state.researchMissionPrompt ? (
+               <GlassCard className="p-6">
+                 <div className="flex items-center justify-between mb-4">
+                   <h3 className="text-sm font-semibold text-purple-300 uppercase tracking-widest">Research Mission</h3>
+                   <button 
+                     onClick={() => exportToPDF('research-mission-content', 'Research_Mission.pdf')}
+                     className="text-xs text-purple-400 hover:text-white flex items-center gap-1 transition-colors"
+                   >
+                     <ArrowDownToLine className="w-3 h-3" /> Save PDF
+                   </button>
+                 </div>
+                 <div id="research-mission-content" className="text-sm text-slate-300 leading-relaxed max-h-40 overflow-y-auto custom-scrollbar bg-slate-950/30 p-4 rounded-lg border border-white/5">
+                    {state.researchMissionPrompt}
+                 </div>
+               </GlassCard>
+            ) : null}
           </div>
         </div>
-      </div>
 
-      <div className="flex justify-end pt-4 border-t border-forge-700">
-        <button
-          onClick={() => navigate('/prd')}
-          className="text-white bg-forge-text hover:bg-slate-700 px-6 py-3 rounded-lg text-sm font-semibold flex items-center gap-2 transition-colors shadow-lg"
-        >
-          Next: Generate PRD <ChevronRight className="w-4 h-4" />
-        </button>
+        <div className="flex justify-end pt-6 border-t border-white/10">
+          <button
+            onClick={() => navigate('/prd')}
+            className="group relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 font-bold text-white shadow-lg shadow-purple-500/25 transition-all hover:scale-[1.02] hover:shadow-purple-500/40"
+          >
+            <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 origin-left" />
+            <span className="relative flex items-center gap-2">
+              Next: Generate PRD <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
+    </PageBackground>
   );
 };
 
@@ -487,92 +541,108 @@ const PrdPage = () => {
     await generateArtifact(ProjectStep.PRD);
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
-    <div className="max-w-5xl mx-auto h-full flex flex-col animate-fade-in">
-      <div className="mb-6 flex items-end justify-between no-print">
-        <div>
-          <h2 className="text-3xl font-bold text-forge-text mb-2">Product Requirements</h2>
-          <p className="text-forge-muted">Synthesize your Idea and Research into a structured PRD.</p>
-        </div>
-        <button
-          onClick={handleGenerate}
-          disabled={state.isGenerating}
-          className="bg-forge-accent hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-6 py-3 rounded-lg shadow-lg shadow-orange-500/20 transition-all flex items-center gap-2"
-        >
-          {state.isGenerating ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div> : <Sparkles className="w-5 h-5" />}
-          {state.prdOutput ? 'Regenerate PRD' : 'Generate PRD'}
-        </button>
-      </div>
-
-      <div className="bg-forge-950 border border-forge-700 rounded-xl flex flex-col flex-1 min-h-0 overflow-hidden shadow-sm print:border-0 print:bg-white">
-        <div className="p-4 border-b border-forge-700 bg-forge-900/30 flex items-center justify-between no-print">
-          <span className="text-sm font-semibold text-forge-500 uppercase tracking-wider flex items-center gap-2">
-            <FileText className="w-4 h-4" />
-            PRD Document
-          </span>
-          <div className="flex gap-2">
-            {state.prdOutput && (
-              <>
-                <button
-                  onClick={handlePrint}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-forge-800 text-forge-text hover:bg-forge-700 transition-colors border border-forge-700"
-                  title="Print or Save as PDF"
-                >
-                  <ArrowDownToLine className="w-3.5 h-3.5" />
-                  Save as PDF
-                </button>
-                <CopyButton
-                  text={state.prdOutput}
-                  className="hover:text-forge-text"
-                  title="Copy PRD (Paste into Google Docs)"
-                />
-              </>
-            )}
+    <PageBackground glowColor="orange">
+      <div className="max-w-6xl mx-auto h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10">
+        
+        {/* Header */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 no-print">
+          <div>
+            <h2 className="text-4xl font-bold text-white mb-2 tracking-tight font-serif">Product Requirements</h2>
+            <p className="text-forge-muted text-lg">Synthesize your Idea and Research into a structured PRD.</p>
           </div>
+          <button
+            onClick={handleGenerate}
+            disabled={state.isGenerating}
+            className="bg-orange-500 hover:bg-orange-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-orange-500/30 transition-all hover:scale-[1.02] flex items-center gap-2"
+          >
+            {state.isGenerating ? (
+               // Simple spinner for button, main loading state is below
+               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div> 
+            ) : <Sparkles className="w-5 h-5" />}
+            {state.prdOutput ? 'Regenerate PRD' : 'Generate PRD'}
+          </button>
         </div>
-        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white print:p-0 print:overflow-visible">
-          {state.prdOutput ? (
-            <MarkdownRenderer content={state.prdOutput} />
+
+        {/* Content Area */}
+        <div className="flex-1 min-h-0 flex flex-col relative print:h-auto print:overflow-visible">
+          {state.isGenerating ? (
+             <div className="flex-1 flex items-center justify-center">
+                <LoadingState type="brain" message="Architecting Project" subMessage="Analyzing research, defining personas, and outlining core features..." />
+             </div>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-forge-muted no-print">
-              <div className="relative">
-                <Brain className="w-16 h-16 mb-4 text-forge-300" />
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-forge-accent rounded-full animate-pulse"></div>
+            <GlassCard className="flex-1 flex flex-col overflow-hidden print:border-0 print:bg-white print:text-black">
+              {/* Toolbar */}
+              <div className="p-4 border-b border-white/10 bg-white/5 flex items-center justify-between no-print">
+                <span className="text-sm font-bold text-orange-400 uppercase tracking-widest flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  PRD Document
+                </span>
+                <div className="flex gap-2">
+                  {state.prdOutput && (
+                    <>
+                      <button
+                        onClick={() => exportToPDF('prd-content-area', 'Project_PRD.pdf')}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-slate-900 border border-white/10 text-slate-300 hover:text-white hover:border-orange-500/50 transition-colors"
+                        title="Save as PDF"
+                      >
+                        <ArrowDownToLine className="w-3.5 h-3.5" />
+                        Export PDF
+                      </button>
+                      <CopyButton
+                        text={state.prdOutput}
+                        className="bg-slate-900 border-white/10"
+                        title="Copy to Clipboard"
+                      />
+                    </>
+                  )}
+                </div>
               </div>
-              <p className="text-lg font-medium text-forge-text">Ready to Architect</p>
-              <p className="text-sm text-forge-500 mt-2 max-w-md text-center">
-                Click Generate to analyze your vision ({state.synthesizedIdea ? 'refined' : 'draft'}) and {state.research.length} research files.
-              </p>
-            </div>
+
+              {/* Markdown Content */}
+              <div className="flex-1 overflow-y-auto p-8 md:p-12 custom-scrollbar bg-slate-950/20 print:p-0 print:bg-white print:overflow-visible">
+                 <div id="prd-content-area" className="text-slate-200">
+                    {state.prdOutput ? (
+                      <MarkdownRenderer content={state.prdOutput} />
+                    ) : (
+                      <div className="h-full flex flex-col items-center justify-center text-slate-500 py-20">
+                        <div className="relative mb-6">
+                           <div className="absolute inset-0 bg-orange-500/20 blur-xl rounded-full"></div>
+                           <Brain className="relative z-10 w-20 h-20 text-orange-400" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-white mb-2">Ready to Architect</h3>
+                        <p className="text-center max-w-md leading-relaxed">
+                          Click Generate to transform your vision into a professional requirements document.
+                        </p>
+                      </div>
+                    )}
+                 </div>
+              </div>
+
+              {/* Bottom Nav */}
+              {state.prdOutput && (
+                <div className="p-4 border-t border-white/10 bg-white/5 flex justify-end no-print">
+                  <button
+                    onClick={() => navigate('/realization')}
+                    className="flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-slate-900 font-bold hover:bg-slate-200 transition-colors"
+                  >
+                    Proceed to Realization <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </GlassCard>
           )}
         </div>
-        {state.prdOutput && (
-          <div className="p-4 border-t border-forge-700 bg-forge-900/30 flex justify-end">
-            <button
-              onClick={() => navigate('/plan')}
-              className="text-white bg-forge-text hover:bg-slate-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
-            >
-              Proceed to Planning <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        )}
       </div>
-    </div>
+    </PageBackground>
   );
 };
 
 
 const RealizationPage = () => {
   const { state, generateArtifact } = useProject();
-  const [activeTab, setActiveTab] = useState<'stitch' | 'opal' | 'master'>('master');
-  const navigate = useNavigate();
-
-  const hasContent = state.stitchPrompt || state.opalPrompt || state.antigravityPrompt;
-
+  const [activeTab, setActiveTab] = useState<'master' | 'stitch' | 'opal'>('master');
+  
   const getParsedRoadmap = () => {
     if (!state.roadmapOutput) return null;
     try {
@@ -586,26 +656,34 @@ const RealizationPage = () => {
 
   const roadmapPhases = getParsedRoadmap();
 
-  return (
-    <div className="max-w-6xl mx-auto h-full flex flex-col animate-fade-in gap-8">
+  const getPromptContent = () => {
+    if (!state.codePrompts) return "Generate the roadmap to unlock execution prompts.";
+    if (activeTab === 'master') return state.codePrompts.antigravity;
+    if (activeTab === 'stitch') return state.codePrompts.stitch;
+    if (activeTab === 'opal') return state.codePrompts.opal;
+    return "";
+  };
 
-      {/* SECTION 1: ROADMAP (The "Plan") */}
-      <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between">
+  return (
+    <PageBackground glowColor="blue">
+      <div className="max-w-7xl mx-auto h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10 gap-8">
+        
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h2 className="text-3xl font-bold text-forge-text mb-2">Realization & Roadmap</h2>
-            <p className="text-forge-muted">Your step-by-step plan to build this vision.</p>
+            <h2 className="text-4xl font-bold text-white mb-2 tracking-tight font-serif">Realization & Roadmap</h2>
+            <p className="text-forge-muted text-lg">Your step-by-step plan to build this vision.</p>
           </div>
           {!state.roadmapOutput && (
             <button
               onClick={() => generateArtifact(ProjectStep.PLANNING)}
               disabled={state.isGenerating || !state.prdOutput}
-              className="bg-forge-accent hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-orange-500/20 transition-all flex items-center gap-2 group"
+              className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] flex items-center gap-2 group"
             >
               {state.isGenerating ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  Generating Roadmap...
+                  Generating...
                 </>
               ) : (
                 <>
@@ -617,257 +695,114 @@ const RealizationPage = () => {
           )}
         </div>
 
-        <div className="bg-forge-950 border border-forge-700 rounded-xl flex flex-col min-h-[400px] max-h-[600px] overflow-hidden shadow-sm">
-          <div className="p-4 border-b border-forge-700 bg-forge-900/30 flex items-center justify-between">
-            <span className="text-sm font-semibold text-forge-500 uppercase tracking-wider flex items-center gap-2">
-              <Map className="w-4 h-4" />
-              Execution Phases
-            </span>
-            {state.roadmapOutput && !roadmapPhases && (
-              <CopyButton
-                text={state.roadmapOutput}
-                className="hover:text-forge-text"
-                title="Copy Roadmap"
-              />
-            )}
-          </div>
-
-          <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
-            {state.roadmapOutput ? (
-              roadmapPhases ? (
-                <div className="space-y-6">
-                  {roadmapPhases.map((phase: any, index: number) => (
-                    <div key={index} className="border border-gray-200 rounded-2xl p-6 bg-gradient-to-br from-slate-50 to-white hover:border-orange-300 hover:shadow-md transition-all duration-200 group">
-                      <div className="flex justify-between items-start mb-5">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white text-sm font-bold shadow-sm">
-                              {index + 1}
-                            </div>
-                            <h3 className="text-lg font-bold text-gray-900">{phase.phaseName}</h3>
-                          </div>
-                          <p className="text-gray-600 text-sm leading-relaxed ml-11">{phase.description}</p>
-                        </div>
-                      </div>
-
-                      {/* Check if phase has granular steps */}
-                      {phase.steps && phase.steps.length > 0 ? (
-                        <div className="ml-0 md:ml-11 grid gap-4">
-                          {phase.steps.map((step: any, stepIndex: number) => (
-                            <div key={stepIndex} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:border-orange-200 transition-colors">
-                              {/* Step Header */}
-                              <div className="flex items-start justify-between mb-3">
-                                <div>
-                                  <h4 className="font-bold text-gray-800 text-sm flex items-center gap-2">
-                                    <div className="w-5 h-5 rounded bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500">
-                                      {index + 1}.{stepIndex + 1}
-                                    </div>
-                                    {step.stepName}
-                                  </h4>
-                                  <p className="text-gray-500 text-xs mt-1 ml-7">{step.description}</p>
-                                </div>
-                              </div>
-
-                              {/* Technical Brief */}
-                              {step.technicalBrief && (
-                                <div className="mb-3 ml-7 bg-blue-50/50 border border-blue-100 rounded-lg p-3">
-                                  <div className="flex items-center justify-between mb-1">
-                                    <span className="text-[10px] font-bold text-blue-700 uppercase tracking-widest flex items-center gap-1">
-                                      <Info className="w-3 h-3" /> Technical Context
-                                    </span>
-                                    <button
-                                      onClick={() => {
-                                        window.speechSynthesis.cancel();
-                                        const u = new SpeechSynthesisUtterance(step.technicalBrief);
-                                        window.speechSynthesis.speak(u);
-                                      }}
-                                      className="p-1 text-blue-600 hover:bg-blue-100 rounded transition-colors"
-                                      title="Listen to explanation"
-                                    >
-                                      <Volume2 className="w-3.5 h-3.5" />
-                                    </button>
-                                  </div>
-                                  <p className="text-xs text-blue-900 leading-relaxed">{step.technicalBrief}</p>
-                                </div>
-                              )}
-
-                              {/* Prompt Action Area */}
-                              <div className="ml-7 flex items-center gap-2">
-                                <CopyButton
-                                  text={step.prompt}
-                                  variant="light"
-                                  title="Copy Step Prompt"
-                                  className="w-full flex justify-center py-2 text-xs font-semibold bg-gray-50 border-gray-200 hover:bg-gray-100 hover:text-gray-900"
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        /* Fallback for old style plans */
-                        <div className="bg-white border border-gray-100 rounded-xl p-4 shadow-inner">
-                          <div className="flex items-center justify-between mb-3">
-                            <label className="text-xs font-bold text-orange-600 uppercase tracking-wide flex items-center gap-2">
-                              <Terminal className="w-3.5 h-3.5" />
-                              Gemini Execution Prompt
-                            </label>
-                            <CopyButton text={phase.executionPrompt} variant="light" title="Copy Phase Prompt" />
-                          </div>
-                          <p className="text-xs text-gray-500 font-mono leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto custom-scrollbar border border-gray-50 rounded p-2 bg-gray-50/50">
-                            {phase.executionPrompt}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  ))}
+        {/* Content Area */}
+        {state.isGenerating ? (
+          <LoadingState type="code" message="Architecting Solution" subMessage="Generating implementation prompts and roadmap..." />
+        ) : !state.roadmapOutput ? (
+          /* Empty State / Promo */
+          <GlassCard className="flex-1 flex flex-col justify-center items-center p-12 text-center border-dashed border-2 border-white/10 bg-white/5">
+             <div className="max-w-md w-full text-left space-y-8">
+                <div>
+                   <h3 className="text-2xl font-bold text-white mb-4 font-serif">Ready to Build?</h3>
+                   <ul className="space-y-4">
+                     {[
+                       "Save 20+ hours of dev time",
+                       "Focus on Marketing & Launch",
+                       "Professional Grade Code",
+                       "Guaranteed Deployment",
+                     ].map((item, i) => (
+                       <li key={i} className="flex items-start gap-3">
+                         <div className="mt-1"><Sparkles className="w-4 h-4 text-blue-400" /></div>
+                         <span className="text-slate-200">{item}</span>
+                       </li>
+                     ))}
+                   </ul>
                 </div>
-              ) : (
-                <MarkdownRenderer content={state.roadmapOutput} />
-              )
-            ) : (
-              <div className="h-full flex flex-col items-center justify-center text-forge-muted">
-                <Map className="w-12 h-12 mb-4 text-forge-300" />
-                <p className="text-forge-text font-medium">Generate a roadmap to get started.</p>
-                {!state.prdOutput && <p className="text-sm text-red-500 mt-2">Prerequisite: Generate PRD first.</p>}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* SECTION 2: EXECUTION PATHS (Only show if roadmap exists) */}
-      {state.roadmapOutput && (
-        <div className="animate-fade-in">
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold text-forge-text mb-2">Execute Your Plan</h3>
-            <p className="text-forge-muted">Choose how you want to bring this roadmap to life.</p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full min-h-0">
-
-            {/* DIY Path */}
-            <div className="flex flex-col bg-white border border-forge-300 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-400"></div>
-              <div className="p-6 pb-2">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                    <Terminal className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Self-Guided Build</h3>
-                    <div className="text-xs font-semibold text-blue-600 uppercase tracking-widest">Free with Google Gemini</div>
+                
+                <div className="pt-4 border-t border-white/10">
+                   <a
+                     href="mailto:contact@jalanea.com?subject=Hire Vibe Code"
+                     className="block w-full text-center bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.05]"
+                   >
+                     Hire Vibe Code →
+                   </a>
+                   <p className="text-center text-xs text-slate-500 mt-2">Professional AI-Native Development Agency</p>
+                </div>
+             </div>
+          </GlassCard>
+        ) : (
+          /* Roadmap & Prompts Display */
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left: Prompts */}
+            <div className="lg:col-span-1 space-y-6">
+              <GlassCard className="h-[600px] flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-white font-bold flex items-center gap-2">
+                    <Terminal className="w-5 h-5 text-blue-400" /> Execution Prompts
+                  </h3>
+                  <div className="flex bg-black/40 rounded-lg p-1">
+                    {['master', 'stitch', 'opal'].map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab as any)}
+                        className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${activeTab === tab ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'}`}
+                      >
+                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                      </button>
+                    ))}
                   </div>
                 </div>
-                <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                  Generate the comprehensive blueprints (Frontend, Backend, and Integration) to build this yourself using AI.
-                </p>
-              </div>
-
-              <div className="flex-1 bg-slate-50 border-t border-slate-200 p-4 flex flex-col min-h-0">
-                {/* Tabs */}
-                <div className="flex bg-white rounded-lg p-1 border border-slate-200 mb-2">
-                  <button onClick={() => setActiveTab('master')} className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors ${activeTab === 'master' ? 'bg-blue-100 text-blue-700' : 'text-slate-500 hover:text-slate-700'}`}>Master</button>
-                  <button onClick={() => setActiveTab('stitch')} className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors ${activeTab === 'stitch' ? 'bg-purple-100 text-purple-700' : 'text-slate-500 hover:text-slate-700'}`}>Stitch (UI)</button>
-                  <button onClick={() => setActiveTab('opal')} className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors ${activeTab === 'opal' ? 'bg-emerald-100 text-emerald-700' : 'text-slate-500 hover:text-slate-700'}`}>Opal (Data)</button>
+                <div className="flex-1 bg-black/50 rounded-lg p-4 font-mono text-xs text-slate-300 overflow-y-auto whitespace-pre-wrap border border-white/5">
+                  {getPromptContent()}
                 </div>
-
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono text-slate-500 uppercase">
-                    {activeTab === 'master' && "Integration Prompt"}
-                    {activeTab === 'stitch' && "Frontend Directives"}
-                    {activeTab === 'opal' && "Backend Logic"}
-                  </span>
-                  {state.antigravityPrompt && (
-                    <CopyButton
-                      text={activeTab === 'master' ? state.antigravityPrompt : activeTab === 'stitch' ? state.stitchPrompt || "" : state.opalPrompt || ""}
-                      className="hover:text-blue-600"
-                      title="Copy Prompt"
-                    />
-                  )}
-                </div>
-                <div className="flex-1 bg-white border border-slate-200 rounded-lg p-3 overflow-y-auto custom-scrollbar max-h-60">
-                  {hasContent ? (
-                    <pre className="text-xs text-gray-600 font-mono whitespace-pre-wrap">
-                      {activeTab === 'master' ? state.antigravityPrompt : activeTab === 'stitch' ? state.stitchPrompt : state.opalPrompt}
-                    </pre>
-                  ) : (
-                    <div className="h-full flex flex-col items-center justify-center text-gray-400 text-xs text-center p-4">
-                      Click generate to create your blueprints.
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="p-4 bg-white border-t border-slate-100">
                 <button
-                  onClick={() => generateArtifact(ProjectStep.CODE)}
-                  disabled={state.isGenerating || !state.roadmapOutput}
-                  className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 group"
+                  onClick={() => navigator.clipboard.writeText(getPromptContent())}
+                  className="mt-4 w-full py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-medium transition-colors"
                 >
-                  {state.isGenerating ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Generating Blueprints...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                      Generate All Blueprints
-                    </>
-                  )}
+                  Copy Prompt
                 </button>
-              </div>
+              </GlassCard>
             </div>
 
-            {/* Professional Path - Vibe Code */}
-            <div className="flex flex-col bg-slate-900 border border-slate-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-amber-500"></div>
-              <div className="p-8 flex-1 flex flex-col">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-orange-500">
-                    <Sparkles className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white">Professional Project Vibe</h3>
-                    <div className="text-xs font-semibold text-orange-500 uppercase tracking-widest">Done For You</div>
-                  </div>
-                </div>
-
-                <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                  Why spend hours coding when you could be <span className="text-white font-medium">marketing your business</span>? Let us handle the technical heavy lifting while you focus on the vision.
-                </p>
-
-                <ul className="space-y-4 mb-8 flex-1">
-                  {[
-                    "Save 20+ hours of dev time",
-                    "Focus on Marketing & Launch",
-                    "Professional Grade Code",
-                    "Guaranteed Deployment",
-                    "Enjoy your coffee/dates while we build"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-orange-500 shrink-0" />
-                      <span className="text-slate-200 text-sm">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-auto">
-                  <a
-                    href="mailto:contact@jalanea.com?subject=Hire Vibe Code for [Project Name]"
-                    className="block w-full text-center bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] mb-3"
-                  >
-                    Hire Vibe Code →
-                  </a>
-                  <p className="text-center text-xs text-slate-500">Limited availability for new partnerships.</p>
-                </div>
-              </div>
+            {/* Right: Roadmap */}
+            <div className="lg:col-span-2 space-y-6">
+               {roadmapPhases && roadmapPhases.phases ? (
+                 <div className="space-y-6">
+                   {roadmapPhases.phases.map((phase: any, i: number) => (
+                     <GlassCard key={i} className="relative overflow-hidden group">
+                       <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-cyan-400"></div>
+                       <div className="ml-4">
+                         <div className="flex items-center justify-between mb-4">
+                           <h3 className="text-xl font-bold text-white">{phase.title}</h3>
+                           <span className="text-blue-400 text-sm font-mono px-2 py-1 bg-blue-500/10 rounded border border-blue-500/20">{phase.duration}</span>
+                         </div>
+                         <ul className="space-y-2 mb-4">
+                           {phase.tasks.map((task: string, j: number) => (
+                             <li key={j} className="flex items-start gap-2 text-slate-300 text-sm">
+                               <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-slate-500 group-hover:bg-blue-400 transition-colors"></div>
+                               {task}
+                             </li>
+                           ))}
+                         </ul>
+                         <div className="flex flex-wrap gap-2">
+                           {phase.deliverables && phase.deliverables.map((del: string, k: number) => (
+                             <span key={k} className="text-xs text-slate-400 px-2 py-1 bg-white/5 rounded-full border border-white/5">{del}</span>
+                           ))}
+                         </div>
+                       </div>
+                     </GlassCard>
+                   ))}
+                 </div>
+               ) : (
+                 <GlassCard className="p-8 text-center text-slate-400">
+                   Parsing Roadmap JSON...
+                 </GlassCard>
+               )}
             </div>
-
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </PageBackground>
   );
 };
 

@@ -4,12 +4,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO & Social Media (SuperDesign Polish) -->
   <title>Jalanea Forge | AI Product Designer</title>
+  <meta name="description"
+    content="Transform your ideas into professional PRDs, Research, and Code Blueprints instantly with AI.">
+  <meta name="theme-color" content="#0f172a">
+
+  <meta property="og:title" content="Jalanea Forge | AI Product Designer">
+  <meta property="og:description"
+    content="Transform your ideas into professional PRDs, Research, and Code Blueprints instantly with AI.">
+  <meta property="og:image" content="/opengraph-image.png">
+  <meta property="og:type" content="website">
+
   <link rel="icon" type="image/png" href="/navbar-favicon.png" />
-  <link rel="icon" type="image/png" href="/navbar-favicon.png" />
+
+  <!-- Typography: Inter (UI) + Playfair Display (Editorial headers like SuperDesign) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
     rel="stylesheet">
+
   <script type="importmap">
 {
   "imports": {
@@ -26,7 +42,58 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Immediate Loading State (pre-hydration) -->
+    <style>
+      body {
+        background-color: #0f172a;
+        margin: 0;
+      }
+
+      .app-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #0f172a;
+        z-index: 9999;
+      }
+
+      .spinner {
+        width: 48px;
+        height: 48px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        border-top-color: #f97316;
+        /* Orange accent */
+        animation: spin 0.8s ease-in-out infinite;
+      }
+
+      .logo-text {
+        margin-top: 16px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.05em;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <div class="app-loader">
+      <div class="spinner"></div>
+      <div class="logo-text">Loading Forge...</div>
+    </div>
+  </div>
   <script type="module" src="/index.tsx"></script>
 </body>
 
