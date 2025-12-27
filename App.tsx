@@ -535,8 +535,7 @@ const ResearchPage = () => {
              </div>
           </GlassCard>
 
-          {/* Active Sources & Mission */}
-          <div className="flex flex-col gap-6">
+            {/* Active Sources Only - Prompts removed as per new flow */}
             <GlassCard className="flex-1 flex flex-col p-6 min-h-[300px]">
               <div className="flex items-center justify-between mb-6">
                  <h3 className="font-semibold text-white flex items-center gap-2">
@@ -544,15 +543,6 @@ const ResearchPage = () => {
                    Active Sources
                  </h3>
                  <div className="flex items-center gap-2">
-                    {!state.researchMissionPrompt && (
-                      <button 
-                        onClick={() => generateResearchPrompt()}
-                        disabled={state.isGenerating}
-                        className="text-xs bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 disabled:opacity-50"
-                      >
-                         {state.isGenerating ? 'Thinking...' : 'Generate Mission'}
-                      </button>
-                    )}
                     <span className="text-xs font-mono text-purple-400/80 bg-purple-400/10 px-2 py-1 rounded">
                       {state.research.length} FILES
                     </span>
@@ -589,52 +579,6 @@ const ResearchPage = () => {
                 )}
               </div>
             </GlassCard>
-
-            {state.researchMissionPrompt ? (
-               <div className="grid grid-cols-1 gap-6">
-                 {/* Step 1: Context Information */}
-                 <GlassCard className="p-6">
-                   <div className="flex items-center justify-between mb-4">
-                     <div>
-                        <span className="text-[10px] font-bold text-purple-400 bg-purple-400/10 px-2 py-1 rounded border border-purple-400/20 mr-2">STEP 1</span>
-                        <h3 className="text-sm font-semibold text-white inline-block">Context Prompt</h3>
-                     </div>
-                     <button 
-                       onClick={() => navigator.clipboard.writeText(state.researchMissionPrompt || "")}
-                       className="text-xs text-purple-400 hover:text-white flex items-center gap-1 transition-colors"
-                     >
-                       <Copy className="w-3 h-3" /> Copy
-                     </button>
-                   </div>
-                   <p className="text-xs text-slate-400 mb-3">Paste this into NotebookLM as a source or chat input to provide context.</p>
-                   <div className="text-sm text-slate-300 leading-relaxed max-h-32 overflow-y-auto custom-scrollbar bg-slate-950/30 p-4 rounded-lg border border-white/5 font-mono text-xs">
-                      {state.researchMissionPrompt}
-                   </div>
-                 </GlassCard>
-
-                 {/* Step 2: Report Generation */}
-                 {state.reportGenerationPrompt && (
-                   <GlassCard className="p-6">
-                     <div className="flex items-center justify-between mb-4">
-                       <div>
-                          <span className="text-[10px] font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded border border-blue-400/20 mr-2">STEP 2</span>
-                          <h3 className="text-sm font-semibold text-white inline-block">Report Generation Prompt</h3>
-                       </div>
-                       <button 
-                         onClick={() => navigator.clipboard.writeText(state.reportGenerationPrompt || "")}
-                         className="text-xs text-blue-400 hover:text-white flex items-center gap-1 transition-colors"
-                       >
-                         <Copy className="w-3 h-3" /> Copy
-                       </button>
-                     </div>
-                     <p className="text-xs text-slate-400 mb-3">After adding sources, paste this into the chat to generate the comprehensive report.</p>
-                     <div className="text-sm text-slate-300 leading-relaxed max-h-32 overflow-y-auto custom-scrollbar bg-slate-950/30 p-4 rounded-lg border border-white/5 font-mono text-xs">
-                        {state.reportGenerationPrompt}
-                     </div>
-                   </GlassCard>
-                 )}
-               </div>
-            ) : null}
           </div>
         </div>
 
