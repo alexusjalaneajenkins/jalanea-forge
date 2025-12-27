@@ -782,37 +782,43 @@ const RealizationPage = () => {
                  </div>
                  
                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {/* DIY OPTION */}
-                    <GlassCard className="flex flex-col p-6 hover:border-blue-500/30 transition-colors group">
-                       <div className="flex items-center gap-2 mb-4">
-                          <div className="p-2 rounded bg-blue-500/10 text-blue-400"><Code2 className="w-5 h-5" /></div>
-                          <div>
-                            <h4 className="font-bold text-white">DIY Route</h4>
-                            <p className="text-xs text-slate-400">Use AI to build this yourself</p>
-                          </div>
-                       </div>
-                       <p className="text-sm text-slate-300 mb-6 flex-1">{phase.description}</p>
-                       
-                       <div className="space-y-3">
-                         {phase.steps?.map((step: any, j: number) => (
-                           <div key={j} className="p-3 bg-black/20 rounded border border-white/5">
-                              <div className="flex justify-between items-start mb-2">
-                                <span className="text-sm font-medium text-white">{step.stepName}</span>
-                                {step.diyPrompt && (
-                                  <button 
-                                    onClick={() => navigator.clipboard.writeText(step.diyPrompt)}
-                                    className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 rounded transition-colors"
-                                    title="Copy AI Prompt"
-                                  >
-                                    Copy Prompt
-                                  </button>
-                                )}
+                     {/* DIY OPTION */}
+                     <GlassCard className="flex flex-col p-6 hover:border-blue-500/30 transition-colors group">
+                        <div className="flex items-center justify-between mb-4">
+                           <div className="flex items-center gap-2">
+                              <div className="p-2 rounded bg-blue-500/10 text-blue-400"><Code2 className="w-5 h-5" /></div>
+                              <div>
+                                <h4 className="font-bold text-white">DIY Route</h4>
+                                <p className="text-xs text-slate-400">Use AI to build this yourself</p>
                               </div>
-                              <p className="text-xs text-slate-500 line-clamp-2">{step.technicalBrief}</p>
                            </div>
-                         ))}
-                       </div>
-                    </GlassCard>
+                           <a 
+                             href="https://gemini.google.com/app" 
+                             target="_blank" 
+                             rel="noopener noreferrer"
+                             className="text-xs text-blue-400 hover:text-white flex items-center gap-1 transition-colors border border-blue-500/20 px-2 py-1 rounded bg-blue-500/5 hover:bg-blue-500/20"
+                           >
+                             Open Gemini <ExternalLink className="w-3 h-3" />
+                           </a>
+                        </div>
+                        <p className="text-sm text-slate-300 mb-6 flex-1">{phase.description}</p>
+                        
+                        <div className="space-y-4">
+                          {phase.steps?.map((step: any, j: number) => (
+                            <div key={j} className="p-4 bg-black/40 rounded-xl border border-white/5 shadow-inner">
+                               <div className="flex justify-between items-center mb-3">
+                                 <span className="text-sm font-semibold text-white">{step.stepName}</span>
+                                 {step.diyPrompt && (
+                                   <CopyButton text={step.diyPrompt} className="hover:bg-blue-500/20 text-blue-400" />
+                                 )}
+                               </div>
+                               <div className="text-xs text-slate-300 bg-slate-900/50 p-3 rounded-lg border border-white/5 font-mono max-h-32 overflow-y-auto custom-scrollbar leading-relaxed">
+                                  {step.diyPrompt || step.technicalBrief}
+                               </div>
+                            </div>
+                          ))}
+                        </div>
+                     </GlassCard>
 
                     {/* HIRE OPTION */}
                     <GlassCard className="flex flex-col p-6 border-orange-500/20 bg-orange-500/5 hover:bg-orange-500/10 transition-colors">
