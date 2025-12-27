@@ -744,49 +744,76 @@ const PrdPage = () => {
 
 
 const RealizationPage = () => {
-  const { state, generateArtifact } = useProject();
-  
+  const { state, generateArtifact, toggleStepCompletion } = useProject();
+  const [expandedPhase, setExpandedPhase] = useState<number | null>(0); // Default open first phase
+  const [showHireModal, setShowHireModal] = useState(false);
+
   // Safe parsing
   let roadmapPhases: any[] = [];
   try {
     if (state.roadmapOutput) {
       const jsonStr = state.roadmapOutput.replace(/```json/g, '').replace(/```/g, '').trim();
       const parsed = JSON.parse(jsonStr);
-      // Handle array vs object wrapper
       roadmapPhases = Array.isArray(parsed) ? parsed : (parsed.phases || []);
     }
   } catch (e) {
     console.error("Failed to parse roadmap usage", e);
   }
 
+  // Calculate Progress
+  const allSteps = roadmapPhases.flatMap((p, pIdx) => p.steps?.map((s: any, sIdx: number) => ({...s, id: `${pIdx}-${sIdx}`})));
+  const totalSteps = allSteps.length;
+  const completedCount = (state.completedRoadmapSteps || []).length;
+  const progressPercent = totalSteps > 0 ? Math.round((completedCount / totalSteps) * 100) : 0;
+
+  // Helper for Badges
+  const getBadge = (name: string) => {
+    const n = name.toLowerCase();
+    if (n.includes('setup') || n.includes('init') || n.includes('config')) return { label: 'Setup', color: 'bg-slate-500/20 text-slate-300' };
+    if (n.includes('database') || n.includes('auth') || n.includes('backend') || n.includes('api')) return { label: 'Backend', color: 'bg-green-500/20 text-green-300' };
+    if (n.includes('ui') || n.includes('frontend') || n.includes('component') || n.includes('page')) return { label: 'Frontend', color: 'bg-blue-500/20 text-blue-300' };
+    return { label: 'Task', color: 'bg-slate-500/20 text-slate-300' };
+  };
+
   return (
     <PageBackground glowColor="blue">
-      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10 gap-8">
+      <div className="max-w-5xl mx-auto min-h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10 gap-8 pb-32">
         
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <h2 className="text-4xl font-bold text-white mb-2 tracking-tight">Realization & Roadmap</h2>
-            <p className="text-forge-muted text-lg">Choose your execution path: Build it yourself with AI or hire an expert.</p>
+        {/* Header with Progress */}
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <h2 className="text-4xl font-bold text-white mb-2 tracking-tight">Realization Engine</h2>
+              <p className="text-forge-muted text-lg">Execute your plan: Task by task.</p>
+            </div>
+            {!state.roadmapOutput && (
+               <button onClick={() => generateArtifact(ProjectStep.CODE)} disabled={state.isGenerating || !state.prdOutput} className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:scale-[1.02] flex items-center gap-2">
+                 <Sparkles className="w-5 h-5" /> Generate Roadmap
+               </button>
+            )}
           </div>
-          {!state.roadmapOutput && (
-            <button
-              onClick={() => generateArtifact(ProjectStep.CODE)}
-              disabled={state.isGenerating || !state.prdOutput}
-              className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] flex items-center gap-2 group"
-            >
-              {state.isGenerating ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  Generating Plan...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                  Generate Roadmap
-                </>
-              )}
-            </button>
+
+          {/* Progress Bar (Gamification) */}
+          {state.roadmapOutput && (
+            <div className="bg-slate-900/50 p-4 rounded-xl border border-white/10 flex items-center gap-4">
+               <div className="flex-1">
+                 <div className="flex justify-between text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">
+                   <span>Project Velocity</span>
+                   <span className={progressPercent === 100 ? "text-green-400" : "text-blue-400"}>{progressPercent}% Complete</span>
+                 </div>
+                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                   <div 
+                      className={`h-full transition-all duration-700 ease-out ${progressPercent === 100 ? 'bg-green-500' : 'bg-blue-500'}`} 
+                      style={{ width: `${progressPercent}%` }}
+                   />
+                 </div>
+               </div>
+               {progressPercent === 100 && (
+                 <div className="p-2 bg-green-500/10 rounded-full animate-bounce">
+                   <Check className="w-5 h-5 text-green-400" />
+                 </div>
+               )}
+            </div>
           )}
         </div>
 
@@ -794,99 +821,124 @@ const RealizationPage = () => {
         {state.isGenerating ? (
           <LoadingState type="code" message="Architecting Solution" subMessage="Breaking down the plan into DIY modules vs Expert tasks..." />
         ) : !state.roadmapOutput ? (
-          /* Empty State */
            <div className="flex-1 flex flex-col items-center justify-center text-slate-500 py-12 border-2 border-dashed border-white/5 rounded-2xl bg-white/5">
              <Map className="w-16 h-16 text-slate-600 mb-4" />
              <p className="text-lg font-medium">No roadmap generated yet.</p>
              <p className="text-sm">Finish your PRD to unlock the execution plan.</p>
            </div>
         ) : (
-          /* DIY vs Hire Cards */
-          <div className="space-y-8">
-            {roadmapPhases.map((phase: any, i: number) => (
-              <div key={i} className="space-y-4">
-                 {/* Phase Header */}
-                 <div className="flex items-center gap-3 mb-2">
-                    <span className="text-xs font-bold font-mono tracking-widest text-blue-400 uppercase">Phase {i + 1}</span>
-                    <h3 className="text-xl font-bold text-white">{phase.phaseName || phase.title}</h3>
-                 </div>
-                 
-                 <div className="flex flex-col gap-4">
-                     {/* DIY CONTENT - Full Width */}
-                     <GlassCard className="flex flex-col p-6 hover:border-blue-500/30 transition-colors group">
-                        <div className="flex items-center justify-between mb-4">
-                           <div className="flex items-center gap-2">
-                              <div className="p-2 rounded bg-blue-500/10 text-blue-400"><Code2 className="w-5 h-5" /></div>
-                              <div>
-                                <h4 className="font-bold text-white">DIY Instructions</h4>
-                                <p className="text-xs text-slate-400">Step-by-step AI implementation guide</p>
-                              </div>
-                           </div>
-                           <a 
-                             href="https://gemini.google.com/app" 
-                             target="_blank" 
-                             rel="noopener noreferrer"
-                             className="text-xs text-blue-400 hover:text-white flex items-center gap-1 transition-colors border border-blue-500/20 px-2 py-1 rounded bg-blue-500/5 hover:bg-blue-500/20"
-                           >
-                             Open Gemini <ExternalLink className="w-3 h-3" />
-                           </a>
-                        </div>
-                        <p className="text-sm text-slate-300 mb-6 flex-1">{phase.description}</p>
-                        
-                        <div className="space-y-4">
-                          {phase.steps?.map((step: any, j: number) => (
-                            <div key={j} className="p-4 bg-black/40 rounded-xl border border-white/5 shadow-inner">
-                               <div className="flex justify-between items-center mb-3">
-                                 <span className="text-sm font-semibold text-white">{step.stepName}</span>
-                                 {step.diyPrompt && (
-                                   <CopyButton text={step.diyPrompt} className="hover:bg-blue-500/20 text-blue-400" />
-                                 )}
-                               </div>
-                               <div className="text-xs text-slate-300 bg-slate-900/50 p-3 rounded-lg border border-white/5 font-mono max-h-32 overflow-y-auto custom-scrollbar leading-relaxed">
-                                  {step.diyPrompt || step.technicalBrief}
-                               </div>
-                            </div>
-                          ))}
-                        </div>
-                     </GlassCard>
-                  </div>
-               </div>
-             ))}
-
-             {/* GLOBAL HIRE CTA - Footer */}
-             <div className="mt-12 pt-8 border-t border-white/10">
-                <GlassCard className="p-8 md:p-10 border-orange-500/30 bg-gradient-to-br from-orange-500/5 to-amber-500/5 relative overflow-hidden group">
-                   <div className="absolute inset-0 bg-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                   <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                      <div className="flex-1 text-center md:text-left">
-                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold mb-4">
-                            <Sparkles className="w-3 h-3" /> FAST TRACK
+          <div className="space-y-4">
+            {roadmapPhases.map((phase: any, i: number) => {
+               const isOpen = expandedPhase === i;
+               return (
+                 <div key={i} className={`rounded-xl border transition-all duration-300 overflow-hidden ${isOpen ? 'bg-white/5 border-blue-500/30 ring-1 ring-blue-500/20' : 'bg-transparent border-white/10 hover:border-white/20'}`}>
+                    
+                    {/* Phase Header (Accordion Trigger) */}
+                    <button 
+                      onClick={() => setExpandedPhase(isOpen ? null : i)}
+                      className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+                    >
+                      <div className="flex items-center gap-4">
+                         <div className={`p-3 rounded-lg flex items-center justify-center font-bold text-lg w-12 h-12 transition-colors ${isOpen ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                           {i + 1}
                          </div>
-                         <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Skip the Build. Launch Faster.</h3>
-                         <p className="text-slate-300 text-lg leading-relaxed max-w-xl">
-                            Don't want to spend weeks coding? Let our expert team handle the technical execution so you can focus on marketing, branding, and business growth.
-                         </p>
-                         <ul className="mt-6 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                            <li className="flex items-center gap-2 text-sm text-slate-400"><Check className="w-4 h-4 text-orange-500" /> Professional Implementation</li>
-                            <li className="flex items-center gap-2 text-sm text-slate-400"><Check className="w-4 h-4 text-orange-500" /> Scalable Architecture</li>
-                            <li className="flex items-center gap-2 text-sm text-slate-400"><Check className="w-4 h-4 text-orange-500" /> 14-Day Delivery</li>
-                         </ul>
+                         <div>
+                           <h3 className={`text-xl font-bold transition-colors ${isOpen ? 'text-white' : 'text-slate-300'}`}>{phase.phaseName || phase.title}</h3>
+                           <p className="text-sm text-slate-500">{phase.description?.substring(0, 60)}...</p>
+                         </div>
                       </div>
-                      <div className="w-full md:w-auto flex-shrink-0">
-                         <a
-                           href="mailto:contact@jalanea.com?subject=Project Inquiry&body=I have my roadmap and I would like to discuss hiring your team to build it."
-                           className="group/btn relative inline-flex w-full md:w-auto items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-lg rounded-2xl shadow-xl shadow-orange-500/25 transition-all transform hover:scale-105 active:scale-95 border border-orange-400/20 overflow-hidden"
-                         >
-                           <span className="relative z-10 flex items-center gap-2">
-                             Get a Quote for Full Build <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                           </span>
-                           <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-amber-400 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
-                         </a>
+                      <div className={`p-2 rounded-full transition-transform duration-300 ${isOpen ? 'bg-white/10 rotate-180' : 'bg-transparent rotate-0'}`}>
+                         <div className="custom-scrol"><ArrowDownToLine className="w-5 h-5 text-slate-400" /></div> {/* Reusing Icon as Chevron-ish */}
                       </div>
-                   </div>
-                </GlassCard>
-             </div>
-           </div>
+                    </button>
+
+                    {/* Phase Body (Expanded) */}
+                    {isOpen && (
+                      <div className="px-6 pb-6 animate-in slide-in-from-top-4 duration-300">
+                         {/* DIY Header */}
+                         <div className="flex items-center justify-between mb-4 pt-4 border-t border-white/10">
+                            <h4 className="text-sm font-bold text-blue-300 uppercase tracking-widest flex items-center gap-2">
+                               <Code2 className="w-4 h-4" /> Phase Tasks
+                            </h4>
+                            <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" className="text-xs text-blue-400 hover:text-white flex items-center gap-1 border border-blue-500/20 px-3 py-1.5 rounded-full hover:bg-blue-500/20 transition-colors">
+                              Open Gemini <ExternalLink className="w-3 h-3" />
+                            </a>
+                         </div>
+
+                         {/* Task Grid */}
+                         <div className="grid grid-cols-1 gap-4">
+                           {phase.steps?.map((step: any, j: number) => {
+                             const stepId = `${i}-${j}`;
+                             const isComplete = (state.completedRoadmapSteps || []).includes(stepId);
+                             const badge = getBadge(step.stepName);
+
+                             return (
+                               <div key={j} className={`group relative p-5 rounded-xl border transition-all duration-300 ${isComplete ? 'bg-green-900/10 border-green-500/30 opacity-75' : 'bg-black/40 border-white/10 hover:border-blue-500/40'}`}>
+                                  <div className="flex items-start gap-4">
+                                     {/* Checkbox (Gamification) */}
+                                     <button 
+                                       onClick={() => toggleStepCompletion(stepId)}
+                                       className={`mt-1 w-6 h-6 rounded-md border flex items-center justify-center transition-all ${isComplete ? 'bg-green-500 border-green-500 text-white' : 'bg-slate-900 border-slate-600 hover:border-blue-400 text-transparent'}`}
+                                     >
+                                        <Check className="w-4 h-4" />
+                                     </button>
+
+                                     <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-3 mb-1">
+                                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${badge.color}`}>{badge.label}</span>
+                                           <h5 className={`font-bold text-lg ${isComplete ? 'text-green-200 line-through' : 'text-white'}`}>{step.stepName}</h5>
+                                           {step.diyPrompt && <CopyButton text={step.diyPrompt} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />}
+                                        </div>
+                                        
+                                        {/* Collapsible Prompt (Progressive Disclosure) */}
+                                        <details className="group/details">
+                                           <summary className="cursor-pointer list-none text-xs font-mono text-slate-400 hover:text-blue-300 transition-colors flex items-center gap-2 mt-2">
+                                              <Terminal className="w-3 h-3" /> View AI Prompt
+                                           </summary>
+                                           <div className="mt-3 p-3 bg-slate-950 rounded-lg border border-white/10 overflow-x-auto">
+                                              <pre className="text-xs font-mono text-slate-300 whitespace-pre-wrap leading-relaxed">
+                                                 {step.diyPrompt || step.technicalBrief}
+                                              </pre>
+                                           </div>
+                                        </details>
+                                     </div>
+                                  </div>
+                               </div>
+                             );
+                           })}
+                         </div>
+                      </div>
+                    )}
+                 </div>
+               );
+            })}
+
+            {/* Global Hire CTA (Always visible at bottom OR sticky) */}
+            <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/30 relative overflow-hidden">
+               <div className="absolute top-0 right-0 p-32 bg-orange-500/5 rounded-full blur-3xl pointer-events-none"></div>
+               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div>
+                    <h3 className="text-2xl font-bold text-white mb-2">Need to move faster?</h3>
+                    <p className="text-slate-300 max-w-lg">
+                      Skip the DIY learning curve. Use the "Fast Track" to hire Jalanea experts for the remaining phases.
+                    </p>
+                  </div>
+                  <a href="mailto:contact@jalanea.com?subject=Fast%20Track%20Build" className="bg-white hover:bg-slate-100 text-black font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 whitespace-nowrap">
+                    Get a Quote
+                  </a>
+               </div>
+            </div>
+
+          </div>
+        )}
+
+        {/* Floating Fast Track Toggle (Sticky) */}
+        {!state.isGenerating && state.roadmapOutput && (
+          <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-1000">
+             <a href="mailto:contact@jalanea.com" className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-6 py-3 rounded-full shadow-2xl hover:scale-105 transition-transform flex items-center gap-2 border border-white/20">
+               <Sparkles className="w-4 h-4 fill-white" /> Fast Track
+             </a>
+          </div>
         )}
       </div>
     </PageBackground>

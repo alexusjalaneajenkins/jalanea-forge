@@ -34,6 +34,7 @@ export interface ProjectState {
   antigravityPrompt?: string; // For Antigravity (Integration)
   bugReportPrompt?: string;
   isGenerating: boolean;
+  completedRoadmapSteps: string[]; // Track completed step IDs (phase-step index)
 }
 
 export interface ProjectMetadata {

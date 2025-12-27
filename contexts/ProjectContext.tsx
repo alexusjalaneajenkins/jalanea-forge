@@ -43,7 +43,8 @@ const initialState: ProjectState = {
     roadmapOutput: "",
     designSystemOutput: "",
     codePromptOutput: "",
-    isGenerating: false
+    isGenerating: false,
+    completedRoadmapSteps: []
 };
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -56,6 +57,17 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const [isLoadingProjects, setIsLoadingProjects] = useState(false);
 
     const { user } = useAuth();
+
+    // Helper to save current project state
+    const saveCurrentProject = (projectState: ProjectState) => {
+        if (user && currentProjectId) {
+            saveProject(user.uid, currentProjectId, projectState);
+            // Update the list metadata immediately for title changes
+            setProjects(prev => prev.map(p =>
+                p.id === currentProjectId ? { ...p, title: projectState.title, updatedAt: Date.now() } : p
+            ));
+        }
+    };
 
     // Load project list on login
     useEffect(() => {
@@ -132,6 +144,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
 
     // Save project on state change (debounced manually via effect)
+    // This useEffect is now for debounced saves of general state changes.
+    // Direct saves (like setCurrentStep, toggleStepCompletion) will use saveCurrentProject directly.
     useEffect(() => {
         if (user && currentProjectId) {
             const timeoutId = setTimeout(() => {
@@ -191,7 +205,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
 
     const setCurrentStep = (step: ProjectStep) => {
-        setState(prev => ({ ...prev, currentStep: step }));
+        setState(prev => {
+            const newState = { ...prev, currentStep: step };
+            saveCurrentProject(newState);
+            return newState;
+        });
     };
 
     const generateArtifact = async (step: ProjectStep) => {
@@ -269,7 +287,21 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
             // Just reset state content, but keep ID
             const resetState = { ...initialState, title: state.title };
             setState(resetState);
+            saveCurrentProject(resetState); // Save the reset state
         }
+    };
+
+    const toggleStepCompletion = (stepId: string) => {
+        setState(prev => {
+            const current = prev.completedRoadmapSteps || [];
+            const updated = current.includes(stepId)
+                ? current.filter(id => id !== stepId)
+                : [...current, stepId];
+            
+            const newState = { ...prev, completedRoadmapSteps: updated };
+            saveCurrentProject(newState);
+            return newState;
+        });
     };
 
     return (
@@ -285,7 +317,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
             openSettings: () => setShowSettings(true),
             openSupport: () => setShowSupportModal(true),
             setCurrentStep,
-            currentProjectId
+            currentProjectId,
+            toggleStepCompletion
         }}>
             <SettingsModal
                 isOpen={showSettings}
