@@ -469,9 +469,12 @@ const ResearchPage = () => {
               
               <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2">
                 {state.research.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center text-slate-500 italic text-sm border-2 border-dashed border-white/5 rounded-xl">
-                    <p>No sources yet.</p>
-                    <p className="text-xs opacity-60 mt-1">Using base knowledge only.</p>
+                  <div className="h-full min-h-[120px] flex flex-col items-center justify-center text-slate-400 text-sm border-2 border-dashed border-white/10 rounded-xl bg-white/5">
+                    <div className="mb-2 p-2 rounded-full bg-white/5">
+                      <BookOpen className="w-4 h-4 text-slate-500" />
+                    </div>
+                    <p className="font-medium">No sources yet</p>
+                    <p className="text-xs text-slate-500 mt-0.5">Using base knowledge only</p>
                   </div>
                 ) : (
                   state.research.map((doc) => (
