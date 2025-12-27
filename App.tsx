@@ -585,7 +585,7 @@ const PrdPage = () => {
                   {state.prdOutput && (
                     <>
                       <button
-                        onClick={() => exportToPDF('prd-content-area', 'Project_PRD.pdf')}
+                        onClick={() => exportToPDF('prd-pdf-hidden', 'Project_PRD.pdf')}
                         className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-slate-900 border border-white/10 text-slate-300 hover:text-white hover:border-orange-500/50 transition-colors"
                         title="Save as PDF"
                       >
@@ -606,7 +606,13 @@ const PrdPage = () => {
               <div className="flex-1 overflow-y-auto p-8 md:p-12 custom-scrollbar bg-slate-950/20 print:p-0 print:bg-white print:overflow-visible">
                  <div id="prd-content-area" className="text-slate-200">
                     {state.prdOutput ? (
-                      <MarkdownRenderer content={state.prdOutput} />
+                      <>
+                        <MarkdownRenderer content={state.prdOutput} />
+                        {/* Hidden Export Container */}
+                        <div id="prd-pdf-hidden" className="fixed top-0 left-[-9999px] w-[800px] bg-white text-black p-12">
+                           <MarkdownRenderer content={state.prdOutput} variant="paper" />
+                        </div>
+                      </>
                     ) : (
                       <div className="h-full flex flex-col items-center justify-center text-slate-500 py-20">
                         <div className="relative mb-6">
