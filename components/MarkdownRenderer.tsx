@@ -48,8 +48,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, var
             </div>
           ),
           thead: ({ node, ...props }) => <thead className={isPaper ? 'bg-gray-50' : 'bg-forge-800'} {...props} />,
-          tbody: ({ node, ...props }) => <tbody className={`bg-white divide-y ${isPaper ? 'divide-gray-200' : 'divide-forge-700'}`} {...props} />,
-          tr: ({ node, ...props }) => <tr className={`transition-colors ${isPaper ? 'hover:bg-gray-50' : 'hover:bg-forge-50'}`} {...props} />,
+          tbody: ({ node, ...props }) => <tbody className={`divide-y ${isPaper ? 'bg-white divide-gray-200' : 'bg-transparent divide-forge-700'}`} {...props} />,
+          tr: ({ node, ...props }) => <tr className={`transition-colors ${isPaper ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`} {...props} />,
           th: ({ node, ...props }) => (
             <th className={`px-6 py-3 text-left text-xs font-medium ${isPaper ? 'text-gray-500' : 'text-forge-500'} uppercase tracking-wider`} {...props} />
           ),
