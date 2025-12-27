@@ -28,6 +28,7 @@ import {
   Check,
   Database,
   ArrowDownToLine,
+  ArrowRight,
   Info,
   Volume2,
   Bug
