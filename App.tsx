@@ -579,7 +579,7 @@ const ResearchPage = () => {
                 )}
               </div>
             </GlassCard>
-          </div>
+
         </div>
 
         <div className="flex justify-end pt-6 border-t border-white/10">
