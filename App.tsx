@@ -674,7 +674,7 @@ const PrdPage = () => {
                       <>
                         <MarkdownRenderer content={state.prdOutput} />
                         {/* Hidden Export Container */}
-                        <div id="prd-pdf-hidden" className="fixed top-0 left-[-9999px] w-[800px] bg-white text-black p-12">
+                        <div id="prd-pdf-hidden" className="fixed top-0 left-0 -z-50 w-[800px] bg-white text-black p-12">
                            <MarkdownRenderer content={state.prdOutput} variant="paper" />
                         </div>
                       </>
@@ -837,9 +837,12 @@ const RealizationPage = () => {
 
                        <a
                          href={`mailto:contact@jalanea.com?subject=Hire Request: ${phase.phaseName}&body=I want to hire you for ${phase.phaseName}`}
-                         className="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold rounded-xl text-center shadow-lg shadow-orange-500/20 transition-all active:scale-[0.98]"
+                         className="group relative w-full py-4 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-bold rounded-xl text-center shadow-lg shadow-orange-500/20 transition-all active:scale-95 border border-orange-400/20 flex items-center justify-center gap-2 overflow-hidden"
                        >
-                         Hire for This Phase
+                         <span className="relative z-10 flex items-center gap-2">
+                           Hire for This Phase <ExternalLink className="w-4 h-4 ml-1" />
+                         </span>
+                         <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-amber-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                        </a>
                     </GlassCard>
                  </div>
