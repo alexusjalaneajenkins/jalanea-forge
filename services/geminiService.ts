@@ -232,8 +232,9 @@ export const generatePlan = async (prd: string): Promise<string> => {
     - "steps": array of objects, where each object has:
         - "stepName": string (e.g., "Setup Authentication")
         - "description": string (User-facing summary)
-        - "technicalBrief": string (Explanation of 'why' this tech is used, e.g., "Firebase Auth is secure...")
-        - "prompt": string (The actual prompt to copy. MUST include "PROJECT VISION:...", "TECH STACK:...", and specific coding task.)
+        - "technicalBrief": string (Explanation of complexity)
+        - "diyPrompt": string (A standalone, copy-pasteable prompt for an AI Coder to implement this specific step. Must include "CONTEXT:...", "TASK:...", and "code guidelines".)
+        - "hirePitch": string (A concise, 1-sentence reason to hire an expert for this, e.g., "Authentication security errors can cost $10k+ to fix later.")
 
     Example Output Structure:
     [
@@ -241,7 +242,7 @@ export const generatePlan = async (prd: string): Promise<string> => {
         "phaseName": "...", 
         "description": "...", 
         "steps": [
-           { "stepName": "...", "description": "...", "technicalBrief": "...", "prompt": "..." }
+           { "stepName": "...", "description": "...", "technicalBrief": "...", "diyPrompt": "...", "hirePitch": "..." }
         ]
       }
     ]
@@ -252,7 +253,7 @@ export const generatePlan = async (prd: string): Promise<string> => {
     'gemini-3-flash-preview',
     prompt,
     {
-      systemInstruction: "You are a Technical Project Manager. Break down complex goals into granular, actionable steps. Focus on educational clarity for the user and security in the code prompts. Return raw JSON.",
+      systemInstruction: "You are a Technical Project Manager. You advocate for the 'Hybrid' approach: letting users build simple things (DIY) but identifying high-risk areas where hiring an expert is smarter. Return raw JSON.",
     }
   );
 

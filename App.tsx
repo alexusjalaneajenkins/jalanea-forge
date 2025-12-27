@@ -650,28 +650,19 @@ const PrdPage = () => {
 
 const RealizationPage = () => {
   const { state, generateArtifact } = useProject();
-  const [activeTab, setActiveTab] = useState<'master' | 'stitch' | 'opal'>('master');
   
-  const getParsedRoadmap = () => {
-    if (!state.roadmapOutput) return null;
-    try {
+  // Safe parsing
+  let roadmapPhases: any[] = [];
+  try {
+    if (state.roadmapOutput) {
       const jsonStr = state.roadmapOutput.replace(/```json/g, '').replace(/```/g, '').trim();
-      return JSON.parse(jsonStr);
-    } catch (e) {
-      console.error("Failed to parse roadmap JSON", e);
-      return null;
+      const parsed = JSON.parse(jsonStr);
+      // Handle array vs object wrapper
+      roadmapPhases = Array.isArray(parsed) ? parsed : (parsed.phases || []);
     }
-  };
-
-  const roadmapPhases = getParsedRoadmap();
-
-  const getPromptContent = () => {
-    if (!state.codePrompts) return "Generate the roadmap to unlock execution prompts.";
-    if (activeTab === 'master') return state.codePrompts.antigravity;
-    if (activeTab === 'stitch') return state.codePrompts.stitch;
-    if (activeTab === 'opal') return state.codePrompts.opal;
-    return "";
-  };
+  } catch (e) {
+    console.error("Failed to parse roadmap usage", e);
+  }
 
   return (
     <PageBackground glowColor="blue">
@@ -681,18 +672,18 @@ const RealizationPage = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <h2 className="text-4xl font-bold text-white mb-2 tracking-tight">Realization & Roadmap</h2>
-            <p className="text-forge-muted text-lg">Your step-by-step plan to build this vision.</p>
+            <p className="text-forge-muted text-lg">Choose your execution path: Build it yourself with AI or hire an expert.</p>
           </div>
           {!state.roadmapOutput && (
             <button
-              onClick={() => generateArtifact(ProjectStep.PLANNING)}
+              onClick={() => generateArtifact(ProjectStep.CODE)}
               disabled={state.isGenerating || !state.prdOutput}
               className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] flex items-center gap-2 group"
             >
               {state.isGenerating ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  Generating...
+                  Generating Plan...
                 </>
               ) : (
                 <>
@@ -706,108 +697,89 @@ const RealizationPage = () => {
 
         {/* Content Area */}
         {state.isGenerating ? (
-          <LoadingState type="code" message="Architecting Solution" subMessage="Generating implementation prompts and roadmap..." />
+          <LoadingState type="code" message="Architecting Solution" subMessage="Breaking down the plan into DIY modules vs Expert tasks..." />
         ) : !state.roadmapOutput ? (
-          /* Empty State / Promo */
-          <GlassCard className="flex-1 flex flex-col justify-center items-center p-12 text-center border-dashed border-2 border-white/10 bg-white/5">
-             <div className="max-w-md w-full text-left space-y-8">
-                <div>
-                   <h3 className="text-2xl font-bold text-white mb-4">Ready to Build?</h3>
-                   <ul className="space-y-4">
-                     {[
-                       "Save 20+ hours of dev time",
-                       "Focus on Marketing & Launch",
-                       "Professional Grade Code",
-                       "Guaranteed Deployment",
-                     ].map((item, i) => (
-                       <li key={i} className="flex items-start gap-3">
-                         <div className="mt-1"><Sparkles className="w-4 h-4 text-blue-400" /></div>
-                         <span className="text-slate-200">{item}</span>
-                       </li>
-                     ))}
-                   </ul>
-                </div>
-                
-                <div className="pt-4 border-t border-white/10">
-                   <a
-                     href="mailto:contact@jalanea.com?subject=Hire Vibe Code"
-                     className="block w-full text-center bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.05]"
-                   >
-                     Hire Vibe Code →
-                   </a>
-                   <p className="text-center text-xs text-slate-500 mt-2">Professional AI-Native Development Agency</p>
-                </div>
-             </div>
-          </GlassCard>
+          /* Empty State */
+           <div className="flex-1 flex flex-col items-center justify-center text-slate-500 py-12 border-2 border-dashed border-white/5 rounded-2xl bg-white/5">
+             <Map className="w-16 h-16 text-slate-600 mb-4" />
+             <p className="text-lg font-medium">No roadmap generated yet.</p>
+             <p className="text-sm">Finish your PRD to unlock the execution plan.</p>
+           </div>
         ) : (
-          /* Roadmap & Prompts Display */
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left: Prompts */}
-            <div className="lg:col-span-1 space-y-6">
-              <GlassCard className="h-[600px] flex flex-col">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-white font-bold flex items-center gap-2">
-                    <Terminal className="w-5 h-5 text-blue-400" /> Execution Prompts
-                  </h3>
-                  <div className="flex bg-black/40 rounded-lg p-1">
-                    {['master', 'stitch', 'opal'].map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => setActiveTab(tab as any)}
-                        className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${activeTab === tab ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'}`}
-                      >
-                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex-1 bg-black/50 rounded-lg p-4 font-mono text-xs text-slate-300 overflow-y-auto whitespace-pre-wrap border border-white/5">
-                  {getPromptContent()}
-                </div>
-                <button
-                  onClick={() => navigator.clipboard.writeText(getPromptContent())}
-                  className="mt-4 w-full py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-medium transition-colors"
-                >
-                  Copy Prompt
-                </button>
-              </GlassCard>
-            </div>
-
-            {/* Right: Roadmap */}
-            <div className="lg:col-span-2 space-y-6">
-               {roadmapPhases && roadmapPhases.phases ? (
-                 <div className="space-y-6">
-                   {roadmapPhases.phases.map((phase: any, i: number) => (
-                     <GlassCard key={i} className="relative overflow-hidden group">
-                       <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-cyan-400"></div>
-                       <div className="ml-4">
-                         <div className="flex items-center justify-between mb-4">
-                           <h3 className="text-xl font-bold text-white">{phase.title}</h3>
-                           <span className="text-blue-400 text-sm font-mono px-2 py-1 bg-blue-500/10 rounded border border-blue-500/20">{phase.duration}</span>
-                         </div>
-                         <ul className="space-y-2 mb-4">
-                           {phase.tasks.map((task: string, j: number) => (
-                             <li key={j} className="flex items-start gap-2 text-slate-300 text-sm">
-                               <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-slate-500 group-hover:bg-blue-400 transition-colors"></div>
-                               {task}
-                             </li>
-                           ))}
-                         </ul>
-                         <div className="flex flex-wrap gap-2">
-                           {phase.deliverables && phase.deliverables.map((del: string, k: number) => (
-                             <span key={k} className="text-xs text-slate-400 px-2 py-1 bg-white/5 rounded-full border border-white/5">{del}</span>
-                           ))}
-                         </div>
-                       </div>
-                     </GlassCard>
-                   ))}
+          /* DIY vs Hire Cards */
+          <div className="space-y-8">
+            {roadmapPhases.map((phase: any, i: number) => (
+              <div key={i} className="space-y-4">
+                 {/* Phase Header */}
+                 <div className="flex items-center gap-3 mb-2">
+                    <span className="text-xs font-bold font-mono tracking-widest text-blue-400 uppercase">Phase {i + 1}</span>
+                    <h3 className="text-xl font-bold text-white">{phase.phaseName || phase.title}</h3>
                  </div>
-               ) : (
-                 <GlassCard className="p-8 text-center text-slate-400">
-                   Parsing Roadmap JSON...
-                 </GlassCard>
-               )}
-            </div>
+                 
+                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {/* DIY OPTION */}
+                    <GlassCard className="flex flex-col p-6 hover:border-blue-500/30 transition-colors group">
+                       <div className="flex items-center gap-2 mb-4">
+                          <div className="p-2 rounded bg-blue-500/10 text-blue-400"><Code2 className="w-5 h-5" /></div>
+                          <div>
+                            <h4 className="font-bold text-white">DIY Route</h4>
+                            <p className="text-xs text-slate-400">Use AI to build this yourself</p>
+                          </div>
+                       </div>
+                       <p className="text-sm text-slate-300 mb-6 flex-1">{phase.description}</p>
+                       
+                       <div className="space-y-3">
+                         {phase.steps?.map((step: any, j: number) => (
+                           <div key={j} className="p-3 bg-black/20 rounded border border-white/5">
+                              <div className="flex justify-between items-start mb-2">
+                                <span className="text-sm font-medium text-white">{step.stepName}</span>
+                                {step.diyPrompt && (
+                                  <button 
+                                    onClick={() => navigator.clipboard.writeText(step.diyPrompt)}
+                                    className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 rounded transition-colors"
+                                    title="Copy AI Prompt"
+                                  >
+                                    Copy Prompt
+                                  </button>
+                                )}
+                              </div>
+                              <p className="text-xs text-slate-500 line-clamp-2">{step.technicalBrief}</p>
+                           </div>
+                         ))}
+                       </div>
+                    </GlassCard>
+
+                    {/* HIRE OPTION */}
+                    <GlassCard className="flex flex-col p-6 border-orange-500/20 bg-orange-500/5 hover:bg-orange-500/10 transition-colors">
+                       <div className="flex items-center gap-2 mb-4">
+                          <div className="p-2 rounded bg-orange-500/10 text-orange-400"><Sparkles className="w-5 h-5" /></div>
+                          <div>
+                            <h4 className="font-bold text-white">Hire Expert</h4>
+                            <p className="text-xs text-slate-400">Save time & ensure quality</p>
+                          </div>
+                       </div>
+                       
+                       <div className="flex-1 mb-6">
+                          <p className="text-sm text-slate-300 italic mb-4">
+                            "{phase.steps?.[0]?.hirePitch || "Accelerate your launch by having our senior engineers handle this complex phase."}"
+                          </p>
+                          <ul className="space-y-2">
+                             <li className="flex items-center gap-2 text-xs text-slate-400"><Check className="w-3.5 h-3.5 text-orange-500" /> Done-for-you implementation</li>
+                             <li className="flex items-center gap-2 text-xs text-slate-400"><Check className="w-3.5 h-3.5 text-orange-500" /> Best-practice security & scale</li>
+                             <li className="flex items-center gap-2 text-xs text-slate-400"><Check className="w-3.5 h-3.5 text-orange-500" /> 14-day delivery guarantee</li>
+                          </ul>
+                       </div>
+
+                       <a
+                         href={`mailto:contact@jalanea.com?subject=Hire Request: ${phase.phaseName}&body=I want to hire you for ${phase.phaseName}`}
+                         className="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold rounded-xl text-center shadow-lg shadow-orange-500/20 transition-all active:scale-[0.98]"
+                       >
+                         Hire for This Phase
+                       </a>
+                    </GlassCard>
+                 </div>
+              </div>
+            ))}
           </div>
         )}
       </div>

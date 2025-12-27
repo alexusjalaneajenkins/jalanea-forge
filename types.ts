@@ -1,12 +1,9 @@
 import React from 'react';
 
-export enum ProjectStep {
   IDEA = 'IDEA',
   RESEARCH = 'RESEARCH',
   PRD = 'PRD',
-  PLANNING = 'PLANNING',
-  DESIGN = 'DESIGN',
-  CODE = 'CODE'
+  CODE = 'CODE' // Renaming 'PLANNING' to 'CODE' or just keeping 'PLANNING' as the final step. The user wants 'Realization' to be the final step. In App.tsx layout, 'Realization' maps to ProjectStep.CODE. Let's map 'Realization' to 'PLANNING' conceptually or just keep 'CODE' as the enum value for step 4.
 }
 
 export interface ResearchDocument {
@@ -48,7 +45,8 @@ export interface RoadmapStep {
   stepName: string;
   description: string;
   technicalBrief: string;
-  prompt: string;
+  diyPrompt?: string;
+  hirePitch?: string;
 }
 
 export interface RoadmapPhase {
