@@ -385,23 +385,24 @@ const IdeaPage = () => {
           </div>
 
           {/* NotebookLM Worflow Prompts */}
+          {/* NotebookLM Worflow Prompts */}
           {state.researchMissionPrompt && (
-            <div className="mt-8 animate-fade-in-up delay-100">
-               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div className="mt-10 animate-fade-in-up delay-100 p-1">
+               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
                  <div>
-                   <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                     <div className="p-1 bg-white/10 rounded"><BookOpen className="w-4 h-4 text-orange-400" /></div>
-                     NotebookLM Workflow Prep
+                   <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-2">
+                     <div className="p-1.5 bg-white/10 rounded-lg"><BookOpen className="w-5 h-5 text-orange-400" /></div>
+                     NotebookLM Workflow
                    </h3>
-                   <p className="text-sm text-forge-muted mt-1">
-                     We've crafted deep-research prompts for you. Use these in Google's NotebookLM to generate a comprehensive report.
+                   <p className="text-sm text-forge-muted max-w-lg leading-relaxed">
+                     Use these specialized prompts to generate a comprehensive research report in Google NotebookLM.
                    </p>
                  </div>
                  <a 
                    href="https://notebooklm.google.com/" 
                    target="_blank" 
                    rel="noopener noreferrer"
-                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-lg shadow-lg shadow-blue-500/20 transition-all hover:scale-105"
+                   className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-500/20 transition-all hover:-translate-y-0.5"
                  >
                    Launch NotebookLM <ExternalLink className="w-4 h-4" />
                  </a>
@@ -409,47 +410,53 @@ const IdeaPage = () => {
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  {/* Step 1 */}
-                 <GlassCard className="p-5 flex flex-col relative overflow-hidden group">
-                   <div className="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
-                   <div className="flex justify-between items-start mb-3">
-                     <div>
-                       <span className="text-[10px] font-bold text-purple-400 bg-purple-400/10 px-2 py-1 rounded border border-purple-400/20">STEP 1: SOURCE</span>
-                       <h4 className="font-bold text-white mt-2">Context Prompt</h4>
+                 <GlassCard className="flex flex-col relative overflow-hidden group border-white/5 bg-white/5 hover:bg-white/10 transition-colors">
+                   <div className="absolute top-0 left-0 w-1.5 h-full bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]"></div>
+                   <div className="p-6 flex flex-col h-full">
+                     <div className="flex justify-between items-start mb-4">
+                       <div>
+                         <span className="inline-block text-[10px] font-extrabold tracking-widest text-purple-300 bg-purple-500/20 px-2 py-1 rounded mb-2">STEP 1: SOURCE</span>
+                         <h4 className="text-lg font-bold text-white">Context Prompt</h4>
+                       </div>
+                       <CopyButton 
+                         text={state.researchMissionPrompt || ""}
+                         className="text-slate-400 hover:text-white hover:bg-white/10 p-2"
+                         title="Copy Source Text"
+                       />
                      </div>
-                     <CopyButton 
-                       text={state.researchMissionPrompt || ""}
-                       className="text-slate-400 hover:text-white hover:bg-white/10"
-                       title="Copy Source Text"
-                     />
-                   </div>
-                   <p className="text-xs text-slate-400 mb-3 flex-1 leading-relaxed">
-                     Create a new Notebook. Click <span className="text-white font-medium">Add Source &gt; Paste Text</span>. Paste this entire block to ground the AI.
-                   </p>
-                   <div className="bg-black/30 p-3 rounded border border-white/5 font-mono text-[10px] text-slate-300 h-24 overflow-y-auto custom-scrollbar">
-                     {state.researchMissionPrompt}
+                     <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+                       Create a new Notebook. <br/>
+                       Click <span className="text-white font-semibold">Add Source &gt; Paste Text</span>.
+                     </p>
+                     <div className="flex-1 bg-black/40 p-4 rounded-xl border border-white/5 font-mono text-xs text-slate-300 overflow-y-auto custom-scrollbar min-h-[140px] shadow-inner">
+                       {state.researchMissionPrompt}
+                     </div>
                    </div>
                  </GlassCard>
 
                  {/* Step 2 */}
                  {state.reportGenerationPrompt && (
-                   <GlassCard className="p-5 flex flex-col relative overflow-hidden group">
-                     <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
-                     <div className="flex justify-between items-start mb-3">
-                       <div>
-                         <span className="text-[10px] font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded border border-blue-400/20">STEP 2: CHAT</span>
-                         <h4 className="font-bold text-white mt-2">Report Prompt</h4>
+                   <GlassCard className="flex flex-col relative overflow-hidden group border-white/5 bg-white/5 hover:bg-white/10 transition-colors">
+                     <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
+                     <div className="p-6 flex flex-col h-full"> 
+                       <div className="flex justify-between items-start mb-4">
+                         <div>
+                           <span className="inline-block text-[10px] font-extrabold tracking-widest text-blue-300 bg-blue-500/20 px-2 py-1 rounded mb-2">STEP 2: CHAT</span>
+                           <h4 className="text-lg font-bold text-white">Report Prompt</h4>
+                         </div>
+                         <CopyButton 
+                           text={state.reportGenerationPrompt || ""}
+                           className="text-slate-400 hover:text-white hover:bg-white/10 p-2"
+                           title="Copy Chat Prompt"
+                         />
                        </div>
-                       <CopyButton 
-                         text={state.reportGenerationPrompt || ""}
-                         className="text-slate-400 hover:text-white hover:bg-white/10"
-                         title="Copy Chat Prompt"
-                       />
-                     </div>
-                     <p className="text-xs text-slate-400 mb-3 flex-1 leading-relaxed">
-                       Once sources are processed, paste this into the <span className="text-white font-medium">Chat Box</span> to generate your research report.
-                     </p>
-                     <div className="bg-black/30 p-3 rounded border border-white/5 font-mono text-[10px] text-slate-300 h-24 overflow-y-auto custom-scrollbar">
-                       {state.reportGenerationPrompt}
+                       <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+                         Once sources are processed,<br/>
+                         paste this into the <span className="text-white font-semibold">Chat Box</span>.
+                       </p>
+                       <div className="flex-1 bg-black/40 p-4 rounded-xl border border-white/5 font-mono text-xs text-slate-300 overflow-y-auto custom-scrollbar min-h-[140px] shadow-inner">
+                         {state.reportGenerationPrompt}
+                       </div>
                      </div>
                    </GlassCard>
                  )}
