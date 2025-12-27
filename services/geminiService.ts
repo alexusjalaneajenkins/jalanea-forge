@@ -234,16 +234,22 @@ export const generatePlan = async (prd: string): Promise<string> => {
         - "stepName": string (e.g., "Setup Authentication")
         - "description": string (User-facing summary)
         - "technicalBrief": string (Explanation of complexity)
-        - "diyPrompt": string (A standalone, copy-pasteable prompt for an AI Coder to implement this specific step. Must include "CONTEXT:...", "TASK:...", and "code guidelines".)
-        - "hirePitch": string (A concise, 1-sentence reason to hire an expert for this, e.g., "Authentication security errors can cost $10k+ to fix later.")
+        - "diyPrompt": string (A DIRECT, COPY-PASTEABLE COMMAND for an AI agent (like Cursor/Replit) to write the code. MUST start with "Act as a Senior Engineer. Create [File Names]..." and include exact technical requirements, libraries to use, and step-by-step implementation logic. Do NOT describe *what* to do; command the AI *to do it*.)
+        - "hirePitch": string (A concise reason to hire an expert, e.g., "Authentication security errors can cost $10k+ to fix.")
 
     Example Output Structure:
     [
       { 
-        "phaseName": "...", 
+        "phaseName": "Phase 1: Foundation", 
         "description": "...", 
         "steps": [
-           { "stepName": "...", "description": "...", "technicalBrief": "...", "diyPrompt": "...", "hirePitch": "..." }
+           { 
+             "stepName": "Setup Next.js", 
+             "description": "Initialize the app repo.", 
+             "technicalBrief": "...", 
+             "diyPrompt": "Act as a Senior React Engineer. Initialize a new Next.js 14 project using App Router and TypeScript. Install TailwindCSS, Lucide React, and Supabase Client. Create a layout.tsx with a dark mode theme provider...", 
+             "hirePitch": "..." 
+           }
         ]
       }
     ]
