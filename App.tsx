@@ -698,8 +698,12 @@ const PrdPage = () => {
                               <p className="text-slate-400 mb-8">Please wait while we format your document.</p>
                               
                               {/* The Actual Paper Document (Visible inside overlay) */}
-                              <div id="prd-pdf-export-overlay" className="bg-white text-black p-12 shadow-2xl max-w-[800px] w-full max-h-[60vh] overflow-y-auto rounded-lg">
-                                 <MarkdownRenderer content={state.prdOutput} variant="paper" />
+                              {/* Parent Wrapper handles scrolling for the UI */}
+                              <div className="max-w-[800px] w-full max-h-[60vh] overflow-y-auto rounded-lg shadow-2xl custom-scrollbar">
+                                 {/* Capture Target: Must be full height (no overflow) to capture all pages */}
+                                 <div id="prd-pdf-export-overlay" className="bg-white text-black p-12 w-full h-auto">
+                                    <MarkdownRenderer content={state.prdOutput} variant="paper" />
+                                 </div>
                               </div>
                            </div>
                         )}
