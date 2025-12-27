@@ -219,8 +219,27 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
                     designSystemOutput: result.stitch + "\n\n" + result.opal
                 }));
             } else if (step === ProjectStep.CODE) {
-                const result = await GeminiService.generateCodePrompt(state);
-                setState(prev => ({ ...prev, antigravityPrompt: result, codePromptOutput: result }));
+                // Combined Realization Flow: Generate Design Prompts first, then Code Prompt
+                const designResult = await GeminiService.generateDesignPrompts(state.prdOutput, state.roadmapOutput);
+
+                // Create temp state with new design prompts for code generation
+                const tempState = {
+                    ...state,
+                    stitchPrompt: designResult.stitch,
+                    opalPrompt: designResult.opal
+                };
+
+                const codeResult = await GeminiService.generateCodePrompt(tempState);
+
+                setState(prev => ({
+                    ...prev,
+                    stitchPrompt: designResult.stitch,
+                    opalPrompt: designResult.opal,
+                    // Legacy support
+                    designSystemOutput: designResult.stitch + "\n\n" + designResult.opal,
+                    antigravityPrompt: codeResult,
+                    codePromptOutput: codeResult
+                }));
             }
         } catch (error: any) {
             console.error("Generation failed:", error);
