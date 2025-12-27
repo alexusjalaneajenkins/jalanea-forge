@@ -54,10 +54,16 @@ import html2pdf from 'html2pdf.js';
 
 const exportToPDF = (elementId: string, filename: string) => {
   const element = document.getElementById(elementId);
-  if (!element) return;
+  if (!element) return Promise.resolve();
   const opt = {
     margin: 10,
     filename: filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, logging: false },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
+  };
+  return html2pdf().set(opt).from(element).save();
+};
     image: { type: 'jpeg' as any, quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true, logging: false },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
@@ -600,6 +606,7 @@ const ResearchPage = () => {
 
 const PrdPage = () => {
   const { state, generateArtifact } = useProject();
+  const [isExporting, setIsExporting] = useState(false);
   const navigate = useNavigate();
 
   const handleGenerate = async () => {
@@ -650,12 +657,20 @@ const PrdPage = () => {
                   {state.prdOutput && (
                     <>
                       <button
-                        onClick={() => exportToPDF('prd-pdf-hidden', 'Project_PRD.pdf')}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-slate-900 border border-white/10 text-slate-300 hover:text-white hover:border-orange-500/50 transition-colors"
+                        onClick={() => {
+                          setIsExporting(true);
+                          setTimeout(() => {
+                            exportToPDF('prd-pdf-export-overlay', 'Project_PRD.pdf')
+                              .catch(err => console.error(err))
+                              .finally(() => setIsExporting(false));
+                          }, 500);
+                        }}
+                        disabled={isExporting}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-slate-900 border border-white/10 text-slate-300 hover:text-white hover:border-orange-500/50 transition-colors disabled:opacity-50"
                         title="Save as PDF"
                       >
-                        <ArrowDownToLine className="w-3.5 h-3.5" />
-                        Export PDF
+                        {isExporting ? <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <ArrowDownToLine className="w-3.5 h-3.5" />}
+                        {isExporting ? 'Exporting...' : 'Export PDF'}
                       </button>
                       <CopyButton
                         text={state.prdOutput}
@@ -674,9 +689,21 @@ const PrdPage = () => {
                       <>
                         <MarkdownRenderer content={state.prdOutput} />
                         {/* Hidden Export Container */}
-                        <div id="prd-pdf-hidden" className="fixed top-0 left-0 -z-50 w-[800px] bg-white text-black p-12">
-                           <MarkdownRenderer content={state.prdOutput} variant="paper" />
-                        </div>
+                        {/* Export Overlay - Only visible during export to prevent ghosting */}
+                        {isExporting && (
+                           <div className="fixed inset-0 z-[9999] bg-slate-950/95 flex flex-col items-center justify-center p-8 backdrop-blur-sm animate-in fade-in duration-200">
+                              <div className="mb-6 p-4 rounded-full bg-orange-500/10 animate-bounce">
+                                  <Download className="w-8 h-8 text-orange-500" />
+                              </div>
+                              <h3 className="text-2xl font-bold text-white mb-2">Generating Professional PDF...</h3>
+                              <p className="text-slate-400 mb-8">Please wait while we format your document.</p>
+                              
+                              {/* The Actual Paper Document (Visible inside overlay) */}
+                              <div id="prd-pdf-export-overlay" className="bg-white text-black p-12 shadow-2xl max-w-[800px] w-full max-h-[60vh] overflow-y-auto rounded-lg">
+                                 <MarkdownRenderer content={state.prdOutput} variant="paper" />
+                              </div>
+                           </div>
+                        )}
                       </>
                     ) : (
                       <div className="h-full flex flex-col items-center justify-center text-slate-500 py-20">
