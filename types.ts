@@ -47,7 +47,8 @@ export interface RoadmapStep {
   stepName: string;
   description: string;
   technicalBrief: string;
-  diyPrompt?: string;
+  diyPrompt?: string; // This is the 'User Prompt'
+  systemPrompt?: string; // This is the 'System Instructions' for AI Studio
   hirePitch?: string;
 }
 

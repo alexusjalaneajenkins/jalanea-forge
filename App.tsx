@@ -939,18 +939,44 @@ const RealizationPage = () => {
                                         <div className="flex items-center gap-3 mb-1">
                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${badge.color}`}>{badge.label}</span>
                                            <h5 className={`font-bold text-lg ${isComplete ? 'text-green-200 line-through' : 'text-white'}`}>{step.stepName}</h5>
-                                           {step.diyPrompt && <CopyButton text={step.diyPrompt} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />}
+                                           {/* Outer Copy Button removed to encourage opening details for full context */}
                                         </div>
                                         
                                         {/* Collapsible Prompt (Progressive Disclosure) */}
                                         <details className="group/details">
                                            <summary className="cursor-pointer list-none text-xs font-mono text-slate-400 hover:text-blue-300 transition-colors flex items-center gap-2 mt-2">
-                                              <Terminal className="w-3 h-3" /> View AI Prompt
+                                              <Terminal className="w-3 h-3" /> View AI Studio Prompts
                                            </summary>
-                                           <div className="mt-3 p-3 bg-slate-950 rounded-lg border border-white/10 overflow-x-auto">
-                                              <pre className="text-xs font-mono text-slate-300 whitespace-pre-wrap leading-relaxed">
-                                                 {step.diyPrompt || step.technicalBrief}
-                                              </pre>
+                                           <div className="mt-3 space-y-3 animate-in slide-in-from-top-2 duration-200">
+                                              {/* System Instructions (AI Studio) */}
+                                              {step.systemPrompt && (
+                                                <div className="bg-slate-950 rounded-lg border border-indigo-500/30 overflow-hidden">
+                                                  <div className="bg-indigo-500/10 px-3 py-1.5 flex justify-between items-center border-b border-indigo-500/10">
+                                                    <span className="text-[10px] uppercase font-bold text-indigo-400 tracking-wider flex items-center gap-2">
+                                                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> System Instructions
+                                                    </span>
+                                                    <CopyButton text={step.systemPrompt} className="hover:text-indigo-300" />
+                                                  </div>
+                                                  <div className="p-3 overflow-x-auto">
+                                                    <pre className="text-xs font-mono text-indigo-200/80 whitespace-pre-wrap leading-relaxed">{step.systemPrompt}</pre>
+                                                  </div>
+                                                </div>
+                                              )}
+                                              
+                                              {/* User Prompt */}
+                                              <div className="bg-slate-950 rounded-lg border border-white/10 overflow-hidden">
+                                                <div className="bg-white/5 px-3 py-1.5 flex justify-between items-center border-b border-white/5">
+                                                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span> User Prompt
+                                                  </span>
+                                                  <CopyButton text={step.diyPrompt || step.technicalBrief} className="hover:text-white" />
+                                                 </div>
+                                                 <div className="p-3 overflow-x-auto">
+                                                   <pre className="text-xs font-mono text-slate-300 whitespace-pre-wrap leading-relaxed">
+                                                      {step.diyPrompt || step.technicalBrief}
+                                                   </pre>
+                                                 </div>
+                                              </div>
                                            </div>
                                         </details>
                                      </div>

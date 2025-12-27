@@ -233,8 +233,9 @@ export const generatePlan = async (prd: string): Promise<string> => {
     - "steps": array of objects, where each object has:
         - "stepName": string (e.g., "Setup Authentication")
         - "description": string (User-facing summary)
-        - "technicalBrief": string (Explanation of complexity)
-        - "diyPrompt": string (A COMPREHENSIVE COMMAND for an AI agent. It MUST have two parts: 1. "CONTEXT": A summary of the App Name, Idea, and Tech Stack (from the PRD). 2. "TASK": The specific coding instruction starting with "Act as a Senior Engineer...". This ensures the AI know exactly WHAT it is building.)
+    - "technicalBrief": string (Explanation of complexity)
+        - "systemPrompt": string (Google AI Studio SYSTEM INSTRUCTION. Must define the Persona, Tech Stack, and Coding Standards. e.g. "You are a Senior React Engineer. Stack: Next.js 14, Tailwind. Rules: Use TypeScript, functional components...")
+        - "diyPrompt": string (Google AI Studio USER PROMPT. The specific task instruction. e.g. "Create a responsive Navbar component with the following links...")
         - "hirePitch": string (A concise reason to hire an expert, e.g., "Authentication security errors can cost $10k+ to fix.")
 
     Example Output Structure:
@@ -247,7 +248,8 @@ export const generatePlan = async (prd: string): Promise<string> => {
              "stepName": "Setup Next.js", 
              "description": "Initialize the app repo.", 
              "technicalBrief": "...", 
-             "diyPrompt": "## PROJECT CONTEXT\nApp: DogWalkerAI\nStack: Next.js 14, Supabase, Tailwind.\nGoal: An Uber-like app for dog walkers.\n\n## TASK\nAct as a Senior React Engineer. Initialize a new Next.js 14 project...", 
+             "systemPrompt": "Act as a Senior React Engineer. You are building 'DogWalkerAI'.\nStack: Next.js 14, Supabase, Tailwind, Framer Motion.\nCoding Standards: Functional components, TypeScript, strict types.",
+             "diyPrompt": "Initialize a new Next.js 14 project using the App Router. Remove the default boilerplate css. Setup the folder structure for 'components', 'lib', and 'hooks'.", 
              "hirePitch": "..." 
            }
         ]
