@@ -386,16 +386,33 @@ const IdeaPage = () => {
           {/* NotebookLM Worflow Prompts */}
           {state.researchMissionPrompt && (
             <div className="mt-8 animate-fade-in-up delay-100">
-               <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                 <div className="p-1 bg-white/10 rounded"><BookOpen className="w-4 h-4 text-orange-400" /></div>
-                 NotebookLM Workflow Prep
-               </h3>
+               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                 <div>
+                   <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                     <div className="p-1 bg-white/10 rounded"><BookOpen className="w-4 h-4 text-orange-400" /></div>
+                     NotebookLM Workflow Prep
+                   </h3>
+                   <p className="text-sm text-forge-muted mt-1">
+                     We've crafted deep-research prompts for you. Use these in Google's NotebookLM to generate a comprehensive report.
+                   </p>
+                 </div>
+                 <a 
+                   href="https://notebooklm.google.com/" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-lg shadow-lg shadow-blue-500/20 transition-all hover:scale-105"
+                 >
+                   Launch NotebookLM <ExternalLink className="w-4 h-4" />
+                 </a>
+               </div>
+
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  {/* Step 1 */}
-                 <GlassCard className="p-5 flex flex-col">
+                 <GlassCard className="p-5 flex flex-col relative overflow-hidden group">
+                   <div className="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
                    <div className="flex justify-between items-start mb-3">
                      <div>
-                       <span className="text-[10px] font-bold text-purple-400 bg-purple-400/10 px-2 py-1 rounded border border-purple-400/20">STEP 1</span>
+                       <span className="text-[10px] font-bold text-purple-400 bg-purple-400/10 px-2 py-1 rounded border border-purple-400/20">STEP 1: SOURCE</span>
                        <h4 className="font-bold text-white mt-2">Context Prompt</h4>
                      </div>
                      <button 
@@ -406,7 +423,9 @@ const IdeaPage = () => {
                        <Copy className="w-4 h-4" />
                      </button>
                    </div>
-                   <p className="text-xs text-slate-400 mb-3 flex-1">Paste this as a SOURCE in NotebookLM.</p>
+                   <p className="text-xs text-slate-400 mb-3 flex-1 leading-relaxed">
+                     Create a new Notebook. Click <span className="text-white font-medium">Add Source &gt; Paste Text</span>. Paste this entire block to ground the AI.
+                   </p>
                    <div className="bg-black/30 p-3 rounded border border-white/5 font-mono text-[10px] text-slate-300 h-24 overflow-y-auto custom-scrollbar">
                      {state.researchMissionPrompt}
                    </div>
@@ -414,10 +433,11 @@ const IdeaPage = () => {
 
                  {/* Step 2 */}
                  {state.reportGenerationPrompt && (
-                   <GlassCard className="p-5 flex flex-col">
+                   <GlassCard className="p-5 flex flex-col relative overflow-hidden group">
+                     <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
                      <div className="flex justify-between items-start mb-3">
                        <div>
-                         <span className="text-[10px] font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded border border-blue-400/20">STEP 2</span>
+                         <span className="text-[10px] font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded border border-blue-400/20">STEP 2: CHAT</span>
                          <h4 className="font-bold text-white mt-2">Report Prompt</h4>
                        </div>
                        <button 
@@ -428,7 +448,9 @@ const IdeaPage = () => {
                          <Copy className="w-4 h-4" />
                        </button>
                      </div>
-                     <p className="text-xs text-slate-400 mb-3 flex-1">Paste this in CHAT to generate the report.</p>
+                     <p className="text-xs text-slate-400 mb-3 flex-1 leading-relaxed">
+                       Once sources are processed, paste this into the <span className="text-white font-medium">Chat Box</span> to generate your research report.
+                     </p>
                      <div className="bg-black/30 p-3 rounded border border-white/5 font-mono text-[10px] text-slate-300 h-24 overflow-y-auto custom-scrollbar">
                        {state.reportGenerationPrompt}
                      </div>
