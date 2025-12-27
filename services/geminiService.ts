@@ -117,6 +117,7 @@ export const generateResearchPrompt = async (synthesizedIdea: string): Promise<{
     4. Look for technical feasibility and similar existing implementations.
     
     Keep the mission prompt concise (under 3 sentences) but directive. Start with "Your mission is to..."
+    refer explicitly to the product concept described below. Do NOT invent a fake company name (like "VentureSpark") unless the vision explicitly names one. Use "this product" or "the proposed solution" instead.
     
     Product Vision:
     ${synthesizedIdea}
