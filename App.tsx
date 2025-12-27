@@ -169,7 +169,7 @@ const Header = () => {
   };
 
   return (
-    <header className="h-20 border-b border-forge-700 bg-forge-950 flex items-center justify-between px-8 sticky top-0 z-10">
+    <header className="h-20 border-b border-forge-700 bg-forge-950/80 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-50">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-lg bg-forge-accent flex items-center justify-center shadow-lg shadow-orange-500/20">
           <Sparkles className="w-6 h-6 text-white" />
