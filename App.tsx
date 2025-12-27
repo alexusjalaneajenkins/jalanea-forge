@@ -510,20 +510,49 @@ const ResearchPage = () => {
             </GlassCard>
 
             {state.researchMissionPrompt ? (
-               <GlassCard className="p-6">
-                 <div className="flex items-center justify-between mb-4">
-                   <h3 className="text-sm font-semibold text-purple-300 uppercase tracking-widest">Research Mission</h3>
-                   <button 
-                     onClick={() => exportToPDF('research-mission-content', 'Research_Mission.pdf')}
-                     className="text-xs text-purple-400 hover:text-white flex items-center gap-1 transition-colors"
-                   >
-                     <ArrowDownToLine className="w-3 h-3" /> Save PDF
-                   </button>
-                 </div>
-                 <div id="research-mission-content" className="text-sm text-slate-300 leading-relaxed max-h-40 overflow-y-auto custom-scrollbar bg-slate-950/30 p-4 rounded-lg border border-white/5">
-                    {state.researchMissionPrompt}
-                 </div>
-               </GlassCard>
+               <div className="grid grid-cols-1 gap-6">
+                 {/* Step 1: Context Information */}
+                 <GlassCard className="p-6">
+                   <div className="flex items-center justify-between mb-4">
+                     <div>
+                        <span className="text-[10px] font-bold text-purple-400 bg-purple-400/10 px-2 py-1 rounded border border-purple-400/20 mr-2">STEP 1</span>
+                        <h3 className="text-sm font-semibold text-white inline-block">Context Prompt</h3>
+                     </div>
+                     <button 
+                       onClick={() => navigator.clipboard.writeText(state.researchMissionPrompt || "")}
+                       className="text-xs text-purple-400 hover:text-white flex items-center gap-1 transition-colors"
+                     >
+                       <Copy className="w-3 h-3" /> Copy
+                     </button>
+                   </div>
+                   <p className="text-xs text-slate-400 mb-3">Paste this into NotebookLM as a source or chat input to provide context.</p>
+                   <div className="text-sm text-slate-300 leading-relaxed max-h-32 overflow-y-auto custom-scrollbar bg-slate-950/30 p-4 rounded-lg border border-white/5 font-mono text-xs">
+                      {state.researchMissionPrompt}
+                   </div>
+                 </GlassCard>
+
+                 {/* Step 2: Report Generation */}
+                 {state.reportGenerationPrompt && (
+                   <GlassCard className="p-6">
+                     <div className="flex items-center justify-between mb-4">
+                       <div>
+                          <span className="text-[10px] font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded border border-blue-400/20 mr-2">STEP 2</span>
+                          <h3 className="text-sm font-semibold text-white inline-block">Report Generation Prompt</h3>
+                       </div>
+                       <button 
+                         onClick={() => navigator.clipboard.writeText(state.reportGenerationPrompt || "")}
+                         className="text-xs text-blue-400 hover:text-white flex items-center gap-1 transition-colors"
+                       >
+                         <Copy className="w-3 h-3" /> Copy
+                       </button>
+                     </div>
+                     <p className="text-xs text-slate-400 mb-3">After adding sources, paste this into the chat to generate the comprehensive report.</p>
+                     <div className="text-sm text-slate-300 leading-relaxed max-h-32 overflow-y-auto custom-scrollbar bg-slate-950/30 p-4 rounded-lg border border-white/5 font-mono text-xs">
+                        {state.reportGenerationPrompt}
+                     </div>
+                   </GlassCard>
+                 )}
+               </div>
             ) : null}
           </div>
         </div>
