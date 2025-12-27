@@ -18,6 +18,7 @@ import {
   FileText,
   Brain,
   RefreshCw,
+  ExternalLink,
   Edit2,
   File as FileIcon,
   FolderOpen,
