@@ -428,7 +428,7 @@ const ResearchPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 flex-1 min-h-0">
           
           {/* Upload Area */}
-          <GlassCard className="flex flex-col p-8 transition-colors" hoverEffect={true}>
+          <GlassCard className="flex flex-col p-2 transition-colors" hoverEffect={true}>
              <div 
                className={`flex-1 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-8 transition-all duration-300
                  ${isDragging ? 'border-purple-500 bg-purple-500/10' : 'border-white/10 hover:border-purple-500/50 hover:bg-white/5'}`}
