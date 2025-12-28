@@ -993,27 +993,30 @@ const RealizationPage = () => {
 
             {/* GLOBAL HIRE CTA - Footer */}
             <div className="mt-12 pt-8 border-t border-white/10 pb-20">
-              <GlassCard className="p-8 md:p-10 border-orange-500/30 bg-gradient-to-br from-orange-500/10 to-amber-500/10 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              <div className="relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-orange-500/10 to-amber-500/10 group transition-all duration-300 hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/20">
 
-                {/* Background Glows */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/20 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2"></div>
+                {/* Full Card Hover Glow (Active on Group Hover) */}
+                <div className="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px]"></div>
 
-                <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                {/* Background Ambient Glows */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/20 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2 group-hover:bg-orange-500/30 transition-colors duration-500"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2 group-hover:bg-amber-500/20 transition-colors duration-500"></div>
+
+                {/* Content Container (Padding applied here so bg covers full card) */}
+                <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-orange-500 text-white uppercase tracking-widest shadow-lg shadow-orange-500/30">Premium</span>
-                      <span className="text-xs font-bold text-orange-300 uppercase tracking-widest">Done For You</span>
+                      <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-orange-500 text-white uppercase tracking-widest shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow">Premium</span>
+                      <span className="text-xs font-bold text-orange-300 uppercase tracking-widest group-hover:text-orange-200 transition-colors">Done For You</span>
                     </div>
-                    <h3 className="text-3xl font-bold text-white mb-3">Fast Track Your Launch</h3>
-                    <p className="text-slate-300 leading-relaxed mb-6 max-w-xl">
+                    <h3 className="text-3xl font-bold text-white mb-3 group-hover:drop-shadow-[0_2px_10px_rgba(249,115,22,0.3)] transition-all">Fast Track Your Launch</h3>
+                    <p className="text-slate-300 leading-relaxed mb-6 max-w-xl group-hover:text-white transition-colors">
                       Skip the DIY learning curve. Instead of building from scratch, let our expert team handle the technical heavy lifting so you can focus on scale.
                     </p>
-                    <ul className="text-sm text-slate-400 space-y-2 mb-2">
-                      <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500" /> Professional Implementation</li>
-                      <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500" /> Scalable Architecture</li>
-                      <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500" /> 14-Day Delivery Guarantee</li>
+                    <ul className="text-sm text-slate-400 space-y-2 mb-2 group-hover:text-slate-200 transition-colors">
+                      <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500 group-hover:text-orange-400" /> Professional Implementation</li>
+                      <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500 group-hover:text-orange-400" /> Scalable Architecture</li>
+                      <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500 group-hover:text-orange-400" /> 14-Day Delivery Guarantee</li>
                     </ul>
                   </div>
                   <div>
@@ -1027,7 +1030,7 @@ const RealizationPage = () => {
                     </a>
                   </div>
                 </div>
-              </GlassCard>
+              </div>
             </div>
           </div>
         )}
