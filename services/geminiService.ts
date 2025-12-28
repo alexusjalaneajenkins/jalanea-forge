@@ -301,12 +301,44 @@ export const refineBugReport = async (error: string, context: string): Promise<{
     }
   );
 
-  const text = (response.text || "{}").replace(/```json/g, '').replace(/```/g, '').trim();
+  let text = response.text || "{}";
+  text = text.replace(/```json/g, '').replace(/```/g, '').trim();
   try {
     return JSON.parse(text);
   } catch (e) {
-    return { subject: "Bug Report", body: `Error parsing AI response. Original error: ${error}` };
+    return { subject: "Error Report", body: error };
   }
+};
+
+export const refinePrd = async (currentPrd: string, instructions: string): Promise<string> => {
+  const ai = getClient();
+  const prompt = `
+      You are an expert Product Manager.
+      
+      CURRENT PRD:
+      ${currentPrd}
+
+      USER REFINEMENT INSTRUCTIONS:
+      ${instructions}
+
+      TASK:
+      Rewrite the PRD to incorporate the user's instructions.
+      Maintain the original structure/markdown format unless asked to change it.
+      Ensure the tone remains professional and the requirements are clear.
+      Return the FULL updated PRD.
+    `;
+
+  const response = await generateContentWithRetry(
+    ai,
+    'gemini-3-flash-preview',
+    prompt,
+    {
+      systemInstruction: "You are an AI Product Editor. Your goal is to refine the PRD exactly as requested while maintaining structural integrity.",
+      temperature: 0.7
+    }
+  );
+
+  return response.text || currentPrd;
 };
 
 export const generateDesignPrompts = async (prd: string, plan: string): Promise<{ stitch: string, opal: string }> => {

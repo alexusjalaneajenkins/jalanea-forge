@@ -12,6 +12,7 @@ interface ProjectContextType {
     state: ProjectState;
     addResearch: (file: File) => Promise<void>;
     updateIdea: (idea: string) => void;
+    updatePrd: (prd: string) => void;
     updateTitle: (title: string) => void;
     generateArtifact: (step: ProjectStep) => Promise<void>;
     generateResearchPrompt: () => Promise<void>;
@@ -200,6 +201,14 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setState(prev => ({ ...prev, ideaInput: idea }));
     };
 
+    const updatePrd = (prd: string) => {
+        setState(prev => {
+            const newState = { ...prev, prdOutput: prd };
+            saveCurrentProject(newState);
+            return newState;
+        });
+    };
+
     const updateTitle = (title: string) => {
         setState(prev => ({ ...prev, title }));
     };
@@ -297,7 +306,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
             const updated = current.includes(stepId)
                 ? current.filter(id => id !== stepId)
                 : [...current, stepId];
-            
+
             const newState = { ...prev, completedRoadmapSteps: updated };
             saveCurrentProject(newState);
             return newState;
@@ -309,6 +318,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
             state,
             addResearch,
             updateIdea,
+            updatePrd,
             updateTitle,
             generateArtifact,
             generateResearchPrompt,
