@@ -171,7 +171,8 @@ const ThemeToggle = () => {
 
 const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
   const { user, profile, signInWithGoogle, logOut, loading } = useAuth();
-  const { openProjectList, state, updateTitle, openSettings } = useProject();
+  const { openProjectList, state, updateTitle, openSettings, openPricing } = useProject();
+  const showUpgrade = profile && (profile.role === 'free' || !profile.role);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
 
@@ -236,6 +237,16 @@ const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
         </div>
       </div>
       <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
+        {showUpgrade && (
+          <button
+            onClick={openPricing}
+            className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white text-sm font-medium transition-all shadow-lg shadow-indigo-500/25"
+            title="Upgrade Plan"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Upgrade</span>
+          </button>
+        )}
         <button
           onClick={openSettings}
           className="p-2.5 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm"

@@ -293,3 +293,81 @@ export const getUsageStatsByUser = async (): Promise<
     totalGenerations: p.ai_generations_used,
   }));
 };
+
+// ============================================
+// STRIPE SUBSCRIPTION OPERATIONS
+// ============================================
+
+export const updateStripeCustomerId = async (
+  userId: string,
+  stripeCustomerId: string
+): Promise<boolean> => {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ stripe_customer_id: stripeCustomerId })
+    .eq('id', userId);
+
+  return !error;
+};
+
+export const updateSubscription = async (
+  userId: string,
+  subscriptionData: {
+    stripe_subscription_id: string | null;
+    current_period_end: string | null;
+    role: UserRole;
+    ai_generations_limit: number;
+  }
+): Promise<boolean> => {
+  const { error } = await supabase
+    .from('profiles')
+    .update(subscriptionData)
+    .eq('id', userId);
+
+  if (error) {
+    console.error('Error updating subscription:', error);
+    return false;
+  }
+  return true;
+};
+
+export const getProfileByStripeCustomerId = async (
+  stripeCustomerId: string
+): Promise<Profile | null> => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('stripe_customer_id', stripeCustomerId)
+    .single();
+
+  if (error) {
+    console.error('Error fetching profile by Stripe customer ID:', error);
+    return null;
+  }
+  return data;
+};
+
+export const resetMonthlyGenerations = async (userId: string): Promise<boolean> => {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ ai_generations_used: 0 })
+    .eq('id', userId);
+
+  return !error;
+};
+
+// Get subscription tier limits
+export const getTierLimits = (role: UserRole): { generations: number; projects: number } => {
+  switch (role) {
+    case 'owner':
+    case 'beta_tester':
+      return { generations: 999999, projects: 999999 };
+    case 'pro':
+      return { generations: 500, projects: 999999 };
+    case 'starter':
+      return { generations: 100, projects: 10 };
+    case 'free':
+    default:
+      return { generations: 25, projects: 3 };
+  }
+};

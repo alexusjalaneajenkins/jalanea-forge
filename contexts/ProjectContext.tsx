@@ -7,6 +7,7 @@ import { useAuth } from './AuthContext';
 import { SettingsModal } from '../components/SettingsModal';
 import { SupportModal } from '../components/SupportModal';
 import { ProjectListDialog } from '../components/ProjectListDialog';
+import PricingModal from '../components/PricingModal';
 
 interface ProjectContextType {
     state: ProjectState;
@@ -20,6 +21,7 @@ interface ProjectContextType {
     openProjectList: () => void;
     openSettings: () => void;
     openSupport: () => void;
+    openPricing: () => void;
     setCurrentStep: (step: ProjectStep) => void;
     revertToPrdVersion: (versionId: string) => void;
     currentProjectId?: string;
@@ -100,6 +102,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const [showProjectDialog, setShowProjectDialog] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
     const [showSupportModal, setShowSupportModal] = useState(false);
+    const [showPricingModal, setShowPricingModal] = useState(false);
     const [isLoadingProjects, setIsLoadingProjects] = useState(false);
 
     const { user } = useAuth();
@@ -520,6 +523,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
             openProjectList: () => setShowProjectDialog(true),
             openSettings: () => setShowSettings(true),
             openSupport: () => setShowSupportModal(true),
+            openPricing: () => setShowPricingModal(true),
             setCurrentStep,
             revertToPrdVersion,
             currentProjectId,
@@ -532,6 +536,10 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
             <SupportModal
                 isOpen={showSupportModal}
                 onClose={() => setShowSupportModal(false)}
+            />
+            <PricingModal
+                isOpen={showPricingModal}
+                onClose={() => setShowPricingModal(false)}
             />
             <ProjectListDialog
                 isOpen={showProjectDialog}
