@@ -77834,7 +77834,7 @@ function(t2) {
   }, t2.loadImageFile = t2.loadFile;
 }(E.API), function(e) {
   function n() {
-    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-DNqdQp64.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
+    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-B-U5veHB.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
       return Promise.reject(new Error("Could not load html2canvas: " + t2));
     }).then(function(t2) {
       return t2.default ? t2.default : t2;
@@ -78531,7 +78531,7 @@ function(t2) {
   var h2 = l2.getContext("2d");
   h2.fillStyle = "#fff", h2.fillRect(0, 0, l2.width, l2.height);
   var f2 = { ignoreMouse: true, ignoreAnimation: true, ignoreDimensions: true }, d2 = this;
-  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-BRcGtV1Y.js"), true ? [] : void 0)).catch(function(t3) {
+  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-CSUCtA58.js"), true ? [] : void 0)).catch(function(t3) {
     return Promise.reject(new Error("Could not load canvg: " + t3));
   }).then(function(t3) {
     return t3.default ? t3.default : t3;
@@ -98253,11 +98253,11 @@ const IdeaPage = () => {
         state.researchMissionPrompt && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-10 animate-fade-in-up delay-100 p-1", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xl font-bold text-white flex items-center gap-2 mb-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-1.5 bg-white/10 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(BookOpen, { className: "w-5 h-5 text-orange-400" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-1.5 bg-gray-100 dark:bg-white/10 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(BookOpen, { className: "w-5 h-5 text-orange-500 dark:text-orange-400" }) }),
                 "NotebookLM Workflow"
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-forge-muted max-w-lg leading-relaxed", children: "Use these specialized prompts to generate a comprehensive research report in Google NotebookLM." })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 dark:text-forge-muted max-w-lg leading-relaxed", children: "Use these specialized prompts to generate a comprehensive research report in Google NotebookLM." })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "a",
@@ -98274,13 +98274,13 @@ const IdeaPage = () => {
             )
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "flex flex-col relative overflow-hidden group border-white/5 bg-white/5 hover:bg-white/10 transition-colors", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "flex flex-col relative overflow-hidden group border-gray-200 dark:border-white/5 bg-white dark:bg-white/5 shadow-sm hover:shadow-md transition-all", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 left-0 w-1.5 h-full bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 flex flex-col h-full", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-start mb-4", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inline-block text-[10px] font-extrabold tracking-widest text-purple-300 bg-purple-500/20 px-2 py-1 rounded mb-2", children: "STEP 1: SOURCE" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-lg font-bold text-white", children: "Context Prompt" })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inline-block text-[10px] font-extrabold tracking-widest text-purple-600 dark:text-purple-300 bg-purple-100 dark:bg-purple-500/20 px-2 py-1 rounded mb-2", children: "STEP 1: SOURCE" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-lg font-bold text-gray-900 dark:text-white", children: "Context Prompt" })
                   ] }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     CopyButton,
@@ -98291,23 +98291,23 @@ const IdeaPage = () => {
                     }
                   )
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-300 mb-4 leading-relaxed", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-700 dark:text-slate-300 mb-4 leading-relaxed", children: [
                   "Create a new Notebook. ",
                   /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
                   "Click ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white font-semibold", children: "Add Source > Paste Text" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-900 dark:text-white font-semibold", children: "Add Source > Paste Text" }),
                   "."
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-black/40 p-4 rounded-xl border border-white/5 font-mono text-xs text-slate-300 overflow-y-auto custom-scrollbar min-h-[140px] shadow-inner", children: state.researchMissionPrompt })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-gray-100 dark:bg-black/40 p-4 rounded-xl border border-gray-200 dark:border-white/5 font-mono text-xs text-gray-900 dark:text-slate-300 overflow-y-auto custom-scrollbar min-h-[140px] shadow-inner", children: state.researchMissionPrompt })
               ] })
             ] }),
-            state.reportGenerationPrompt && /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "flex flex-col relative overflow-hidden group border-white/5 bg-white/5 hover:bg-white/10 transition-colors", children: [
+            state.reportGenerationPrompt && /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "flex flex-col relative overflow-hidden group border-gray-200 dark:border-white/5 bg-white dark:bg-white/5 shadow-sm hover:shadow-md transition-all", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 left-0 w-1.5 h-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 flex flex-col h-full", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-start mb-4", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inline-block text-[10px] font-extrabold tracking-widest text-blue-300 bg-blue-500/20 px-2 py-1 rounded mb-2", children: "STEP 2: CHAT" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-lg font-bold text-white", children: "Report Prompt" })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inline-block text-[10px] font-extrabold tracking-widest text-blue-600 dark:text-blue-300 bg-blue-100 dark:bg-blue-500/20 px-2 py-1 rounded mb-2", children: "STEP 2: CHAT" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-lg font-bold text-gray-900 dark:text-white", children: "Report Prompt" })
                   ] }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     CopyButton,
@@ -98318,11 +98318,11 @@ const IdeaPage = () => {
                     }
                   )
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-300 mb-4 leading-relaxed", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-700 dark:text-slate-300 mb-4 leading-relaxed", children: [
                   "Once sources are processed,",
                   /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
                   "paste this into the ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white font-semibold", children: "Chat Box" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-900 dark:text-white font-semibold", children: "Chat Box" }),
                   "."
                 ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-black/40 p-4 rounded-xl border border-white/5 font-mono text-xs text-slate-300 overflow-y-auto custom-scrollbar min-h-[140px] shadow-inner", children: state.reportGenerationPrompt })

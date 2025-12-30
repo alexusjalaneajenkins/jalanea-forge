@@ -1,4 +1,4 @@
-import { r as requireHtml2canvas, g as getDefaultExportFromCjs } from "./index-AFoIgs32.js";
+import { r as requireHtml2canvas, g as getDefaultExportFromCjs } from "./index-CK8xxK1A.js";
 function _mergeNamespaces(n, m) {
   for (var i = 0; i < m.length; i++) {
     const e = m[i];
