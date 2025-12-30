@@ -77834,7 +77834,7 @@ function(t2) {
   }, t2.loadImageFile = t2.loadFile;
 }(E.API), function(e) {
   function n() {
-    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-B6YqTnnx.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
+    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-CGQHOgkR.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
       return Promise.reject(new Error("Could not load html2canvas: " + t2));
     }).then(function(t2) {
       return t2.default ? t2.default : t2;
@@ -78531,7 +78531,7 @@ function(t2) {
   var h2 = l2.getContext("2d");
   h2.fillStyle = "#fff", h2.fillRect(0, 0, l2.width, l2.height);
   var f2 = { ignoreMouse: true, ignoreAnimation: true, ignoreDimensions: true }, d2 = this;
-  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-D74etFWq.js"), true ? [] : void 0)).catch(function(t3) {
+  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-D4RuBTRJ.js"), true ? [] : void 0)).catch(function(t3) {
     return Promise.reject(new Error("Could not load canvg: " + t3));
   }).then(function(t3) {
     return t3.default ? t3.default : t3;
@@ -98676,10 +98676,10 @@ const RealizationPage = () => {
   const progressPercent = totalSteps > 0 ? Math.round(completedCount / totalSteps * 100) : 0;
   const getBadge = (name2) => {
     const n = name2.toLowerCase();
-    if (n.includes("setup") || n.includes("init") || n.includes("config")) return { label: "Setup", color: "bg-slate-500/20 text-slate-300" };
-    if (n.includes("database") || n.includes("auth") || n.includes("backend") || n.includes("api")) return { label: "Backend", color: "bg-green-500/20 text-green-300" };
-    if (n.includes("ui") || n.includes("frontend") || n.includes("component") || n.includes("page")) return { label: "Frontend", color: "bg-blue-500/20 text-blue-300" };
-    return { label: "Task", color: "bg-slate-500/20 text-slate-300" };
+    if (n.includes("setup") || n.includes("init") || n.includes("config")) return { label: "Setup", color: "bg-slate-100 text-slate-700 dark:bg-slate-500/20 dark:text-slate-300" };
+    if (n.includes("database") || n.includes("auth") || n.includes("backend") || n.includes("api")) return { label: "Backend", color: "bg-emerald-100 text-emerald-800 dark:bg-green-500/20 dark:text-green-300" };
+    if (n.includes("ui") || n.includes("frontend") || n.includes("component") || n.includes("page")) return { label: "Frontend", color: "bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-300" };
+    return { label: "Task", color: "bg-slate-100 text-slate-700 dark:bg-slate-500/20 dark:text-slate-300" };
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(PageBackground, { glowColor: "blue", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto min-h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10 gap-8 pb-32 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-6", children: [
@@ -98788,7 +98788,7 @@ const RealizationPage = () => {
           ),
           isOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-6 pb-6 animate-in slide-in-from-top-4 duration-300", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4 pt-4 border-t border-white/10", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h4", { className: "text-sm font-bold text-blue-300 uppercase tracking-widest flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("h4", { className: "text-sm font-bold text-gray-500 dark:text-blue-300 uppercase tracking-widest flex items-center gap-2", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(CodeXml, { className: "w-4 h-4" }),
                 " Phase Tasks"
               ] }),
@@ -98849,19 +98849,19 @@ const RealizationPage = () => {
           ] })
         ] }, i2);
       }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-12 pt-8 border-t border-white/10 pb-20", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-orange-500/10 to-amber-500/10 group transition-all duration-300 hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/20", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-12 pt-8 border-t border-white/10 pb-20", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden rounded-2xl border border-gray-200 dark:border-orange-500/30 bg-white dark:bg-gradient-to-br dark:from-orange-500/10 dark:to-amber-500/10 group transition-all duration-300 hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/20", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px]" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 right-0 w-64 h-64 bg-orange-500/20 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2 group-hover:bg-orange-500/30 transition-colors duration-500" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-0 left-0 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2 group-hover:bg-amber-500/20 transition-colors duration-500" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 right-0 w-64 h-64 bg-orange-500/10 dark:bg-orange-500/20 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2 group-hover:bg-orange-500/30 transition-colors duration-500" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-0 left-0 w-64 h-64 bg-amber-500/5 dark:bg-amber-500/10 rounded-full blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2 group-hover:bg-amber-500/20 transition-colors duration-500" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-3", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 rounded-full text-[10px] font-bold bg-orange-500 text-white uppercase tracking-widest shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow", children: "Premium" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-orange-300 uppercase tracking-widest group-hover:text-orange-200 transition-colors", children: "Done For You" })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-3xl font-bold text-white mb-3 group-hover:drop-shadow-[0_2px_10px_rgba(249,115,22,0.3)] transition-all", children: "Fast Track Your Launch" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 leading-relaxed mb-6 max-w-xl group-hover:text-white transition-colors", children: "Skip the DIY learning curve. Instead of building from scratch, let our expert team handle the technical heavy lifting so you can focus on scale." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "text-sm text-slate-400 space-y-2 mb-2 group-hover:text-slate-200 transition-colors", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-3xl font-bold text-gray-900 dark:text-white mb-3 group-hover:drop-shadow-[0_2px_10px_rgba(249,115,22,0.3)] transition-all", children: "Fast Track Your Launch" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-600 dark:text-slate-300 leading-relaxed mb-6 max-w-xl group-hover:text-gray-900 dark:group-hover:text-white transition-colors", children: "Skip the DIY learning curve. Instead of building from scratch, let our expert team handle the technical heavy lifting so you can focus on scale." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "text-sm text-gray-600 dark:text-slate-400 space-y-2 mb-2 group-hover:text-gray-900 dark:group-hover:text-slate-200 transition-colors", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-orange-500 group-hover:text-orange-400" }),
                 " Professional Implementation"
