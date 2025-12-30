@@ -49,6 +49,9 @@ import { ProjectProvider, useProject } from './contexts/ProjectContext';
 import { PageBackground } from './components/PageBackground';
 import { GlassCard } from './components/GlassCard';
 import { LoadingState } from './components/LoadingState';
+import { OnboardingTour } from './components/OnboardingTour';
+import { Confetti, useConfetti } from './components/Confetti';
+import { HelpTooltip } from './components/HelpTooltip';
 import html2pdf from 'html2pdf.js';
 
 // --- Utils ---
@@ -287,6 +290,7 @@ const IdeaPage = () => {
   const { state, updateIdea, generateArtifact } = useProject();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const { showConfetti, triggerConfetti, handleConfettiComplete } = useConfetti();
 
   const handleRefine = async () => {
     if (!state.ideaInput.trim()) return;
@@ -377,7 +381,13 @@ const IdeaPage = () => {
         <div className="max-w-4xl mx-auto w-full h-full flex flex-col p-4 md:p-8">
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-bold text-forge-text mb-2">Product Vision</h2>
+              <h2 className="text-3xl font-bold text-forge-text mb-2 flex items-center gap-2">
+                Product Vision
+                <HelpTooltip
+                  content="Your refined product idea, transformed by AI into a clear vision statement with target users, value proposition, and key differentiators."
+                  title="Vision Statement"
+                />
+              </h2>
               <p className="text-forge-muted">Your crystallized idea.</p>
             </div>
             <button
@@ -410,6 +420,10 @@ const IdeaPage = () => {
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-2">
                     <div className="p-1.5 bg-gray-100 dark:bg-white/10 rounded-lg"><BookOpen className="w-5 h-5 text-orange-500 dark:text-orange-400" /></div>
                     NotebookLM Workflow
+                    <HelpTooltip
+                      content="Use Google NotebookLM to conduct deep research. Copy the Context Prompt as a source, then use the Report Prompt in the chat to generate a comprehensive research report."
+                      title="Research Integration"
+                    />
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-forge-muted max-w-lg leading-relaxed">
                     Use these specialized prompts to generate a comprehensive research report in Google NotebookLM.
@@ -492,7 +506,10 @@ const IdeaPage = () => {
 
           <div className="mt-6 flex justify-end">
             <button
-              onClick={() => navigate('/research')}
+              onClick={() => {
+                triggerConfetti();
+                setTimeout(() => navigate('/research'), 300);
+              }}
               className="bg-forge-text text-forge-950 hover:bg-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center gap-2 group"
             >
               Continue to Research
@@ -501,6 +518,9 @@ const IdeaPage = () => {
           </div>
         </div>
       )}
+
+      {/* Confetti celebration */}
+      <Confetti active={showConfetti} onComplete={handleConfettiComplete} particleCount={60} />
     </div>
   );
 };
@@ -510,6 +530,7 @@ const ResearchPage = () => {
   const { state, addResearch, generateResearchPrompt } = useProject();
   const [isDragging, setIsDragging] = useState(false);
   const navigate = useNavigate();
+  const { showConfetti, triggerConfetti, handleConfettiComplete } = useConfetti();
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -610,7 +631,10 @@ const ResearchPage = () => {
 
         <div className="flex justify-end pt-6 border-t border-white/10">
           <button
-            onClick={() => navigate('/prd')}
+            onClick={() => {
+              triggerConfetti();
+              setTimeout(() => navigate('/prd'), 300);
+            }}
             className="group relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 font-bold text-white shadow-lg shadow-purple-500/25 transition-all hover:scale-[1.02] hover:shadow-purple-500/40"
           >
             <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 origin-left" />
@@ -619,6 +643,9 @@ const ResearchPage = () => {
             </span>
           </button>
         </div>
+
+        {/* Confetti celebration */}
+        <Confetti active={showConfetti} onComplete={handleConfettiComplete} particleCount={60} />
       </div>
     </PageBackground>
   );
@@ -633,6 +660,7 @@ const PrdPage = () => {
   const [refineInstruction, setRefineInstruction] = useState("");
   const [isRefining, setIsRefining] = useState(false);
   const navigate = useNavigate();
+  const { showConfetti, triggerConfetti, handleConfettiComplete } = useConfetti();
 
   // Sync state to local edit buffer when entering edit mode or when PRD changes
   useEffect(() => {
@@ -720,7 +748,14 @@ const PrdPage = () => {
         {/* Header */}
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 no-print">
           <div>
-            <h2 className="text-4xl font-bold text-forge-text mb-2 tracking-tight">Product Requirements</h2>
+            <h2 className="text-4xl font-bold text-forge-text mb-2 tracking-tight flex items-center gap-3">
+              Product Requirements
+              <HelpTooltip
+                content="A comprehensive document that defines your product's features, user personas, success metrics, and technical requirements. This is your blueprint for development."
+                title="PRD Overview"
+                size="md"
+              />
+            </h2>
             <p className="text-gray-600 dark:text-forge-muted text-lg">Synthesize your Idea and Research into a structured PRD.</p>
           </div>
           <div className="flex gap-3">
@@ -859,7 +894,10 @@ const PrdPage = () => {
               {state.prdOutput && !isEditing && (
                 <div className="p-4 border-t border-white/10 bg-white/5 flex justify-end no-print">
                   <button
-                    onClick={() => navigate('/realization')}
+                    onClick={() => {
+                      triggerConfetti();
+                      setTimeout(() => navigate('/realization'), 300);
+                    }}
                     className="flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-slate-900 font-bold hover:bg-slate-200 transition-colors"
                   >
                     Proceed to Realization <ChevronRight className="w-4 h-4" />
@@ -869,6 +907,9 @@ const PrdPage = () => {
             </GlassCard>
           )}
         </div>
+
+        {/* Confetti celebration */}
+        <Confetti active={showConfetti} onComplete={handleConfettiComplete} particleCount={60} />
       </div>
     </PageBackground>
   );
@@ -915,7 +956,14 @@ const RealizationPage = () => {
         <div className="flex flex-col gap-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <h2 className="text-4xl font-bold text-forge-text mb-2 tracking-tight">Realization Engine</h2>
+              <h2 className="text-4xl font-bold text-forge-text mb-2 tracking-tight flex items-center gap-3">
+                Realization Engine
+                <HelpTooltip
+                  content="Your implementation roadmap broken into phases and tasks. Each task includes AI prompts you can copy directly into Google AI Studio or your preferred coding assistant."
+                  title="Implementation Guide"
+                  size="md"
+                />
+              </h2>
               <p className="text-forge-muted text-lg">Execute your plan: Task by task.</p>
             </div>
 
@@ -1266,7 +1314,15 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-forge-900 text-forge-text selection:bg-orange-100 selection:text-orange-900">
+      {/* Skip link for keyboard/screen reader users */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       <Header onMenuToggle={() => setMobileMenuOpen(!mobileMenuOpen)} />
+
+      {/* Onboarding Tour for first-time users */}
+      <OnboardingTour />
 
       {/* Mobile Sidebar Overlay */}
       <div
@@ -1416,7 +1472,7 @@ const Layout = () => {
           </div>
         </aside>
 
-        <main className="flex-1 overflow-auto bg-forge-900 relative">
+        <main id="main-content" className="flex-1 overflow-auto bg-forge-900 relative" role="main" aria-label="Main content">
           <div className="h-full">
             <Routes>
               <Route path="/" element={<IdeaPage />} />
