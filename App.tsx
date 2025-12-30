@@ -376,15 +376,15 @@ const IdeaPage = () => {
             </button>
           </div>
 
-          <div className="flex-1 flex flex-col min-h-0 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden animate-fade-in-up">
-            <div className="p-4 border-b border-gray-100 bg-slate-50/80 flex items-center justify-between backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-slate-700 font-semibold">
+          <div className="w-full flex-1 min-h-0 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden flex flex-col mb-8 transition-colors">
+            <div className="p-4 border-b border-gray-100 dark:border-gray-700 bg-slate-50/80 dark:bg-slate-800/80 flex items-center justify-between backdrop-blur-sm transition-colors">
+              <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200 font-semibold transition-colors">
                 <Sparkles className="w-4 h-4 text-orange-500" />
                 Generated Vision Statement
               </div>
               <CopyButton text={state.synthesizedIdea || ""} />
             </div>
-            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
+            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white dark:bg-slate-900 transition-colors">
               <MarkdownRenderer content={state.synthesizedIdea} variant="paper" />
             </div>
           </div>
