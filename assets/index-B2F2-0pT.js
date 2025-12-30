@@ -77834,7 +77834,7 @@ function(t2) {
   }, t2.loadImageFile = t2.loadFile;
 }(E.API), function(e) {
   function n() {
-    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-Cx8vz0Nv.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
+    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-Db1bvoNN.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
       return Promise.reject(new Error("Could not load html2canvas: " + t2));
     }).then(function(t2) {
       return t2.default ? t2.default : t2;
@@ -78531,7 +78531,7 @@ function(t2) {
   var h2 = l2.getContext("2d");
   h2.fillStyle = "#fff", h2.fillRect(0, 0, l2.width, l2.height);
   var f2 = { ignoreMouse: true, ignoreAnimation: true, ignoreDimensions: true }, d2 = this;
-  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-Dxcfe1Ev.js"), true ? [] : void 0)).catch(function(t3) {
+  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-CFB7WQ6F.js"), true ? [] : void 0)).catch(function(t3) {
     return Promise.reject(new Error("Could not load canvg: " + t3));
   }).then(function(t3) {
     return t3.default ? t3.default : t3;
@@ -98721,9 +98721,9 @@ const RealizationPage = () => {
           )
         ] })
       ] }),
-      state.roadmapOutput && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-900/50 p-4 rounded-xl border border-white/10 flex items-center gap-4", children: [
+      state.roadmapOutput && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/10 flex items-center gap-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs font-bold text-slate-900 dark:text-slate-400 mb-2 uppercase tracking-wide", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Project Velocity" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: progressPercent === 100 ? "text-green-400" : "text-blue-400", children: [
               progressPercent,
@@ -98762,7 +98762,7 @@ const RealizationPage = () => {
       roadmapPhases.map((phase, i2) => {
         var _a2, _b2;
         const isOpen = expandedPhase === i2;
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `rounded-xl border transition-all duration-300 overflow-hidden ${isOpen ? "bg-white/5 border-blue-500/30 ring-1 ring-blue-500/20" : "bg-transparent border-white/10 hover:border-white/20"}`, children: [
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `rounded-xl border transition-all duration-300 overflow-hidden ${isOpen ? "bg-white dark:bg-white/5 border-blue-500/30 ring-1 ring-blue-500/20" : "bg-transparent border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20"}`, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
@@ -98772,7 +98772,7 @@ const RealizationPage = () => {
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `p-3 rounded-lg flex items-center justify-center font-bold text-lg w-12 h-12 transition-colors ${isOpen ? "bg-blue-600 text-white" : "bg-slate-800 text-slate-400"}`, children: i2 + 1 }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: `text-xl font-bold transition-colors ${isOpen ? "text-white" : "text-slate-300"}`, children: phase.phaseName || phase.title }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: `text-xl font-bold transition-colors ${isOpen ? "text-gray-900 dark:text-white" : "text-gray-600 dark:text-slate-300"}`, children: phase.phaseName || phase.title }),
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-500", children: [
                       (_a2 = phase.description) == null ? void 0 : _a2.substring(0, 60),
                       "..."
@@ -98801,19 +98801,19 @@ const RealizationPage = () => {
               const stepId = `${i2}-${j2}`;
               const isComplete = (state.completedRoadmapSteps || []).includes(stepId);
               const badge = getBadge(step.stepName);
-              return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `group relative p-5 rounded-xl border transition-all duration-300 ${isComplete ? "bg-green-900/10 border-green-500/30 opacity-75" : "bg-black/40 border-white/10 hover:border-blue-500/40"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-4", children: [
+              return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `group relative p-5 rounded-xl border transition-all duration-300 ${isComplete ? "bg-green-50 dark:bg-green-900/10 border-green-500/30 opacity-75" : "bg-white dark:bg-black/40 border-slate-200 dark:border-white/10 hover:border-blue-500/40"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-4", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "button",
                   {
                     onClick: () => toggleStepCompletion(stepId),
-                    className: `mt-1 w-6 h-6 rounded-md border flex items-center justify-center transition-all ${isComplete ? "bg-green-500 border-green-500 text-white" : "bg-slate-900 border-slate-600 hover:border-blue-400 text-transparent"}`,
+                    className: `mt-1 w-6 h-6 rounded-md border flex items-center justify-center transition-all ${isComplete ? "bg-green-500 border-green-500 text-white" : "bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 hover:border-blue-400 text-transparent"}`,
                     children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" })
                   }
                 ),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-1", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${badge.color}`, children: badge.label }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h5", { className: `font-bold text-lg ${isComplete ? "text-green-200 line-through" : "text-white"}`, children: step.stepName })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("h5", { className: `font-bold text-lg ${isComplete ? "text-green-600 dark:text-green-200 line-through" : "text-gray-900 dark:text-white"}`, children: step.stepName })
                   ] }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("details", { className: "group/details", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("summary", { className: "cursor-pointer list-none text-xs font-mono text-slate-400 hover:text-blue-300 transition-colors flex items-center gap-2 mt-2", children: [
