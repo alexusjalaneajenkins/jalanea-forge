@@ -699,7 +699,7 @@ const PrdPage = () => {
         {/* Header */}
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 no-print">
           <div>
-            <h2 className="text-4xl font-bold text-white mb-2 tracking-tight">Product Requirements</h2>
+            <h2 className="text-4xl font-bold text-forge-text mb-2 tracking-tight">Product Requirements</h2>
             <p className="text-forge-muted text-lg">Synthesize your Idea and Research into a structured PRD.</p>
           </div>
           <div className="flex gap-3">
@@ -785,7 +785,7 @@ const PrdPage = () => {
               </div>
 
               {/* Content / Editor */}
-              <div className="flex-1 overflow-y-auto p-0 md:p-0 custom-scrollbar bg-slate-950/20 print:p-0 print:bg-white print:overflow-visible relative">
+              <div className="flex-1 overflow-y-auto p-0 md:p-0 custom-scrollbar bg-slate-50 dark:bg-slate-950/20 print:p-0 print:bg-white print:overflow-visible relative">
                 {isEditing ? (
                   <textarea
                     value={editContent}
@@ -818,12 +818,12 @@ const PrdPage = () => {
                           )}
                         </>
                       ) : (
-                        <div className="h-full flex flex-col items-center justify-center text-slate-500 py-20">
+                        <div className="h-full flex flex-col items-center justify-center text-forge-muted py-20">
                           <div className="relative mb-6">
                             <div className="absolute inset-0 bg-orange-500/20 blur-xl rounded-full"></div>
                             <Brain className="relative z-10 w-20 h-20 text-orange-400" />
                           </div>
-                          <h3 className="text-2xl font-bold text-white mb-2">Ready to Architect</h3>
+                          <h3 className="text-2xl font-bold text-forge-text mb-2">Ready to Architect</h3>
                           <p className="text-center max-w-md leading-relaxed">
                             Click Generate to transform your vision into a professional requirements document.
                           </p>
