@@ -650,7 +650,7 @@ const PrdPage = () => {
 
   return (
     <PageBackground glowColor="orange">
-      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8">
+      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10 bg-slate-50 dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8">
 
         {/* Refine Modal */}
         {showRefineModal && (
@@ -700,20 +700,20 @@ const PrdPage = () => {
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 no-print">
           <div>
             <h2 className="text-4xl font-bold text-forge-text mb-2 tracking-tight">Product Requirements</h2>
-            <p className="text-forge-muted text-lg">Synthesize your Idea and Research into a structured PRD.</p>
+            <p className="text-gray-600 dark:text-forge-muted text-lg">Synthesize your Idea and Research into a structured PRD.</p>
           </div>
           <div className="flex gap-3">
             {state.prdOutput && (
               <>
                 <button
                   onClick={() => setShowRefineModal(true)}
-                  className="bg-forge-800 hover:bg-forge-700 text-orange-200 border border-orange-500/20 px-4 py-3 rounded-xl font-bold transition-all flex items-center gap-2"
+                  className="bg-white hover:bg-orange-50 dark:bg-forge-800 dark:hover:bg-forge-700 text-orange-600 dark:text-orange-200 border-2 border-orange-200 dark:border-orange-500/20 px-4 py-3 rounded-xl font-bold transition-all flex items-center gap-2"
                 >
-                  <Sparkles className="w-4 h-4 text-orange-400" /> Refine
+                  <Sparkles className="w-4 h-4 text-orange-500 dark:text-orange-400" /> Refine
                 </button>
                 <button
                   onClick={() => setIsEditing(!isEditing)}
-                  className={`px-4 py-3 rounded-xl font-bold transition-all flex items-center gap-2 border ${isEditing ? 'bg-orange-500 text-white border-orange-400' : 'bg-forge-800 text-forge-muted border-forge-700 hover:text-white'}`}
+                  className={`px-4 py-3 rounded-xl font-bold transition-all flex items-center gap-2 border ${isEditing ? 'bg-orange-500 text-white border-orange-400' : 'bg-gray-100 hover:bg-gray-200 text-slate-700 border-gray-200 dark:bg-forge-800 dark:text-forge-muted dark:border-forge-700 dark:hover:text-white'}`}
                 >
                   <Edit2 className="w-4 h-4" /> {isEditing ? 'Done Editing' : 'Edit Manually'}
                 </button>
