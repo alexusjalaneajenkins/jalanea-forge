@@ -1104,7 +1104,7 @@ const RealizationPage = () => {
 
             {/* GLOBAL HIRE CTA - Footer */}
             <div className="mt-12 pt-8 border-t border-white/10 pb-20">
-              <div className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-orange-500/30 bg-white dark:bg-gradient-to-br dark:from-orange-500/10 dark:to-amber-500/10 group transition-all duration-300 hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/20">
+              <div className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-orange-400/50 bg-white dark:bg-slate-900 group transition-all duration-300 hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/20">
 
                 {/* Full Card Hover Glow (Active on Group Hover) */}
                 <div className="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px]"></div>
