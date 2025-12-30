@@ -77834,7 +77834,7 @@ function(t2) {
   }, t2.loadImageFile = t2.loadFile;
 }(E.API), function(e) {
   function n() {
-    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-B-U5veHB.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
+    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-B8ClOsZL.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
       return Promise.reject(new Error("Could not load html2canvas: " + t2));
     }).then(function(t2) {
       return t2.default ? t2.default : t2;
@@ -78531,7 +78531,7 @@ function(t2) {
   var h2 = l2.getContext("2d");
   h2.fillStyle = "#fff", h2.fillRect(0, 0, l2.width, l2.height);
   var f2 = { ignoreMouse: true, ignoreAnimation: true, ignoreDimensions: true }, d2 = this;
-  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-CSUCtA58.js"), true ? [] : void 0)).catch(function(t3) {
+  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-BWytnPoV.js"), true ? [] : void 0)).catch(function(t3) {
     return Promise.reject(new Error("Could not load canvg: " + t3));
   }).then(function(t3) {
     return t3.default ? t3.default : t3;
@@ -98325,7 +98325,7 @@ const IdeaPage = () => {
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-900 dark:text-white font-semibold", children: "Chat Box" }),
                   "."
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-black/40 p-4 rounded-xl border border-white/5 font-mono text-xs text-slate-300 overflow-y-auto custom-scrollbar min-h-[140px] shadow-inner", children: state.reportGenerationPrompt })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 bg-gray-100 dark:bg-black/40 p-4 rounded-xl border border-gray-200 dark:border-white/5 font-mono text-xs text-gray-900 dark:text-slate-300 overflow-y-auto custom-scrollbar min-h-[140px] shadow-inner", children: state.reportGenerationPrompt })
               ] })
             ] })
           ] })
