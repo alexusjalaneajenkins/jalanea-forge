@@ -768,15 +768,15 @@ const PrdPage = () => {
                             }, 500);
                           }}
                           disabled={isExporting}
-                          className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-slate-900 border border-white/10 text-slate-300 hover:text-white hover:border-orange-500/50 transition-colors disabled:opacity-50"
+                          className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-slate-300 hover:bg-gray-50 hover:text-gray-900 dark:hover:text-white dark:hover:border-orange-500/50 transition-colors disabled:opacity-50"
                           title="Save as PDF"
                         >
-                          {isExporting ? <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <ArrowDownToLine className="w-3.5 h-3.5" />}
+                          {isExporting ? <div className="w-3.5 h-3.5 border-2 border-gray-400 dark:border-white/30 border-t-gray-700 dark:border-t-white rounded-full animate-spin"></div> : <ArrowDownToLine className="w-3.5 h-3.5" />}
                           {isExporting ? 'Exporting...' : 'Export PDF'}
                         </button>
                         <CopyButton
                           text={state.prdOutput}
-                          className="bg-slate-900 border-white/10"
+                          className="bg-white dark:bg-slate-900 border-gray-300 dark:border-white/10 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-transparent"
                           title="Copy to Clipboard"
                         />
                       </>
