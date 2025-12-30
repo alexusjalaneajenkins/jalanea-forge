@@ -305,7 +305,7 @@ const IdeaPage = () => {
             <div className="inline-flex items-center justify-center p-3 mb-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
               <Sparkles className="w-8 h-8 text-orange-400" />
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-100 to-orange-200 tracking-tight leading-tight drop-shadow-sm">
+            <h1 className="text-5xl md:text-6xl font-bold text-forge-text bg-none dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-orange-100 dark:to-orange-200 tracking-tight leading-tight drop-shadow-sm">
               Vibe Design with <br />
               <span className="text-orange-400">Real Product Vision</span>
             </h1>
