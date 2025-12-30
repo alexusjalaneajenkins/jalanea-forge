@@ -7,28 +7,33 @@ import { supabase } from './lib/supabase';
 // Handle Supabase OAuth callback BEFORE React Router initializes
 // This is needed because HashRouter (#/) conflicts with Supabase's hash-based auth tokens
 const hash = window.location.hash;
-if (hash && (hash.includes('access_token') || hash.includes('error_description'))) {
-  // Extract the auth portion from the hash (everything after #)
-  const hashParams = hash.substring(1);
 
-  // If using HashRouter, the auth tokens might be after the route
-  // e.g., #/some-route#access_token=xxx or #access_token=xxx
-  const authPart = hashParams.includes('access_token')
-    ? hashParams.substring(hashParams.indexOf('access_token'))
-    : hashParams;
+if (hash && (hash.includes('access_token') || hash.includes('refresh_token'))) {
+  console.log('OAuth callback detected in hash:', hash);
 
-  console.log('OAuth callback detected, processing auth tokens...');
+  // Parse the hash to extract tokens
+  // The hash format is: #access_token=xxx&refresh_token=yyy&...
+  const hashParams = new URLSearchParams(hash.substring(1));
+  const accessToken = hashParams.get('access_token');
+  const refreshToken = hashParams.get('refresh_token');
 
-  // Let Supabase process the tokens
-  supabase.auth.getSession().then(({ data, error }) => {
-    if (error) {
-      console.error('Error processing OAuth callback:', error);
-    } else if (data.session) {
-      console.log('OAuth session established successfully');
-      // Clean up the URL by removing the auth tokens
-      window.history.replaceState(null, '', window.location.pathname + '#/');
-    }
-  });
+  console.log('Tokens found:', { accessToken: !!accessToken, refreshToken: !!refreshToken });
+
+  if (accessToken) {
+    // Set the session using the tokens from the URL
+    supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken || '',
+    }).then(({ data, error }) => {
+      if (error) {
+        console.error('Error setting auth session:', error);
+      } else {
+        console.log('Auth session established:', data.session?.user?.email);
+        // Clean up the URL hash after processing
+        window.history.replaceState(null, '', window.location.pathname + '#/');
+      }
+    });
+  }
 }
 
 const rootElement = document.getElementById('root');
