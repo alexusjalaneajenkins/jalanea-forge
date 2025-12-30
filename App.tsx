@@ -526,8 +526,8 @@ const ResearchPage = () => {
                 if (e.dataTransfer.files[0]) await addResearch(e.dataTransfer.files[0]);
               }}
             >
-              <div className="w-20 h-20 rounded-full bg-purple-500/20 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
-                <Upload className="w-8 h-8 text-purple-400" />
+              <div className="w-20 h-20 rounded-full bg-purple-500/10 dark:bg-purple-500/20 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(168,85,247,0.15)] dark:shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+                <Upload className="w-8 h-8 text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="text-xl font-medium text-forge-text mb-2">Upload Knowledge</h3>
               <p className="text-forge-muted text-sm text-center mb-8 max-w-xs leading-relaxed">
@@ -556,12 +556,12 @@ const ResearchPage = () => {
 
             <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2">
               {state.research.length === 0 ? (
-                <div className="h-full min-h-[120px] flex flex-col items-center justify-center text-slate-400 text-sm border-2 border-dashed border-white/10 rounded-xl bg-white/5">
-                  <div className="mb-2 p-2 rounded-full bg-white/5">
-                    <BookOpen className="w-4 h-4 text-slate-500" />
+                <div className="h-full min-h-[120px] flex flex-col items-center justify-center text-forge-muted text-sm border-2 border-dashed border-slate-200 dark:border-white/10 rounded-xl bg-slate-50 dark:bg-white/5">
+                  <div className="mb-2 p-2 rounded-full bg-slate-200 dark:bg-white/5">
+                    <BookOpen className="w-4 h-4 text-forge-muted" />
                   </div>
-                  <p className="font-medium">No sources yet</p>
-                  <p className="text-xs text-slate-500 mt-0.5">Using base knowledge only</p>
+                  <p className="font-medium text-forge-text">No sources yet</p>
+                  <p className="text-xs text-forge-muted mt-0.5">Using base knowledge only</p>
                 </div>
               ) : (
                 state.research.map((doc) => (
