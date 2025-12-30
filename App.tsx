@@ -317,7 +317,7 @@ const IdeaPage = () => {
           <div className="w-full max-w-2xl backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-2 shadow-2xl ring-1 ring-white/5 group focus-within:ring-orange-500/50 focus-within:bg-white/10 transition-all duration-300">
             <div className="relative">
               <textarea
-                className="w-full bg-transparent p-6 text-xl text-white resize-none focus:outline-none placeholder-forge-500 leading-relaxed min-h-[120px] scrollbar-hide"
+                className="w-full bg-transparent p-6 text-xl text-forge-text resize-none focus:outline-none placeholder-forge-500 dark:placeholder-forge-500 light:placeholder-slate-400 leading-relaxed min-h-[120px] scrollbar-hide"
                 placeholder="Describe your dream product..."
                 value={state.ideaInput}
                 onChange={(e) => updateIdea(e.target.value)}
@@ -352,7 +352,7 @@ const IdeaPage = () => {
               <button
                 key={i}
                 onClick={() => updateIdea(text)}
-                className="px-4 py-1.5 text-xs font-medium text-forge-300 bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 rounded-full transition-all hover:text-white"
+                className="px-4 py-1.5 text-xs font-medium text-forge-muted hover:text-forge-text dark:text-forge-300 dark:hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 rounded-full transition-all"
               >
                 {text}
               </button>
