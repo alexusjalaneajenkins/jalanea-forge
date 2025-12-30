@@ -1,7 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-const FROM_EMAIL = 'Jalanea Forge <onboarding@resend.dev>'; // Change to your verified domain
+const FROM_EMAIL = 'Jalanea Forge <forge@jalanea.works>';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
