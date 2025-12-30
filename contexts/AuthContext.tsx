@@ -94,14 +94,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signInWithGoogle = async () => {
+    console.log('signInWithGoogle called');
     setError(null);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      // Build redirect URL with base path for GitHub Pages
+      const redirectUrl = `${window.location.origin}/jalanea-forge/`;
+      console.log('Redirect URL:', redirectUrl);
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: redirectUrl,
         },
       });
+
+      console.log('OAuth response:', { data, error });
+
       if (error) throw error;
     } catch (error: any) {
       console.error('Error signing in with Google:', error);
