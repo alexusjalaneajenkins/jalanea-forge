@@ -1,63 +1,75 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-const FROM_EMAIL = 'Jalanea Forge <forge@jalanea.works>';
+const FROM_EMAIL = 'Alexus from Jalanea Forge <forge@jalanea.works>';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Email templates
+// Simple, personal email style
+const baseStyle = `
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.8;
+    color: #374151;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  a { color: #6366f1; }
+  .link-button {
+    display: inline-block;
+    background: #6366f1;
+    color: white !important;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 8px 4px 8px 0;
+  }
+  .signature {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+  }
+`;
+
+// Email templates - personal, founder-style
 const templates = {
   welcome: (name: string) => ({
-    subject: 'Welcome to Jalanea Forge!',
+    subject: 'Welcome to Jalanea Forge',
     html: `
       <!DOCTYPE html>
       <html>
-      <head>
-        <style>
-          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
-          .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-          .header { text-align: center; margin-bottom: 40px; }
-          .logo { font-size: 28px; font-weight: bold; color: #f97316; }
-          .content { background: #f9fafb; border-radius: 12px; padding: 32px; margin-bottom: 32px; }
-          .button { display: inline-block; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; }
-          .footer { text-align: center; color: #6b7280; font-size: 14px; }
-          .features { margin: 24px 0; }
-          .feature { padding: 12px 0; border-bottom: 1px solid #e5e7eb; }
-          .feature:last-child { border-bottom: none; }
-        </style>
-      </head>
+      <head><style>${baseStyle}</style></head>
       <body>
-        <div class="container">
-          <div class="header">
-            <div class="logo">JALANEA FORGE</div>
-            <p style="color: #6b7280; margin-top: 8px;">AI Product Designer</p>
-          </div>
+        <p>Hey ${name},</p>
 
-          <div class="content">
-            <h1 style="margin-top: 0;">Welcome, ${name}!</h1>
-            <p>You've just unlocked the power of AI-driven product design. Jalanea Forge helps you go from idea to actionable PRD in minutes.</p>
+        <p>I'm Alexus — the creator of Jalanea Forge.</p>
 
-            <div class="features">
-              <div class="feature"><strong>Step 1: Idea</strong> - Describe your product vision</div>
-              <div class="feature"><strong>Step 2: Research</strong> - Upload market research & insights</div>
-              <div class="feature"><strong>Step 3: PRD</strong> - Generate a comprehensive product document</div>
-              <div class="feature"><strong>Step 4: Roadmap</strong> - Get actionable development tasks</div>
-            </div>
+        <p>I built Jalanea Forge because I believe everyone has great ideas, but turning those ideas into something real — a product, a business, a solution — can feel overwhelming. That's where we come in.</p>
 
-            <p>You have <strong>25 free AI generations</strong> to get started. Ready to build something amazing?</p>
+        <p>Jalanea Forge uses AI to help you go from a spark of an idea to a concrete plan you can actually execute. No more staring at blank pages or wondering "where do I even start?"</p>
 
-            <p style="text-align: center; margin-top: 32px;">
-              <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="button">Start Creating</a>
-            </p>
-          </div>
+        <p><strong>Here's how to get started:</strong></p>
 
-          <div class="footer">
-            <p>Questions? Reply to this email - we're here to help!</p>
-            <p>&copy; 2024 Jalanea Forge. All rights reserved.</p>
-          </div>
+        <p>
+          <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="link-button">Describe your idea</a>
+          <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="link-button">Generate your PRD</a>
+          <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="link-button">Get your roadmap</a>
+        </p>
+
+        <p>You've got <strong>25 free AI generations</strong> to explore. That's enough to fully develop a few ideas and see what's possible.</p>
+
+        <p><strong>P.S.:</strong> What idea are you working on? What brought you here?</p>
+
+        <p>Hit "Reply" and let me know. I read every email.</p>
+
+        <div class="signature">
+          <p>Cheers,<br><strong>Alexus</strong><br>Founder, Jalanea Forge</p>
         </div>
       </body>
       </html>
@@ -65,50 +77,38 @@ const templates = {
   }),
 
   subscriptionConfirmed: (name: string, plan: string, generations: number) => ({
-    subject: `You're now on ${plan}!`,
+    subject: `You're in — welcome to ${plan}`,
     html: `
       <!DOCTYPE html>
       <html>
-      <head>
-        <style>
-          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
-          .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-          .header { text-align: center; margin-bottom: 40px; }
-          .logo { font-size: 28px; font-weight: bold; color: #f97316; }
-          .content { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); border-radius: 12px; padding: 32px; margin-bottom: 32px; color: white; }
-          .button { display: inline-block; background: white; color: #6366f1; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; }
-          .footer { text-align: center; color: #6b7280; font-size: 14px; }
-          .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-weight: 600; margin-bottom: 16px; }
-        </style>
-      </head>
+      <head><style>${baseStyle}</style></head>
       <body>
-        <div class="container">
-          <div class="header">
-            <div class="logo">JALANEA FORGE</div>
-          </div>
+        <p>Hey ${name},</p>
 
-          <div class="content">
-            <div class="badge">${plan.toUpperCase()} PLAN</div>
-            <h1 style="margin-top: 0;">Welcome to ${plan}, ${name}!</h1>
-            <p>Your subscription is now active. Here's what you've unlocked:</p>
+        <p>Thank you. Seriously.</p>
 
-            <ul style="margin: 24px 0;">
-              <li><strong>${generations} AI generations</strong> per month</li>
-              <li>${plan === 'Pro' ? 'Unlimited' : '10'} projects</li>
-              <li>Export PRD to PDF</li>
-              <li>Version history</li>
-              ${plan === 'Pro' ? '<li>Priority support</li><li>Early access to new features</li>' : ''}
-            </ul>
+        <p>By upgrading to ${plan}, you're not just getting more AI generations — you're investing in your ideas. And that means a lot to me.</p>
 
-            <p style="text-align: center; margin-top: 32px;">
-              <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="button">Continue Building</a>
-            </p>
-          </div>
+        <p><strong>Here's what you now have access to:</strong></p>
 
-          <div class="footer">
-            <p>Manage your subscription anytime from your account settings.</p>
-            <p>&copy; 2024 Jalanea Forge. All rights reserved.</p>
-          </div>
+        <ul>
+          <li><strong>${generations} AI generations</strong> per month</li>
+          <li>${plan === 'Pro' ? 'Unlimited' : '10'} projects</li>
+          <li>Export your PRDs to PDF</li>
+          <li>Full version history</li>
+          ${plan === 'Pro' ? '<li>Priority support (yes, I actually respond)</li>' : ''}
+        </ul>
+
+        <p>Now the real question: <strong>What are you going to build?</strong></p>
+
+        <p>
+          <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="link-button">Start a new project</a>
+        </p>
+
+        <p>If you ever need help or have feedback, just reply to this email. I'm here.</p>
+
+        <div class="signature">
+          <p>Let's build something great,<br><strong>Alexus</strong><br>Founder, Jalanea Forge</p>
         </div>
       </body>
       </html>
@@ -116,49 +116,32 @@ const templates = {
   }),
 
   subscriptionCancelled: (name: string) => ({
-    subject: 'Your subscription has been cancelled',
+    subject: 'You\'re always welcome back',
     html: `
       <!DOCTYPE html>
       <html>
-      <head>
-        <style>
-          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
-          .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-          .header { text-align: center; margin-bottom: 40px; }
-          .logo { font-size: 28px; font-weight: bold; color: #f97316; }
-          .content { background: #f9fafb; border-radius: 12px; padding: 32px; margin-bottom: 32px; }
-          .button { display: inline-block; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; }
-          .footer { text-align: center; color: #6b7280; font-size: 14px; }
-        </style>
-      </head>
+      <head><style>${baseStyle}</style></head>
       <body>
-        <div class="container">
-          <div class="header">
-            <div class="logo">JALANEA FORGE</div>
-          </div>
+        <p>Hey ${name},</p>
 
-          <div class="content">
-            <h1 style="margin-top: 0;">We're sorry to see you go, ${name}</h1>
-            <p>Your subscription has been cancelled. You'll continue to have access until the end of your current billing period.</p>
+        <p>I saw that you cancelled your subscription. No hard feelings — I get it.</p>
 
-            <p>After that, you'll be moved to our Free plan with:</p>
-            <ul>
-              <li>25 AI generations per month</li>
-              <li>3 projects</li>
-              <li>Basic features</li>
-            </ul>
+        <p>You'll still have access to your current plan until the end of your billing period. After that, you'll be on the Free plan with 25 generations per month and 3 projects.</p>
 
-            <p>Changed your mind? You can resubscribe anytime:</p>
+        <p>Your projects aren't going anywhere. They'll be here if you ever want to pick up where you left off.</p>
 
-            <p style="text-align: center; margin-top: 32px;">
-              <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="button">Resubscribe</a>
-            </p>
-          </div>
+        <p><strong>One quick ask:</strong> Would you mind telling me why you cancelled? Was it the price? Missing features? Something else?</p>
 
-          <div class="footer">
-            <p>We'd love to hear your feedback - reply to this email to let us know how we can improve.</p>
-            <p>&copy; 2024 Jalanea Forge. All rights reserved.</p>
-          </div>
+        <p>Your feedback genuinely helps me make Jalanea Forge better. Just hit reply.</p>
+
+        <p>And if you ever want to come back, it's just one click:</p>
+
+        <p>
+          <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="link-button">Resubscribe</a>
+        </p>
+
+        <div class="signature">
+          <p>Thanks for giving us a shot,<br><strong>Alexus</strong><br>Founder, Jalanea Forge</p>
         </div>
       </body>
       </html>
@@ -166,53 +149,33 @@ const templates = {
   }),
 
   usageAlert: (name: string, used: number, limit: number, percentage: number) => ({
-    subject: percentage >= 100 ? 'You\'ve used all your AI generations' : `You've used ${percentage}% of your AI generations`,
+    subject: percentage >= 100
+      ? 'You\'ve hit your limit — but your ideas don\'t have to stop'
+      : `Quick heads up: ${percentage}% of your generations used`,
     html: `
       <!DOCTYPE html>
       <html>
-      <head>
-        <style>
-          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
-          .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-          .header { text-align: center; margin-bottom: 40px; }
-          .logo { font-size: 28px; font-weight: bold; color: #f97316; }
-          .content { background: #f9fafb; border-radius: 12px; padding: 32px; margin-bottom: 32px; }
-          .button { display: inline-block; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; }
-          .footer { text-align: center; color: #6b7280; font-size: 14px; }
-          .progress-bar { background: #e5e7eb; border-radius: 10px; height: 20px; overflow: hidden; margin: 16px 0; }
-          .progress-fill { background: ${percentage >= 100 ? '#ef4444' : percentage >= 80 ? '#f59e0b' : '#22c55e'}; height: 100%; border-radius: 10px; }
-          .usage-text { text-align: center; font-size: 24px; font-weight: bold; color: ${percentage >= 100 ? '#ef4444' : '#333'}; }
-        </style>
-      </head>
+      <head><style>${baseStyle}</style></head>
       <body>
-        <div class="container">
-          <div class="header">
-            <div class="logo">JALANEA FORGE</div>
-          </div>
+        <p>Hey ${name},</p>
 
-          <div class="content">
-            <h1 style="margin-top: 0;">${percentage >= 100 ? 'You\'ve reached your limit' : 'Usage Alert'}, ${name}</h1>
+        ${percentage >= 100
+          ? `<p>You've used all <strong>${limit} AI generations</strong> this month. That's actually awesome — it means you're putting in the work.</p>
 
-            <div class="usage-text">${used} / ${limit} generations used</div>
+             <p>But I don't want your momentum to stop. If you're in the middle of something, upgrading takes 30 seconds:</p>`
+          : `<p>Just a quick heads up — you've used <strong>${used} of your ${limit}</strong> AI generations this month (${percentage}%).</p>
 
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: ${Math.min(percentage, 100)}%"></div>
-            </div>
+             <p>If you're working on something big and might need more, now's a good time to think about upgrading:</p>`
+        }
 
-            ${percentage >= 100
-              ? '<p>You\'ve used all your AI generations for this month. Upgrade now to keep building!</p>'
-              : `<p>You've used ${percentage}% of your monthly AI generations. Consider upgrading to get more!</p>`
-            }
+        <p>
+          <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="link-button">Upgrade now</a>
+        </p>
 
-            <p style="text-align: center; margin-top: 32px;">
-              <a href="https://alexusjalaneajenkins.github.io/jalanea-forge/" class="button">Upgrade Now</a>
-            </p>
-          </div>
+        <p>Your generations reset at the start of each billing cycle. ${percentage >= 100 ? 'Or you can wait it out — no pressure.' : ''}</p>
 
-          <div class="footer">
-            <p>Your generations reset at the start of each billing cycle.</p>
-            <p>&copy; 2024 Jalanea Forge. All rights reserved.</p>
-          </div>
+        <div class="signature">
+          <p>Keep building,<br><strong>Alexus</strong><br>Founder, Jalanea Forge</p>
         </div>
       </body>
       </html>
@@ -226,17 +189,14 @@ interface EmailRequest {
   type: EmailType;
   to: string;
   name: string;
-  // For subscription emails
   plan?: string;
   generations?: number;
-  // For usage alerts
   used?: number;
   limit?: number;
   percentage?: number;
 }
 
 serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
@@ -272,7 +232,6 @@ serve(async (req) => {
         );
     }
 
-    // Send email via Resend
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
