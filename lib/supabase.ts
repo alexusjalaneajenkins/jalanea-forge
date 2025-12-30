@@ -3,7 +3,7 @@ import type { Database } from './database.types';
 
 // Supabase configuration - anon key is safe for client-side use
 const supabaseUrl = 'https://azdghysdkaacusknwoxf.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZGdoeXNka2FhY3Vza253b3hmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxMDkwODUsImV4cCI6MjA4MjY4NTA4NX0.uWlR53OJ9mMGiE6TOzRBRZL8LOv2QhSLkF5yzur8pK4';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZGdoeXNka2FhY3Vza253b3hmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxMDkwODUsImV4cCI6MjA4MjY4NTA4NX0.uWlR73OJ9mMGiE6TOzRBRZL8LOv2QhSLkF5yzur8pK4';
 
 export const supabase = createClient<Database>(
   supabaseUrl,
