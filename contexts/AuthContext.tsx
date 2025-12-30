@@ -115,7 +115,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Manually redirect to the OAuth URL
       if (data?.url) {
         console.log('Redirecting to:', data.url);
-        window.location.href = data.url;
+        window.location.assign(data.url);
+        return; // Exit immediately to prevent React state updates from interfering
       }
     } catch (error: any) {
       console.error('Error signing in with Google:', error);
