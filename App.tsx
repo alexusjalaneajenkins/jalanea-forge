@@ -894,7 +894,7 @@ const RealizationPage = () => {
         <div className="flex flex-col gap-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <h2 className="text-4xl font-bold text-white mb-2 tracking-tight">Realization Engine</h2>
+              <h2 className="text-4xl font-bold text-forge-text mb-2 tracking-tight">Realization Engine</h2>
               <p className="text-forge-muted text-lg">Execute your plan: Task by task.</p>
             </div>
 
@@ -965,12 +965,12 @@ const RealizationPage = () => {
         {state.isGenerating ? (
           <LoadingState type="code" message="Architecting Solution" subMessage="Breaking down the plan into DIY modules vs Expert tasks..." />
         ) : !state.roadmapOutput ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-slate-500 py-16 border-2 border-dashed border-white/5 rounded-2xl bg-white/5 group hover:border-blue-500/20 transition-colors">
+          <div className="flex-1 flex flex-col items-center justify-center text-forge-muted py-16 border-2 border-dashed border-slate-200 dark:border-white/5 rounded-2xl bg-slate-50 dark:bg-white/5 group hover:border-blue-500/20 transition-colors">
             <div className="p-6 bg-slate-900 rounded-full mb-6 group-hover:scale-110 transition-transform duration-500 ring-1 ring-white/10 shadow-2xl">
               <Map className="w-12 h-12 text-blue-500" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">Ready to Build?</h3>
-            <p className="text-slate-400 max-w-md text-center mb-8">
+            <h3 className="text-2xl font-bold text-forge-text mb-2">Ready to Build?</h3>
+            <p className="text-forge-muted max-w-md text-center mb-8">
               Transform your PRD into a step-by-step technical roadmap.
               The AI will break down every feature into copy-pasteable code tasks.
             </p>
