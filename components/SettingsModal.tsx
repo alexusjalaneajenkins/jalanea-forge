@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, Key, ExternalLink, Check, AlertCircle } from 'lucide-react';
+import { X, Key, ExternalLink, Check, AlertCircle, Loader2, Wifi, WifiOff } from 'lucide-react';
+import { testApiKey } from '../services/geminiService';
 
 interface SettingsModalProps {
     isOpen: boolean;
@@ -8,21 +9,49 @@ interface SettingsModalProps {
     isDismissible?: boolean; // If false, user cannot close without saving a key (for forced prompt)
 }
 
+type ConnectionStatus = 'idle' | 'testing' | 'connected' | 'error';
+
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, isDismissible = true }) => {
     const [apiKey, setApiKey] = useState('');
     const [isSaved, setIsSaved] = useState(false);
+    const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('idle');
+    const [connectionError, setConnectionError] = useState('');
 
     useEffect(() => {
         if (isOpen) {
             const storedKey = localStorage.getItem('jalanea_gemini_key');
-            if (storedKey) setApiKey(storedKey);
+            if (storedKey) {
+                setApiKey(storedKey);
+                // Auto-check connection status for existing key
+                setConnectionStatus('connected');
+            } else {
+                setConnectionStatus('idle');
+            }
+            setConnectionError('');
         }
     }, [isOpen]);
+
+    const handleTestConnection = async () => {
+        if (!apiKey.trim()) return;
+
+        setConnectionStatus('testing');
+        setConnectionError('');
+
+        const result = await testApiKey(apiKey.trim());
+
+        if (result.success) {
+            setConnectionStatus('connected');
+        } else {
+            setConnectionStatus('error');
+            setConnectionError(result.error || 'Connection failed');
+        }
+    };
 
     const handleSave = () => {
         if (!apiKey.trim()) return;
         localStorage.setItem('jalanea_gemini_key', apiKey.trim());
         setIsSaved(true);
+        setConnectionStatus('connected');
         setTimeout(() => {
             setIsSaved(false);
             onClose();
@@ -32,6 +61,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
     const handleClear = () => {
         localStorage.removeItem('jalanea_gemini_key');
         setApiKey('');
+        setConnectionStatus('idle');
+        setConnectionError('');
     }
 
     if (!isOpen) return null;
@@ -97,11 +128,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                                 <input
                                     type="password"
                                     value={apiKey}
-                                    onChange={(e) => setApiKey(e.target.value)}
+                                    onChange={(e) => {
+                                        setApiKey(e.target.value);
+                                        // Reset status when key changes
+                                        if (connectionStatus !== 'idle') {
+                                            setConnectionStatus('idle');
+                                            setConnectionError('');
+                                        }
+                                    }}
                                     placeholder="AIzaSy..."
                                     className="w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-forge-accent focus:border-transparent outline-none transition-all font-mono text-sm text-gray-800"
                                 />
-                                {apiKey && (
+                                {apiKey && connectionStatus === 'connected' && (
                                     <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-500">
                                         <Check className="w-4 h-4" />
                                     </div>
@@ -110,6 +148,52 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                             <p className="text-xs text-forge-muted pl-1">
                                 Your key is stored locally in your browser. It is never sent to our servers.
                             </p>
+                        </div>
+
+                        {/* Connection Status & Test Button */}
+                        <div className="space-y-3">
+                            <button
+                                onClick={handleTestConnection}
+                                disabled={!apiKey.trim() || connectionStatus === 'testing'}
+                                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-gray-200"
+                            >
+                                {connectionStatus === 'testing' ? (
+                                    <>
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                        Testing Connection...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Wifi className="w-4 h-4" />
+                                        Test Connection
+                                    </>
+                                )}
+                            </button>
+
+                            {/* Status Indicator */}
+                            {connectionStatus === 'connected' && (
+                                <div className="flex items-center gap-2 p-3 bg-emerald-50 border border-emerald-200 rounded-xl animate-fade-in">
+                                    <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                                        <Check className="w-4 h-4 text-emerald-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold text-emerald-800">Connected</p>
+                                        <p className="text-xs text-emerald-600">API key is valid and working</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {connectionStatus === 'error' && (
+                                <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl animate-fade-in">
+                                    <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                                        <WifiOff className="w-4 h-4 text-red-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold text-red-800">Connection Failed</p>
+                                        <p className="text-xs text-red-600">{connectionError}</p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 

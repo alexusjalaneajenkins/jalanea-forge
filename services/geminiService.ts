@@ -3,6 +3,39 @@ import { ProjectState, ResearchDocument } from "../types";
 
 export const MISSING_API_KEY_ERROR = "MISSING_API_KEY";
 
+// Test if an API key is valid by making a minimal request
+export const testApiKey = async (apiKey: string): Promise<{ success: boolean; error?: string }> => {
+  try {
+    const ai = new GoogleGenAI({ apiKey });
+    // Make a minimal request to validate the key
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.0-flash',
+      contents: 'Say "OK" in one word.',
+      config: {
+        maxOutputTokens: 5,
+        temperature: 0,
+      }
+    });
+    if (response.text) {
+      return { success: true };
+    }
+    return { success: false, error: 'No response received' };
+  } catch (error: any) {
+    const message = error.message || 'Unknown error';
+    if (message.includes('API_KEY_INVALID') || message.includes('API key not valid')) {
+      return { success: false, error: 'Invalid API key. Please check and try again.' };
+    }
+    if (message.includes('PERMISSION_DENIED')) {
+      return { success: false, error: 'Permission denied. The API key may not have access to Gemini.' };
+    }
+    if (message.includes('429') || message.includes('RESOURCE_EXHAUSTED')) {
+      // Rate limit actually means the key is valid
+      return { success: true };
+    }
+    return { success: false, error: message };
+  }
+};
+
 const getClient = () => {
   const storedKey = localStorage.getItem('jalanea_gemini_key');
   if (storedKey) {

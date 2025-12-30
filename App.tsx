@@ -32,7 +32,8 @@ import {
   ArrowRight,
   Info,
   Volume2,
-  Bug
+  Bug,
+  Menu
 } from 'lucide-react';
 import { ProjectState, ProjectStep, ResearchDocument, NavItem, ProjectMetadata, RoadmapPhase } from './types';
 import * as GeminiService from './services/geminiService';
@@ -107,7 +108,7 @@ const SidebarLink = ({ item, isActive, isComplete }: { item: NavItem, isActive: 
   );
 };
 
-const CopyButton = ({ text, className = "", title = "Copy to Clipboard", variant = "dark" }: { text: string, className?: string, title?: string, variant?: "dark" | "light" }) => {
+const CopyButton = ({ text, className = "", title = "Copy to Clipboard", variant = "dark", label }: { text: string, className?: string, title?: string, variant?: "dark" | "light", label?: string }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -128,13 +129,16 @@ const CopyButton = ({ text, className = "", title = "Copy to Clipboard", variant
       className={`relative p-2 rounded-lg transition-all duration-200 shadow-sm border group ${copied ? copiedStyles : baseStyles} ${className}`}
       title={copied ? "Copied!" : title}
     >
-      <div className="relative w-4 h-4">
-        <div className={`absolute inset-0 transition-all duration-300 ${copied ? 'scale-0 opacity-0 rotate-45' : 'scale-100 opacity-100 rotate-0'}`}>
-          <Copy className="w-4 h-4" />
+      <div className={`flex items-center ${label ? 'gap-2' : ''}`}>
+        <div className="relative w-4 h-4">
+          <div className={`absolute inset-0 transition-all duration-300 ${copied ? 'scale-0 opacity-0 rotate-45' : 'scale-100 opacity-100 rotate-0'}`}>
+            <Copy className="w-4 h-4" />
+          </div>
+          <div className={`absolute inset-0 transition-all duration-300 ${copied ? 'scale-100 opacity-100 rotate-0' : 'scale-0 opacity-0 -rotate-45'}`}>
+            <Check className="w-4 h-4" />
+          </div>
         </div>
-        <div className={`absolute inset-0 transition-all duration-300 ${copied ? 'scale-100 opacity-100 rotate-0' : 'scale-0 opacity-0 -rotate-45'}`}>
-          <Check className="w-4 h-4" />
-        </div>
+        {label && <span className="text-sm font-medium">{copied ? "Copied!" : label}</span>}
       </div>
     </button>
   );
@@ -158,7 +162,7 @@ const ThemeToggle = () => {
   );
 };
 
-const Header = () => {
+const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
   const { user, signIn, logOut, loading } = useAuth();
   const { openProjectList, state, updateTitle, openSettings } = useProject();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -175,15 +179,25 @@ const Header = () => {
   };
 
   return (
-    <header className="h-20 border-b border-forge-700 bg-forge-950/80 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-50">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-forge-accent flex items-center justify-center shadow-lg shadow-orange-500/20">
-          <Sparkles className="w-6 h-6 text-white" />
+    <header className="h-16 md:h-20 border-b border-forge-700 bg-forge-950/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 sticky top-0 z-50">
+      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+        {/* Mobile hamburger menu */}
+        <button
+          onClick={onMenuToggle}
+          className="md:hidden p-2.5 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm flex-shrink-0"
+          title="Menu"
+          aria-label="Open navigation menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+
+        <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-forge-accent flex items-center justify-center shadow-lg shadow-orange-500/20 flex-shrink-0">
+          <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-white" />
         </div>
-        <div className="flex flex-col items-start">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-xl tracking-tight text-forge-text leading-tight">JALANEA FORGE</span>
-            <span className="text-forge-700">/</span>
+        <div className="flex flex-col items-start min-w-0">
+          <div className="flex items-center gap-1 md:gap-2 min-w-0">
+            <span className="font-bold text-base md:text-xl tracking-tight text-forge-text leading-tight hidden sm:inline">JALANEA FORGE</span>
+            <span className="text-forge-700 hidden sm:inline">/</span>
             {isEditingTitle ? (
               <input
                 ref={titleInputRef}
@@ -192,40 +206,34 @@ const Header = () => {
                 onChange={(e) => updateTitle(e.target.value)}
                 onBlur={() => setIsEditingTitle(false)}
                 onKeyDown={handleKeyDown}
-                className="bg-forge-900 text-forge-text font-medium text-sm px-2 py-0.5 rounded border border-forge-700 focus:outline-none focus:border-forge-accent min-w-[150px]"
+                className="bg-forge-900 text-forge-text font-medium text-sm px-2 py-0.5 rounded border border-forge-700 focus:outline-none focus:border-forge-accent min-w-[100px] md:min-w-[150px]"
               />
             ) : (
               <div
                 onClick={() => setIsEditingTitle(true)}
-                className="font-medium text-forge-text hover:bg-forge-900 px-2 py-0.5 rounded cursor-pointer transition-colors flex items-center gap-2 group"
+                className="font-medium text-forge-text hover:bg-forge-900 px-1 md:px-2 py-0.5 rounded cursor-pointer transition-colors flex items-center gap-1 md:gap-2 group truncate max-w-[120px] sm:max-w-[200px] md:max-w-none"
                 title="Rename Project"
               >
-                {state.title}
-                <Edit2 className="w-3 h-3 text-forge-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="truncate">{state.title}</span>
+                <Edit2 className="w-3 h-3 text-forge-600 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
               </div>
             )}
           </div>
-          <div className="flex items-center gap-2">
-            <p className="text-xs text-forge-500 font-medium mt-0.5">AI Product Designer</p>
-            <span className="text-forge-700 text-xs mt-0.5">•</span>
-            <p className="text-xs text-forge-accent font-semibold mt-0.5">
-              Step {(Object.values(ProjectStep).indexOf(state.currentStep) + 1)} of 4
+          <div className="flex items-center gap-1 md:gap-2">
+            <p className="text-[10px] md:text-xs text-forge-500 font-medium mt-0.5 hidden sm:block">AI Product Designer</p>
+            <span className="text-forge-700 text-xs mt-0.5 hidden sm:block">•</span>
+            <p className="text-[10px] md:text-xs text-forge-accent font-semibold mt-0.5">
+              Step {(Object.values(ProjectStep).indexOf(state.currentStep) + 1)}/4
             </p>
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-4">
-        <button
-          onClick={openProjectList}
-          className="p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm md:hidden"
-          title="My Projects"
-        >
-          <FolderOpen className="w-5 h-5" />
-        </button>
+      <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
         <button
           onClick={openSettings}
-          className="p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm"
+          className="p-2.5 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm"
           title="AI Settings"
+          aria-label="Open AI settings"
         >
           <Settings className="w-5 h-5" />
         </button>
@@ -234,12 +242,13 @@ const Header = () => {
           <div className="h-8 w-8 rounded-full bg-forge-800 animate-pulse"></div>
         ) : user ? (
           <div className="flex items-center gap-2">
-            <span className="text-sm text-forge-muted mr-2 hidden md:inline">Welcome, {user.displayName?.split(' ')[0]}</span>
+            <span className="text-sm text-forge-muted mr-2 hidden lg:inline">Welcome, {user.displayName?.split(' ')[0]}</span>
 
             <button
               onClick={openProjectList}
-              className="p-2 text-forge-muted hover:text-forge-text hover:bg-forge-800 rounded-lg transition-colors mr-2"
+              className="p-2.5 text-forge-muted hover:text-forge-text hover:bg-forge-800 rounded-lg transition-colors hidden md:flex"
               title="My Projects"
+              aria-label="Open project list"
             >
               <FolderOpen className="w-5 h-5" />
             </button>
@@ -248,6 +257,8 @@ const Header = () => {
               onClick={logOut}
               className="h-9 w-9 rounded-full bg-forge-800 flex items-center justify-center text-xs font-bold border border-forge-700 text-forge-muted overflow-hidden cursor-pointer hover:border-red-500 hover:text-red-500 transition-all shadow-sm"
               title="Sign Out"
+              role="button"
+              aria-label="Sign out"
             >
               {user.photoURL ? (
                 <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" />
@@ -259,9 +270,10 @@ const Header = () => {
         ) : (
           <button
             onClick={signIn}
-            className="text-sm font-semibold bg-forge-accent hover:bg-orange-600 text-white px-5 py-2.5 rounded-lg transition-colors shadow-lg shadow-orange-500/20 flex items-center gap-2"
+            className="text-xs md:text-sm font-semibold bg-forge-accent hover:bg-orange-600 text-white px-3 md:px-5 py-2.5 rounded-lg transition-colors shadow-lg shadow-orange-500/20 flex items-center gap-2"
           >
-            <span>Sign in with Google</span>
+            <span className="hidden sm:inline">Sign in with Google</span>
+            <span className="sm:hidden">Sign in</span>
           </button>
         )}
       </div>
@@ -403,14 +415,22 @@ const IdeaPage = () => {
                     Use these specialized prompts to generate a comprehensive research report in Google NotebookLM.
                   </p>
                 </div>
-                <a
-                  href="https://notebooklm.google.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-500/20 transition-all hover:-translate-y-0.5"
-                >
-                  Launch NotebookLM <ExternalLink className="w-4 h-4" />
-                </a>
+                <div className="flex items-center gap-3">
+                  <CopyButton
+                    text={`=== STEP 1: CONTEXT PROMPT (Paste as Source) ===\n\n${state.researchMissionPrompt || ''}\n\n${'='.repeat(50)}\n\n=== STEP 2: REPORT PROMPT (Paste in Chat) ===\n\n${state.reportGenerationPrompt || ''}`}
+                    className="px-4 py-2.5 bg-white dark:bg-forge-800 border border-gray-200 dark:border-forge-700 text-gray-700 dark:text-forge-300 hover:bg-gray-50 dark:hover:bg-forge-700 rounded-xl shadow-sm transition-all"
+                    title="Copy All Prompts"
+                    label="Copy All"
+                  />
+                  <a
+                    href="https://notebooklm.google.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-500/20 transition-all hover:-translate-y-0.5"
+                  >
+                    Launch NotebookLM <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1171,7 +1191,8 @@ const RealizationPage = () => {
 const Layout = () => {
   const location = useLocation();
   const { user } = useAuth();
-  const { state, openSupport, setCurrentStep } = useProject();
+  const { state, openSupport, setCurrentStep, openProjectList } = useProject();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems: NavItem[] = [
     { label: 'Idea', step: ProjectStep.IDEA, icon: Lightbulb, path: '/' },
@@ -1197,9 +1218,134 @@ const Layout = () => {
     }
   }, [location.pathname, state.currentStep, setCurrentStep]);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Close mobile menu on Escape
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        return;
+      }
+
+      // Navigation shortcuts: Cmd/Ctrl + 1-4
+      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
+        const key = e.key;
+        if (key >= '1' && key <= '4') {
+          e.preventDefault();
+          const index = parseInt(key) - 1;
+          if (navItems[index]) {
+            window.location.hash = navItems[index].path;
+          }
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileMenuOpen]);
+
+  const handleNavClick = (path: string) => {
+    window.location.hash = path;
+    setMobileMenuOpen(false);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-forge-900 text-forge-text selection:bg-orange-100 selection:text-orange-900">
-      <Header />
+      <Header onMenuToggle={() => setMobileMenuOpen(!mobileMenuOpen)} />
+
+      {/* Mobile Sidebar Overlay */}
+      <div
+        className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* Mobile Sidebar Drawer */}
+      <aside
+        className={`mobile-sidebar bg-forge-950 border-r border-forge-700 flex flex-col ${mobileMenuOpen ? 'active' : ''}`}
+        role="navigation"
+        aria-label="Mobile navigation"
+      >
+        <div className="p-4 border-b border-forge-700 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-forge-accent flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-bold text-lg text-forge-text">FORGE</span>
+          </div>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="p-2 rounded-lg text-forge-muted hover:text-forge-text hover:bg-forge-800 transition-colors"
+            aria-label="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-4 flex-1 overflow-y-auto">
+          <div className="text-xs font-bold text-forge-500 uppercase tracking-widest mb-4">Workflow</div>
+          <nav className="space-y-2">
+            {navItems.map((item) => {
+              let isComplete = false;
+              if (item.step === ProjectStep.IDEA && state.synthesizedIdea) isComplete = true;
+              if (item.step === ProjectStep.RESEARCH && state.research.length > 0) isComplete = true;
+              if (item.step === ProjectStep.PRD && state.prdOutput) isComplete = true;
+              if (item.step === ProjectStep.CODE && state.roadmapOutput) isComplete = true;
+
+              return (
+                <button
+                  key={item.path}
+                  onClick={() => handleNavClick(item.path)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group border ${
+                    location.pathname === item.path
+                      ? 'bg-forge-800 border-forge-700 text-forge-accent shadow-sm'
+                      : 'border-transparent text-forge-muted hover:bg-forge-800 hover:text-forge-text'
+                  }`}
+                >
+                  <item.icon className={`w-5 h-5 ${location.pathname === item.path ? 'text-forge-accent' : 'text-forge-600 group-hover:text-forge-text'}`} />
+                  <span className="font-medium text-sm">{item.label}</span>
+                  <div className="ml-auto flex items-center gap-2">
+                    {isComplete && <Check className="w-4 h-4 text-emerald-500" />}
+                    {location.pathname === item.path && <ChevronRight className="w-4 h-4 text-forge-400" />}
+                  </div>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="p-4 border-t border-forge-700 space-y-3 safe-bottom">
+          <button
+            onClick={() => { openProjectList(); setMobileMenuOpen(false); }}
+            className="w-full p-3 rounded-xl border border-forge-700 bg-forge-900/30 hover:bg-forge-800 transition-colors text-center"
+          >
+            <FolderOpen className="w-5 h-5 mx-auto mb-1 text-forge-muted" />
+            <span className="text-sm font-medium text-forge-text">My Projects</span>
+          </button>
+          <button
+            onClick={() => { openSupport(); setMobileMenuOpen(false); }}
+            className="w-full p-3 rounded-xl border border-forge-700 bg-forge-900/30 hover:bg-forge-800 transition-colors text-center"
+          >
+            <Bug className="w-5 h-5 mx-auto mb-1 text-forge-muted" />
+            <span className="text-sm font-medium text-forge-text">Get Support</span>
+          </button>
+        </div>
+      </aside>
 
       {/* Error Toast */}
       {error && (
@@ -1236,11 +1382,20 @@ const Layout = () => {
           })}
 
           <div className="mt-auto pt-6 border-t border-forge-700">
-            <div className="bg-forge-800/50 p-4 rounded-xl border border-forge-700">
+            <div className="bg-forge-800/50 p-4 rounded-xl border border-forge-700 mb-3">
               <h4 className="font-medium text-forge-text text-sm mb-2">Pro Tip</h4>
               <p className="text-xs text-forge-muted leading-relaxed">
                 Add NotebookLM exports in the Research tab to ground the model.
               </p>
+            </div>
+            <div className="bg-forge-800/30 p-3 rounded-lg border border-forge-700/50">
+              <p className="text-[10px] text-forge-500 uppercase tracking-wider mb-2 font-semibold">Keyboard Shortcuts</p>
+              <div className="grid grid-cols-2 gap-1 text-xs text-forge-muted">
+                <span className="font-mono bg-forge-800 px-1.5 py-0.5 rounded">⌘1</span><span>Idea</span>
+                <span className="font-mono bg-forge-800 px-1.5 py-0.5 rounded">⌘2</span><span>Research</span>
+                <span className="font-mono bg-forge-800 px-1.5 py-0.5 rounded">⌘3</span><span>PRD</span>
+                <span className="font-mono bg-forge-800 px-1.5 py-0.5 rounded">⌘4</span><span>Realization</span>
+              </div>
             </div>
             <a
               href="https://jalanea.com"
@@ -1262,19 +1417,6 @@ const Layout = () => {
         </aside>
 
         <main className="flex-1 overflow-auto bg-forge-900 relative">
-          {/* Mobile Nav Placeholder - hidden on md+ */}
-          <div className="md:hidden mb-6 flex overflow-x-auto gap-2 pb-2 no-print">
-            {navItems.map((item) => (
-              <div key={item.path} onClick={() => window.location.hash = item.path} className={`
-                   flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2
-                   ${location.pathname === item.path ? 'bg-forge-accent text-white' : 'bg-white border border-forge-700 text-forge-muted'}
-                `}>
-                <item.icon className="w-4 h-4" />
-                {item.label}
-              </div>
-            ))}
-          </div>
-
           <div className="h-full">
             <Routes>
               <Route path="/" element={<IdeaPage />} />
