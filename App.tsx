@@ -35,14 +35,15 @@ import {
   Bug,
   Menu,
   History,
-  RotateCcw
+  RotateCcw,
+  Shield
 } from 'lucide-react';
 import { ProjectState, ProjectStep, ResearchDocument, NavItem, ProjectMetadata, RoadmapPhase } from './types';
 import * as GeminiService from './services/geminiService';
 import { MarkdownRenderer } from './components/MarkdownRenderer';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
-import { saveProject, loadProject, createProject, getUserProjects, deleteProject } from './services/firebase';
+import { saveProjectState, getProject, createProject, getUserProjects, deleteProject } from './services/supabaseService';
 import { ProjectListDialog } from './components/ProjectListDialog';
 import { SettingsModal } from './components/SettingsModal';
 import { SupportModal } from './components/SupportModal';
@@ -54,6 +55,7 @@ import { LoadingState } from './components/LoadingState';
 import { OnboardingTour } from './components/OnboardingTour';
 import { Confetti, useConfetti } from './components/Confetti';
 import { HelpTooltip } from './components/HelpTooltip';
+import { AdminPanel } from './pages/AdminPanel';
 import html2pdf from 'html2pdf.js';
 
 // --- Utils ---
@@ -168,7 +170,7 @@ const ThemeToggle = () => {
 };
 
 const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
-  const { user, signIn, logOut, loading } = useAuth();
+  const { user, profile, signInWithGoogle, logOut, loading } = useAuth();
   const { openProjectList, state, updateTitle, openSettings } = useProject();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
@@ -247,7 +249,7 @@ const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
           <div className="h-8 w-8 rounded-full bg-forge-800 animate-pulse"></div>
         ) : user ? (
           <div className="flex items-center gap-2">
-            <span className="text-sm text-forge-muted mr-2 hidden lg:inline">Welcome, {user.displayName?.split(' ')[0]}</span>
+            <span className="text-sm text-forge-muted mr-2 hidden lg:inline">Welcome, {(profile?.display_name || user.user_metadata?.full_name || user.email)?.split(' ')[0]}</span>
 
             <button
               onClick={openProjectList}
@@ -265,16 +267,16 @@ const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
               role="button"
               aria-label="Sign out"
             >
-              {user.photoURL ? (
-                <img src={user.photoURL} alt="Profile" className="h-full w-full object-cover" />
+              {(profile?.avatar_url || user.user_metadata?.avatar_url) ? (
+                <img src={profile?.avatar_url || user.user_metadata?.avatar_url} alt="Profile" className="h-full w-full object-cover" />
               ) : (
-                user.displayName?.charAt(0) || 'U'
+                (profile?.display_name || user.user_metadata?.full_name || user.email)?.charAt(0) || 'U'
               )}
             </div>
           </div>
         ) : (
           <button
-            onClick={signIn}
+            onClick={signInWithGoogle}
             className="text-xs md:text-sm font-semibold bg-forge-accent hover:bg-orange-600 text-white px-3 md:px-5 py-2.5 rounded-lg transition-colors shadow-lg shadow-orange-500/20 flex items-center gap-2"
           >
             <span className="hidden sm:inline">Sign in with Google</span>
@@ -1426,9 +1428,10 @@ const RealizationPage = () => {
 
 const Layout = () => {
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { state, openSupport, setCurrentStep, openProjectList } = useProject();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isOwner = profile?.role === 'owner';
 
   const navItems: NavItem[] = [
     { label: 'Idea', step: ProjectStep.IDEA, icon: Lightbulb, path: '/' },
@@ -1657,6 +1660,17 @@ const Layout = () => {
               <span className="text-xs text-forge-500 uppercase tracking-widest group-hover:text-forge-accent transition-colors">Need Help?</span>
               <div className="font-bold text-forge-text mt-1 group-hover:text-white">Get Support</div>
             </button>
+            {isOwner && (
+              <button
+                onClick={() => window.location.hash = '/admin'}
+                className="mt-4 block w-full p-3 rounded-xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 transition-colors text-center group"
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <Shield className="w-4 h-4 text-purple-400" />
+                  <span className="font-bold text-purple-300 group-hover:text-purple-200">Admin Panel</span>
+                </div>
+              </button>
+            )}
           </div>
         </aside>
 
@@ -1667,6 +1681,7 @@ const Layout = () => {
               <Route path="/research" element={<ResearchPage />} />
               <Route path="/prd" element={<PrdPage />} />
               <Route path="/realization" element={<RealizationPage />} />
+              <Route path="/admin" element={<AdminPanel />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import { ProjectState, ProjectStep, ResearchDocument, ProjectMetadata, PrdVersion } from '../types';
 import * as GeminiService from '../services/geminiService';
 import { MISSING_API_KEY_ERROR } from '../services/geminiService';
-import { saveProject, loadProject, createProject, getUserProjects, deleteProject } from '../services/firebase';
+import { getProject, createProject, getUserProjects, deleteProject, updateProject, logUsage, incrementAiGenerations } from '../services/supabaseService';
 import { useAuth } from './AuthContext';
 import { SettingsModal } from '../components/SettingsModal';
 import { SupportModal } from '../components/SupportModal';
@@ -61,6 +61,38 @@ const createPrdVersion = (content: string, label?: string): PrdVersion => ({
 // Max versions to keep (to avoid storage bloat)
 const MAX_PRD_VERSIONS = 10;
 
+// LocalStorage key for extra project data not in DB
+const getLocalStorageKey = (projectId: string) => `forge_project_extra_${projectId}`;
+
+// Save extra project data to localStorage (fields not in DB)
+const saveExtraData = (projectId: string, data: {
+    prdVersionHistory?: PrdVersion[];
+    researchMissionPrompt?: string;
+    reportGenerationPrompt?: string;
+    completedRoadmapSteps?: string[];
+}) => {
+    try {
+        localStorage.setItem(getLocalStorageKey(projectId), JSON.stringify(data));
+    } catch (e) {
+        console.error('Failed to save extra project data:', e);
+    }
+};
+
+// Load extra project data from localStorage
+const loadExtraData = (projectId: string): {
+    prdVersionHistory?: PrdVersion[];
+    researchMissionPrompt?: string;
+    reportGenerationPrompt?: string;
+    completedRoadmapSteps?: string[];
+} => {
+    try {
+        const data = localStorage.getItem(getLocalStorageKey(projectId));
+        return data ? JSON.parse(data) : {};
+    } catch (e) {
+        return {};
+    }
+};
+
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [state, setState] = useState<ProjectState>(initialState);
     const [projects, setProjects] = useState<ProjectMetadata[]>([]);
@@ -72,10 +104,28 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     const { user } = useAuth();
 
-    // Helper to save current project state
+    // Helper to save current project state to Supabase
     const saveCurrentProject = (projectState: ProjectState) => {
         if (user && currentProjectId) {
-            saveProject(user.uid, currentProjectId, projectState);
+            // Save to Supabase (only fields that exist in DB)
+            updateProject(currentProjectId, {
+                name: projectState.title,
+                current_step: Object.values(ProjectStep).indexOf(projectState.currentStep) + 1,
+                idea_input: projectState.ideaInput,
+                vision_statement: projectState.synthesizedIdea,
+                research_data: projectState.research,
+                prd_content: projectState.prdOutput,
+                realization_tasks: projectState.roadmapOutput,
+            });
+
+            // Save extra data to localStorage
+            saveExtraData(currentProjectId, {
+                prdVersionHistory: projectState.prdVersionHistory,
+                researchMissionPrompt: projectState.researchMissionPrompt,
+                reportGenerationPrompt: projectState.reportGenerationPrompt,
+                completedRoadmapSteps: projectState.completedRoadmapSteps,
+            });
+
             // Update the list metadata immediately for title changes
             setProjects(prev => prev.map(p =>
                 p.id === currentProjectId ? { ...p, title: projectState.title, updatedAt: Date.now() } : p
@@ -87,12 +137,18 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     useEffect(() => {
         if (user) {
             setIsLoadingProjects(true);
-            getUserProjects(user.uid).then(list => {
-                setProjects(list);
+            getUserProjects(user.id).then(list => {
+                // Transform Supabase projects to ProjectMetadata format
+                const projectList: ProjectMetadata[] = list.map(p => ({
+                    id: p.id,
+                    title: p.name, // Database uses 'name' field
+                    updatedAt: new Date(p.updated_at).getTime()
+                }));
+                setProjects(projectList);
                 setIsLoadingProjects(false);
 
-                if (list.length > 0) {
-                    const mostRecent = list[0];
+                if (projectList.length > 0) {
+                    const mostRecent = projectList[0];
                     loadProjectDetails(mostRecent.id);
                 } else {
                     createNewProject();
@@ -108,9 +164,31 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const loadProjectDetails = async (projectId: string) => {
         if (!user) return;
         setIsLoadingProjects(true);
-        const data = await loadProject(user.uid, projectId);
-        if (data) {
-            setState({ ...data, id: projectId });
+        const project = await getProject(projectId);
+        if (project) {
+            // Load extra data from localStorage
+            const extraData = loadExtraData(projectId);
+
+            // Transform Supabase project to ProjectState format
+            const steps = Object.values(ProjectStep);
+            const stepIndex = Math.max(0, Math.min((project.current_step || 1) - 1, steps.length - 1));
+            const projectState: ProjectState = {
+                title: project.name, // Database uses 'name' field
+                currentStep: steps[stepIndex],
+                research: project.research_data || [],
+                ideaInput: project.idea_input || '',
+                synthesizedIdea: project.vision_statement || '', // Database uses 'vision_statement'
+                prdOutput: project.prd_content || '',
+                prdVersionHistory: extraData.prdVersionHistory || [],
+                roadmapOutput: project.realization_tasks || '', // Database uses 'realization_tasks'
+                designSystemOutput: '',
+                codePromptOutput: '',
+                researchMissionPrompt: extraData.researchMissionPrompt || '',
+                reportGenerationPrompt: extraData.reportGenerationPrompt || '',
+                isGenerating: false,
+                completedRoadmapSteps: extraData.completedRoadmapSteps || []
+            };
+            setState(projectState);
             setCurrentProjectId(projectId);
             setShowProjectDialog(false);
         }
@@ -122,17 +200,23 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         try {
             setIsLoadingProjects(true);
             const projectTitle = title || "New Project " + (projects.length + 1);
-            const newProject: ProjectState = { ...initialState, title: projectTitle };
-            const newId = await createProject(user.uid, newProject);
+            const newProject = await createProject(user.id, projectTitle);
 
-            // Update list
-            const list = await getUserProjects(user.uid);
-            setProjects(list);
+            if (newProject) {
+                // Update list
+                const list = await getUserProjects(user.id);
+                const projectList: ProjectMetadata[] = list.map(p => ({
+                    id: p.id,
+                    title: p.name, // Database uses 'name' field
+                    updatedAt: new Date(p.updated_at).getTime()
+                }));
+                setProjects(projectList);
 
-            // Set current
-            setCurrentProjectId(newId);
-            setState({ ...newProject, id: newId });
-            setShowProjectDialog(false);
+                // Set current
+                setCurrentProjectId(newProject.id);
+                setState({ ...initialState, title: projectTitle });
+                setShowProjectDialog(false);
+            }
         } catch (error) {
             alert(error instanceof Error ? error.message : "Failed to create project");
         } finally {
@@ -144,13 +228,22 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         if (!user) return;
         if (!confirm("Are you sure you want to delete this project?")) return;
 
-        await deleteProject(user.uid, projectId);
-        const list = await getUserProjects(user.uid);
-        setProjects(list);
+        await deleteProject(projectId);
+
+        // Clean up localStorage
+        localStorage.removeItem(getLocalStorageKey(projectId));
+
+        const list = await getUserProjects(user.id);
+        const projectList: ProjectMetadata[] = list.map(p => ({
+            id: p.id,
+            title: p.name, // Database uses 'name' field
+            updatedAt: new Date(p.updated_at).getTime()
+        }));
+        setProjects(projectList);
 
         if (currentProjectId === projectId) {
-            if (list.length > 0) {
-                loadProjectDetails(list[0].id);
+            if (projectList.length > 0) {
+                loadProjectDetails(projectList[0].id);
             } else {
                 createNewProject();
             }
@@ -158,17 +251,10 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
 
     // Save project on state change (debounced manually via effect)
-    // This useEffect is now for debounced saves of general state changes.
-    // Direct saves (like setCurrentStep, toggleStepCompletion) will use saveCurrentProject directly.
     useEffect(() => {
         if (user && currentProjectId) {
             const timeoutId = setTimeout(() => {
-                saveProject(user.uid, currentProjectId, state);
-
-                // Update the list metadata if title changed
-                setProjects(prev => prev.map(p =>
-                    p.id === currentProjectId ? { ...p, title: state.title, updatedAt: Date.now() } : p
-                ));
+                saveCurrentProject(state);
             }, 2000); // Auto-save every 2s of inactivity
             return () => clearTimeout(timeoutId);
         }
@@ -290,6 +376,12 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
                 const result = await GeminiService.refineIdea(state.ideaInput);
                 setState(prev => ({ ...prev, synthesizedIdea: result }));
 
+                // Log usage
+                if (user) {
+                    logUsage(user.id, 'vision_generation');
+                    incrementAiGenerations(user.id);
+                }
+
                 // Auto-generate Research Prompts for NotebookLM immediately
                 const { mission, report } = await GeminiService.generateResearchPrompt(result);
                 setState(prev => ({
@@ -297,10 +389,22 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
                     researchMissionPrompt: mission,
                     reportGenerationPrompt: report
                 }));
+
+                // Log usage for research prompt
+                if (user) {
+                    logUsage(user.id, 'research_prompt_generation');
+                    incrementAiGenerations(user.id);
+                }
             } else if (step === ProjectStep.PRD) {
                 // Use synthesized idea if available, otherwise raw
                 const inputIdea = state.synthesizedIdea || state.ideaInput;
                 const result = await GeminiService.generatePRD(inputIdea, state.research);
+
+                // Log usage
+                if (user) {
+                    logUsage(user.id, 'prd_generation');
+                    incrementAiGenerations(user.id);
+                }
 
                 // Save current PRD to version history before updating
                 setState(prev => {
@@ -322,11 +426,23 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
                 if (!state.prdOutput) {
                     const prdResult = await GeminiService.generatePRD(inputIdea, state.research);
                     setState(prev => ({ ...prev, prdOutput: prdResult }));
+
+                    // Log usage
+                    if (user) {
+                        logUsage(user.id, 'prd_generation');
+                        incrementAiGenerations(user.id);
+                    }
                 }
 
                 // Generate Roadmap (which returns JSON with DIY prompts)
                 const result = await GeminiService.generatePlan(state.prdOutput || "");
                 setState(prev => ({ ...prev, roadmapOutput: result }));
+
+                // Log usage
+                if (user) {
+                    logUsage(user.id, 'task_generation');
+                    incrementAiGenerations(user.id);
+                }
             }
         } catch (error: any) {
             console.error("Generation failed:", error);
@@ -350,6 +466,12 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
                 researchMissionPrompt: mission,
                 reportGenerationPrompt: report
             }));
+
+            // Log usage
+            if (user) {
+                logUsage(user.id, 'research_prompt_generation');
+                incrementAiGenerations(user.id);
+            }
         } catch (error: any) {
             console.error("Research prompt generation failed:", error);
             if (error.message === MISSING_API_KEY_ERROR) {
