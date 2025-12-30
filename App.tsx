@@ -460,7 +460,7 @@ const IdeaPage = () => {
                         Once sources are processed,<br />
                         paste this into the <span className="text-gray-900 dark:text-white font-semibold">Chat Box</span>.
                       </p>
-                      <div className="flex-1 bg-black/40 p-4 rounded-xl border border-white/5 font-mono text-xs text-slate-300 overflow-y-auto custom-scrollbar min-h-[140px] shadow-inner">
+                      <div className="flex-1 bg-gray-100 dark:bg-black/40 p-4 rounded-xl border border-gray-200 dark:border-white/5 font-mono text-xs text-gray-900 dark:text-slate-300 overflow-y-auto custom-scrollbar min-h-[140px] shadow-inner">
                         {state.reportGenerationPrompt}
                       </div>
                     </div>
