@@ -1061,29 +1061,29 @@ const RealizationPage = () => {
                                     <div className="mt-3 space-y-3 animate-in slide-in-from-top-2 duration-200">
                                       {/* System Instructions (AI Studio) */}
                                       {step.systemPrompt && (
-                                        <div className="bg-slate-950 rounded-lg border border-indigo-500/30 overflow-hidden">
-                                          <div className="bg-indigo-500/10 px-3 py-1.5 flex justify-between items-center border-b border-indigo-500/10">
+                                        <div className="bg-gray-50 dark:bg-slate-950 rounded-lg border border-gray-200 dark:border-indigo-500/30 overflow-hidden">
+                                          <div className="bg-white dark:bg-indigo-500/10 px-3 py-1.5 flex justify-between items-center border-b border-gray-200 dark:border-indigo-500/10">
                                             <span className="text-[10px] uppercase font-bold text-indigo-400 tracking-wider flex items-center gap-2">
                                               <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> System Instructions
                                             </span>
                                             <CopyButton text={step.systemPrompt} className="hover:text-indigo-300" />
                                           </div>
                                           <div className="p-3 overflow-x-auto">
-                                            <pre className="text-xs font-mono text-indigo-200/80 whitespace-pre-wrap leading-relaxed">{step.systemPrompt}</pre>
+                                            <pre className="text-xs font-mono text-gray-800 dark:text-indigo-200/80 whitespace-pre-wrap leading-relaxed">{step.systemPrompt}</pre>
                                           </div>
                                         </div>
                                       )}
 
                                       {/* User Prompt */}
-                                      <div className="bg-slate-950 rounded-lg border border-white/10 overflow-hidden">
-                                        <div className="bg-white/5 px-3 py-1.5 flex justify-between items-center border-b border-white/5">
-                                          <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span> User Prompt
+                                      <div className="bg-gray-50 dark:bg-slate-950 rounded-lg border border-gray-200 dark:border-white/10 overflow-hidden">
+                                        <div className="bg-white dark:bg-white/5 px-3 py-1.5 flex justify-between items-center border-b border-gray-200 dark:border-white/5">
+                                          <span className="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider flex items-center gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-slate-400"></span> User Prompt
                                           </span>
-                                          <CopyButton text={step.diyPrompt || step.technicalBrief} className="hover:text-white" />
+                                          <CopyButton text={step.diyPrompt || step.technicalBrief} className="text-gray-400 hover:text-gray-600 dark:hover:text-white" />
                                         </div>
                                         <div className="p-3 overflow-x-auto">
-                                          <pre className="text-xs font-mono text-slate-300 whitespace-pre-wrap leading-relaxed">
+                                          <pre className="text-xs font-mono text-gray-800 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
                                             {step.diyPrompt || step.technicalBrief}
                                           </pre>
                                         </div>
