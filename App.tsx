@@ -33,7 +33,9 @@ import {
   Info,
   Volume2,
   Bug,
-  Menu
+  Menu,
+  History,
+  RotateCcw
 } from 'lucide-react';
 import { ProjectState, ProjectStep, ResearchDocument, NavItem, ProjectMetadata, RoadmapPhase } from './types';
 import * as GeminiService from './services/geminiService';
@@ -652,15 +654,104 @@ const ResearchPage = () => {
 };
 
 const PrdPage = () => {
-  const { state, generateArtifact, updatePrd } = useProject();
+  const { state, generateArtifact, updatePrd, revertToPrdVersion } = useProject();
   const [isExporting, setIsExporting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState("");
   const [showRefineModal, setShowRefineModal] = useState(false);
   const [refineInstruction, setRefineInstruction] = useState("");
   const [isRefining, setIsRefining] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
+  const versionHistoryRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { showConfetti, triggerConfetti, handleConfettiComplete } = useConfetti();
+
+  // Close menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
+        setShowExportMenu(false);
+      }
+      if (versionHistoryRef.current && !versionHistoryRef.current.contains(e.target as Node)) {
+        setShowVersionHistory(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Format timestamp for display
+  const formatVersionTime = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+  };
+
+  const handleRevertVersion = (versionId: string) => {
+    if (confirm('This will restore this version as your current PRD. Your current PRD will be saved to history. Continue?')) {
+      revertToPrdVersion(versionId);
+      setShowVersionHistory(false);
+    }
+  };
+
+  // Export functions
+  const exportAsMarkdown = () => {
+    const blob = new Blob([state.prdOutput], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${state.title.replace(/[^a-z0-9]/gi, '_')}_PRD.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setShowExportMenu(false);
+  };
+
+  const exportAsPlainText = () => {
+    // Strip markdown formatting for plain text
+    const plainText = state.prdOutput
+      .replace(/#{1,6}\s/g, '') // Remove headers
+      .replace(/\*\*([^*]+)\*\*/g, '$1') // Remove bold
+      .replace(/\*([^*]+)\*/g, '$1') // Remove italic
+      .replace(/`([^`]+)`/g, '$1') // Remove inline code
+      .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links, keep text
+      .replace(/^\s*[-*+]\s/gm, '• ') // Convert list markers to bullets
+      .replace(/^\s*\d+\.\s/gm, '• '); // Convert numbered lists to bullets
+
+    const blob = new Blob([plainText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${state.title.replace(/[^a-z0-9]/gi, '_')}_PRD.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setShowExportMenu(false);
+  };
+
+  const exportAsPDF = () => {
+    setIsExporting(true);
+    setShowExportMenu(false);
+    setTimeout(() => {
+      exportToPDF('prd-pdf-export-overlay', 'Project_PRD.pdf')
+        .catch(err => console.error(err))
+        .finally(() => setIsExporting(false));
+    }, 500);
+  };
 
   // Sync state to local edit buffer when entering edit mode or when PRD changes
   useEffect(() => {
@@ -813,27 +904,124 @@ const PrdPage = () => {
                   ) : (
                     state.prdOutput && (
                       <>
-                        <button
-                          onClick={() => {
-                            setIsExporting(true);
-                            setTimeout(() => {
-                              exportToPDF('prd-pdf-export-overlay', 'Project_PRD.pdf')
-                                .catch(err => console.error(err))
-                                .finally(() => setIsExporting(false));
-                            }, 500);
-                          }}
-                          disabled={isExporting}
-                          className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-slate-300 hover:bg-gray-50 hover:text-gray-900 dark:hover:text-white dark:hover:border-orange-500/50 transition-colors disabled:opacity-50"
-                          title="Save as PDF"
-                        >
-                          {isExporting ? <div className="w-3.5 h-3.5 border-2 border-gray-400 dark:border-white/30 border-t-gray-700 dark:border-t-white rounded-full animate-spin"></div> : <ArrowDownToLine className="w-3.5 h-3.5" />}
-                          {isExporting ? 'Exporting...' : 'Export PDF'}
-                        </button>
+                        {/* Export Dropdown */}
+                        <div ref={exportMenuRef} className="relative">
+                          <button
+                            onClick={() => setShowExportMenu(!showExportMenu)}
+                            disabled={isExporting}
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-slate-300 hover:bg-gray-50 hover:text-gray-900 dark:hover:text-white dark:hover:border-orange-500/50 transition-colors disabled:opacity-50"
+                            aria-label="Export options"
+                            aria-expanded={showExportMenu}
+                          >
+                            {isExporting ? (
+                              <div className="w-3.5 h-3.5 border-2 border-gray-400 dark:border-white/30 border-t-gray-700 dark:border-t-white rounded-full animate-spin" />
+                            ) : (
+                              <ArrowDownToLine className="w-3.5 h-3.5" />
+                            )}
+                            {isExporting ? 'Exporting...' : 'Export'}
+                            <ChevronRight className={`w-3 h-3 transition-transform ${showExportMenu ? 'rotate-90' : ''}`} />
+                          </button>
+
+                          {/* Export Menu Dropdown */}
+                          {showExportMenu && (
+                            <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-forge-800 border border-gray-200 dark:border-forge-700 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in">
+                              <button
+                                onClick={exportAsPDF}
+                                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-forge-text hover:bg-gray-50 dark:hover:bg-forge-700 transition-colors text-left"
+                              >
+                                <FileText className="w-4 h-4 text-red-500" />
+                                <div>
+                                  <div className="font-medium">PDF Document</div>
+                                  <div className="text-xs text-gray-500 dark:text-forge-muted">Best for sharing</div>
+                                </div>
+                              </button>
+                              <button
+                                onClick={exportAsMarkdown}
+                                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-forge-text hover:bg-gray-50 dark:hover:bg-forge-700 transition-colors text-left border-t border-gray-100 dark:border-forge-700"
+                              >
+                                <Code2 className="w-4 h-4 text-blue-500" />
+                                <div>
+                                  <div className="font-medium">Markdown</div>
+                                  <div className="text-xs text-gray-500 dark:text-forge-muted">For dev tools</div>
+                                </div>
+                              </button>
+                              <button
+                                onClick={exportAsPlainText}
+                                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-forge-text hover:bg-gray-50 dark:hover:bg-forge-700 transition-colors text-left border-t border-gray-100 dark:border-forge-700"
+                              >
+                                <FileIcon className="w-4 h-4 text-gray-500" />
+                                <div>
+                                  <div className="font-medium">Plain Text</div>
+                                  <div className="text-xs text-gray-500 dark:text-forge-muted">Universal format</div>
+                                </div>
+                              </button>
+                            </div>
+                          )}
+                        </div>
                         <CopyButton
                           text={state.prdOutput}
                           className="bg-white dark:bg-slate-900 border-gray-300 dark:border-white/10 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-transparent"
                           title="Copy to Clipboard"
                         />
+
+                        {/* Version History Button */}
+                        <div ref={versionHistoryRef} className="relative">
+                          <button
+                            onClick={() => setShowVersionHistory(!showVersionHistory)}
+                            disabled={!state.prdVersionHistory || state.prdVersionHistory.length === 0}
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-slate-300 hover:bg-gray-50 hover:text-gray-900 dark:hover:text-white dark:hover:border-orange-500/50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                            title="Version History"
+                            aria-label="View version history"
+                          >
+                            <History className="w-3.5 h-3.5" />
+                            {state.prdVersionHistory && state.prdVersionHistory.length > 0 && (
+                              <span className="bg-gray-200 dark:bg-forge-700 px-1.5 py-0.5 rounded text-[10px]">
+                                {state.prdVersionHistory.length}
+                              </span>
+                            )}
+                          </button>
+
+                          {/* Version History Dropdown */}
+                          {showVersionHistory && state.prdVersionHistory && state.prdVersionHistory.length > 0 && (
+                            <div className="absolute right-0 top-full mt-2 w-72 bg-white dark:bg-forge-800 border border-gray-200 dark:border-forge-700 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in">
+                              <div className="p-3 border-b border-gray-100 dark:border-forge-700">
+                                <h4 className="font-semibold text-sm text-gray-900 dark:text-white flex items-center gap-2">
+                                  <History className="w-4 h-4 text-forge-accent" />
+                                  Version History
+                                </h4>
+                                <p className="text-xs text-gray-500 dark:text-forge-muted mt-1">
+                                  Click to restore a previous version
+                                </p>
+                              </div>
+                              <div className="max-h-64 overflow-y-auto">
+                                {[...state.prdVersionHistory].reverse().map((version, index) => (
+                                  <button
+                                    key={version.id}
+                                    onClick={() => handleRevertVersion(version.id)}
+                                    className="w-full flex items-start gap-3 px-3 py-3 text-left hover:bg-gray-50 dark:hover:bg-forge-700 transition-colors border-t border-gray-100 dark:border-forge-700 first:border-t-0 group"
+                                  >
+                                    <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-forge-700 flex items-center justify-center flex-shrink-0 group-hover:bg-forge-accent/20">
+                                      <RotateCcw className="w-3.5 h-3.5 text-gray-500 dark:text-forge-muted group-hover:text-forge-accent" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                          {version.label || 'Version'}
+                                        </span>
+                                        <span className="text-[10px] text-gray-400 dark:text-forge-muted">
+                                          {formatVersionTime(version.timestamp)}
+                                        </span>
+                                      </div>
+                                      <p className="text-xs text-gray-500 dark:text-forge-muted truncate mt-0.5">
+                                        {version.content.substring(0, 60)}...
+                                      </p>
+                                    </div>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </>
                     )
                   )}

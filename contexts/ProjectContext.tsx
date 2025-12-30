@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { ProjectState, ProjectStep, ResearchDocument, ProjectMetadata } from '../types';
+import { ProjectState, ProjectStep, ResearchDocument, ProjectMetadata, PrdVersion } from '../types';
 import * as GeminiService from '../services/geminiService';
 import { MISSING_API_KEY_ERROR } from '../services/geminiService';
 import { saveProject, loadProject, createProject, getUserProjects, deleteProject } from '../services/firebase';
@@ -12,7 +12,7 @@ interface ProjectContextType {
     state: ProjectState;
     addResearch: (file: File) => Promise<void>;
     updateIdea: (idea: string) => void;
-    updatePrd: (prd: string) => void;
+    updatePrd: (prd: string, label?: string) => void;
     updateTitle: (title: string) => void;
     generateArtifact: (step: ProjectStep) => Promise<void>;
     generateResearchPrompt: () => Promise<void>;
@@ -21,6 +21,7 @@ interface ProjectContextType {
     openSettings: () => void;
     openSupport: () => void;
     setCurrentStep: (step: ProjectStep) => void;
+    revertToPrdVersion: (versionId: string) => void;
     currentProjectId?: string;
 }
 
@@ -41,12 +42,24 @@ const initialState: ProjectState = {
     ideaInput: "",
     synthesizedIdea: "",
     prdOutput: "",
+    prdVersionHistory: [],
     roadmapOutput: "",
     designSystemOutput: "",
     codePromptOutput: "",
     isGenerating: false,
     completedRoadmapSteps: []
 };
+
+// Helper to create a new PRD version
+const createPrdVersion = (content: string, label?: string): PrdVersion => ({
+    id: Math.random().toString(36).substr(2, 9),
+    content,
+    timestamp: Date.now(),
+    label
+});
+
+// Max versions to keep (to avoid storage bloat)
+const MAX_PRD_VERSIONS = 10;
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [state, setState] = useState<ProjectState>(initialState);
@@ -201,9 +214,57 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setState(prev => ({ ...prev, ideaInput: idea }));
     };
 
-    const updatePrd = (prd: string) => {
+    const updatePrd = (prd: string, label?: string) => {
         setState(prev => {
-            const newState = { ...prev, prdOutput: prd };
+            // Only save version if content actually changed
+            if (prd === prev.prdOutput) {
+                return prev;
+            }
+
+            // Save current PRD to history before updating (if it exists)
+            let newHistory = prev.prdVersionHistory || [];
+            if (prev.prdOutput && prev.prdOutput.trim()) {
+                // Don't duplicate if last version has same content
+                const lastVersion = newHistory[newHistory.length - 1];
+                if (!lastVersion || lastVersion.content !== prev.prdOutput) {
+                    const versionLabel = label || 'Manual Edit';
+                    newHistory = [...newHistory, createPrdVersion(prev.prdOutput, versionLabel)];
+                    // Keep only last MAX_PRD_VERSIONS
+                    if (newHistory.length > MAX_PRD_VERSIONS) {
+                        newHistory = newHistory.slice(-MAX_PRD_VERSIONS);
+                    }
+                }
+            }
+
+            const newState = {
+                ...prev,
+                prdOutput: prd,
+                prdVersionHistory: newHistory
+            };
+            saveCurrentProject(newState);
+            return newState;
+        });
+    };
+
+    const revertToPrdVersion = (versionId: string) => {
+        setState(prev => {
+            const version = prev.prdVersionHistory?.find(v => v.id === versionId);
+            if (!version) return prev;
+
+            // Save current PRD to history before reverting
+            let newHistory = prev.prdVersionHistory || [];
+            if (prev.prdOutput && prev.prdOutput.trim()) {
+                newHistory = [...newHistory, createPrdVersion(prev.prdOutput, 'Before Revert')];
+                if (newHistory.length > MAX_PRD_VERSIONS) {
+                    newHistory = newHistory.slice(-MAX_PRD_VERSIONS);
+                }
+            }
+
+            const newState = {
+                ...prev,
+                prdOutput: version.content,
+                prdVersionHistory: newHistory
+            };
             saveCurrentProject(newState);
             return newState;
         });
@@ -240,7 +301,18 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
                 // Use synthesized idea if available, otherwise raw
                 const inputIdea = state.synthesizedIdea || state.ideaInput;
                 const result = await GeminiService.generatePRD(inputIdea, state.research);
-                setState(prev => ({ ...prev, prdOutput: result }));
+
+                // Save current PRD to version history before updating
+                setState(prev => {
+                    let newHistory = prev.prdVersionHistory || [];
+                    if (prev.prdOutput && prev.prdOutput.trim()) {
+                        newHistory = [...newHistory, createPrdVersion(prev.prdOutput, 'Before AI Generation')];
+                        if (newHistory.length > MAX_PRD_VERSIONS) {
+                            newHistory = newHistory.slice(-MAX_PRD_VERSIONS);
+                        }
+                    }
+                    return { ...prev, prdOutput: result, prdVersionHistory: newHistory };
+                });
             } else if (step === ProjectStep.CODE) {
                 // Realization Flow: Generate Roadmap (Plan) which includes DIY Prompts
                 // Use synthesized idea if available, otherwise raw
@@ -327,6 +399,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
             openSettings: () => setShowSettings(true),
             openSupport: () => setShowSupportModal(true),
             setCurrentStep,
+            revertToPrdVersion,
             currentProjectId,
             toggleStepCompletion
         }}>

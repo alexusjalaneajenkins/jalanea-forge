@@ -15,6 +15,13 @@ export interface ResearchDocument {
   source: 'upload' | 'manual';
 }
 
+export interface PrdVersion {
+  id: string;
+  content: string;
+  timestamp: number;
+  label?: string; // Optional label like "AI Generated", "Manual Edit", "AI Refined"
+}
+
 export interface ProjectState {
   id?: string;
   updatedAt?: number;
@@ -24,6 +31,7 @@ export interface ProjectState {
   ideaInput: string;
   synthesizedIdea: string;
   prdOutput: string;
+  prdVersionHistory?: PrdVersion[]; // Version history for PRD
   roadmapOutput: string;
   designSystemOutput: string;
   codePromptOutput: string;
