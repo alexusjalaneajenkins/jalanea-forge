@@ -2909,12 +2909,12 @@ video {
   border-color: rgb(99 102 241 / 0.3);
 }
 
-.dark\:border-orange-500\/20:is(.dark *) {
-  border-color: rgb(249 115 22 / 0.2);
+.dark\:border-orange-400\/50:is(.dark *) {
+  border-color: rgb(251 146 60 / 0.5);
 }
 
-.dark\:border-orange-500\/30:is(.dark *) {
-  border-color: rgb(249 115 22 / 0.3);
+.dark\:border-orange-500\/20:is(.dark *) {
+  border-color: rgb(249 115 22 / 0.2);
 }
 
 .dark\:border-slate-600:is(.dark *) {
@@ -3029,18 +3029,8 @@ video {
   background-color: rgb(255 255 255 / 0.05);
 }
 
-.dark\:bg-gradient-to-br:is(.dark *) {
-  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
-}
-
 .dark\:bg-gradient-to-r:is(.dark *) {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
-}
-
-.dark\:from-orange-500\/10:is(.dark *) {
-  --tw-gradient-from: rgb(249 115 22 / 0.1) var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(249 115 22 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
 .dark\:from-white:is(.dark *) {
@@ -3052,10 +3042,6 @@ video {
 .dark\:via-orange-100:is(.dark *) {
   --tw-gradient-to: rgb(255 237 213 / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), #ffedd5 var(--tw-gradient-via-position), var(--tw-gradient-to);
-}
-
-.dark\:to-amber-500\/10:is(.dark *) {
-  --tw-gradient-to: rgb(245 158 11 / 0.1) var(--tw-gradient-to-position);
 }
 
 .dark\:to-orange-200:is(.dark *) {
