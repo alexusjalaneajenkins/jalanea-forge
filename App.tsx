@@ -503,7 +503,7 @@ const ResearchPage = () => {
 
   return (
     <PageBackground glowColor="purple">
-      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10">
+      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8">
         <div className="mb-10 text-center mt-auto md:mt-0">
           <h2 className="text-4xl font-bold text-forge-text mb-3 tracking-tight">Research & Context</h2>
           <p className="text-forge-muted text-lg max-w-2xl mx-auto">
@@ -650,7 +650,7 @@ const PrdPage = () => {
 
   return (
     <PageBackground glowColor="orange">
-      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10">
+      <div className="max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8">
 
         {/* Refine Modal */}
         {showRefineModal && (
@@ -888,7 +888,7 @@ const RealizationPage = () => {
 
   return (
     <PageBackground glowColor="blue">
-      <div className="max-w-5xl mx-auto min-h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10 gap-8 pb-32">
+      <div className="max-w-5xl mx-auto min-h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10 gap-8 pb-32 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8">
 
         {/* Header with Progress */}
         <div className="flex flex-col gap-6">
