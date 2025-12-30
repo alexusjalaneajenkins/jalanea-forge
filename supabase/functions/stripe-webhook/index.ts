@@ -10,10 +10,42 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
 const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET') || '';
 
 // Tier configuration
-const TIER_CONFIG: Record<string, { role: string; generationsLimit: number }> = {
-  starter: { role: 'starter', generationsLimit: 100 },
-  pro: { role: 'pro', generationsLimit: 500 },
+const TIER_CONFIG: Record<string, { role: string; generationsLimit: number; name: string }> = {
+  starter: { role: 'starter', generationsLimit: 100, name: 'Starter' },
+  pro: { role: 'pro', generationsLimit: 500, name: 'Pro' },
 };
+
+// Helper to send emails via the send-email edge function
+async function sendEmail(payload: {
+  type: string;
+  to: string;
+  name: string;
+  plan?: string;
+  generations?: number;
+}) {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
+  const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+
+  try {
+    const response = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${supabaseServiceKey}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('Failed to send email:', error);
+    } else {
+      console.log(`Email sent: ${payload.type} to ${payload.to}`);
+    }
+  } catch (error) {
+    console.error('Email send error:', error);
+  }
+}
 
 serve(async (req) => {
   const signature = req.headers.get('stripe-signature');
@@ -59,6 +91,13 @@ serve(async (req) => {
         const userId = subscription.metadata?.supabase_user_id;
 
         if (userId) {
+          // Get user profile for email
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('email, display_name')
+            .eq('id', userId)
+            .single();
+
           await supabase.from('profiles').update({
             stripe_subscription_id: subscriptionId,
             current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
@@ -68,6 +107,17 @@ serve(async (req) => {
           }).eq('id', userId);
 
           console.log(`User ${userId} upgraded to ${tierConfig.role}`);
+
+          // Send subscription confirmation email
+          if (profile?.email) {
+            await sendEmail({
+              type: 'subscriptionConfirmed',
+              to: profile.email,
+              name: profile.display_name || profile.email.split('@')[0],
+              plan: tierConfig.name,
+              generations: tierConfig.generationsLimit,
+            });
+          }
         }
         break;
       }
@@ -110,7 +160,7 @@ serve(async (req) => {
         // Get user by Stripe customer ID
         const { data: profile } = await supabase
           .from('profiles')
-          .select('id')
+          .select('id, email, display_name')
           .eq('stripe_customer_id', customerId)
           .single();
 
@@ -124,6 +174,15 @@ serve(async (req) => {
           }).eq('id', profile.id);
 
           console.log(`User ${profile.id} downgraded to free tier`);
+
+          // Send cancellation email
+          if (profile.email) {
+            await sendEmail({
+              type: 'subscriptionCancelled',
+              to: profile.email,
+              name: profile.display_name || profile.email.split('@')[0],
+            });
+          }
         }
         break;
       }

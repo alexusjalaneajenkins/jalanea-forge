@@ -42,13 +42,60 @@ export const incrementAiGenerations = async (userId: string): Promise<boolean> =
   // Fall back to manual update since RPC might not exist
   const profile = await getProfile(userId);
   if (profile) {
+    const newUsed = profile.ai_generations_used + 1;
     const { error: updateError } = await supabase
       .from('profiles')
-      .update({ ai_generations_used: profile.ai_generations_used + 1 })
+      .update({ ai_generations_used: newUsed })
       .eq('id', userId);
+
+    if (!updateError) {
+      // Check if we should send a usage alert
+      const percentage = Math.round((newUsed / profile.ai_generations_limit) * 100);
+
+      // Send alert at 80% and 100% thresholds
+      if (percentage === 80 || percentage === 100) {
+        sendUsageAlert(userId, profile.email || '', profile.display_name || '', newUsed, profile.ai_generations_limit, percentage);
+      }
+    }
+
     return !updateError;
   }
   return false;
+};
+
+// Helper to send usage alert emails
+const sendUsageAlert = async (
+  userId: string,
+  email: string,
+  name: string,
+  used: number,
+  limit: number,
+  percentage: number
+) => {
+  if (!email) return;
+
+  try {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    await fetch(`${supabaseUrl}/functions/v1/send-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${supabaseKey}`,
+      },
+      body: JSON.stringify({
+        type: 'usageAlert',
+        to: email,
+        name: name || email.split('@')[0],
+        used,
+        limit,
+        percentage,
+      }),
+    });
+  } catch (error) {
+    console.error('Failed to send usage alert:', error);
+  }
 };
 
 export const canUseAiGeneration = async (userId: string): Promise<boolean> => {

@@ -20,6 +20,32 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+// Helper to send welcome email
+const sendWelcomeEmail = async (email: string, name: string) => {
+  if (!email) return;
+
+  try {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    await fetch(`${supabaseUrl}/functions/v1/send-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${supabaseKey}`,
+      },
+      body: JSON.stringify({
+        type: 'welcome',
+        to: email,
+        name: name || email.split('@')[0],
+      }),
+    });
+    console.log('Welcome email sent to:', email);
+  } catch (error) {
+    console.error('Failed to send welcome email:', error);
+  }
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -77,6 +103,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setTimeout(() => {
             if (mounted) fetchProfile(session.user.id).catch(console.error);
           }, 100);
+
+          // Send welcome email for new signups
+          if (event === 'SIGNED_IN') {
+            const isNewUser = session.user.created_at &&
+              (Date.now() - new Date(session.user.created_at).getTime()) < 60000; // Created within last minute
+
+            if (isNewUser) {
+              sendWelcomeEmail(
+                session.user.email || '',
+                session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'there'
+              );
+            }
+          }
         } else {
           setProfile(null);
         }
