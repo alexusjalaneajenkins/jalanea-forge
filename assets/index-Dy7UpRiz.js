@@ -77834,7 +77834,7 @@ function(t2) {
   }, t2.loadImageFile = t2.loadFile;
 }(E.API), function(e) {
   function n() {
-    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-Db1bvoNN.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
+    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-B6YqTnnx.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
       return Promise.reject(new Error("Could not load html2canvas: " + t2));
     }).then(function(t2) {
       return t2.default ? t2.default : t2;
@@ -78531,7 +78531,7 @@ function(t2) {
   var h2 = l2.getContext("2d");
   h2.fillStyle = "#fff", h2.fillRect(0, 0, l2.width, l2.height);
   var f2 = { ignoreMouse: true, ignoreAnimation: true, ignoreDimensions: true }, d2 = this;
-  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-CFB7WQ6F.js"), true ? [] : void 0)).catch(function(t3) {
+  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-D74etFWq.js"), true ? [] : void 0)).catch(function(t3) {
     return Promise.reject(new Error("Could not load canvg: " + t3));
   }).then(function(t3) {
     return t3.default ? t3.default : t3;
@@ -98821,25 +98821,25 @@ const RealizationPage = () => {
                       " View AI Studio Prompts"
                     ] }),
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 space-y-3 animate-in slide-in-from-top-2 duration-200", children: [
-                      step.systemPrompt && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-950 rounded-lg border border-indigo-500/30 overflow-hidden", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-indigo-500/10 px-3 py-1.5 flex justify-between items-center border-b border-indigo-500/10", children: [
+                      step.systemPrompt && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-gray-50 dark:bg-slate-950 rounded-lg border border-gray-200 dark:border-indigo-500/30 overflow-hidden", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-white dark:bg-indigo-500/10 px-3 py-1.5 flex justify-between items-center border-b border-gray-200 dark:border-indigo-500/10", children: [
                           /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-bold text-indigo-400 tracking-wider flex items-center gap-2", children: [
                             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-indigo-400" }),
                             " System Instructions"
                           ] }),
                           /* @__PURE__ */ jsxRuntimeExports.jsx(CopyButton, { text: step.systemPrompt, className: "hover:text-indigo-300" })
                         ] }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "text-xs font-mono text-indigo-200/80 whitespace-pre-wrap leading-relaxed", children: step.systemPrompt }) })
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "text-xs font-mono text-gray-800 dark:text-indigo-200/80 whitespace-pre-wrap leading-relaxed", children: step.systemPrompt }) })
                       ] }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-950 rounded-lg border border-white/10 overflow-hidden", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-white/5 px-3 py-1.5 flex justify-between items-center border-b border-white/5", children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-2", children: [
-                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-slate-400" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-gray-50 dark:bg-slate-950 rounded-lg border border-gray-200 dark:border-white/10 overflow-hidden", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-white dark:bg-white/5 px-3 py-1.5 flex justify-between items-center border-b border-gray-200 dark:border-white/5", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider flex items-center gap-2", children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-slate-400" }),
                             " User Prompt"
                           ] }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx(CopyButton, { text: step.diyPrompt || step.technicalBrief, className: "hover:text-white" })
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(CopyButton, { text: step.diyPrompt || step.technicalBrief, className: "text-gray-400 hover:text-gray-600 dark:hover:text-white" })
                         ] }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "text-xs font-mono text-slate-300 whitespace-pre-wrap leading-relaxed", children: step.diyPrompt || step.technicalBrief }) })
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "text-xs font-mono text-gray-800 dark:text-slate-300 whitespace-pre-wrap leading-relaxed", children: step.diyPrompt || step.technicalBrief }) })
                       ] })
                     ] })
                   ] })
