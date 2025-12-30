@@ -111,6 +111,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('OAuth response:', { data, error });
 
       if (error) throw error;
+
+      // Manually redirect to the OAuth URL
+      if (data?.url) {
+        console.log('Redirecting to:', data.url);
+        window.location.href = data.url;
+      }
     } catch (error: any) {
       console.error('Error signing in with Google:', error);
       let msg = 'Failed to sign in with Google.';
