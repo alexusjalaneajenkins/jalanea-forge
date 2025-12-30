@@ -77834,7 +77834,7 @@ function(t2) {
   }, t2.loadImageFile = t2.loadFile;
 }(E.API), function(e) {
   function n() {
-    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-TNWjVnCD.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
+    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-Cx8vz0Nv.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
       return Promise.reject(new Error("Could not load html2canvas: " + t2));
     }).then(function(t2) {
       return t2.default ? t2.default : t2;
@@ -78531,7 +78531,7 @@ function(t2) {
   var h2 = l2.getContext("2d");
   h2.fillStyle = "#fff", h2.fillRect(0, 0, l2.width, l2.height);
   var f2 = { ignoreMouse: true, ignoreAnimation: true, ignoreDimensions: true }, d2 = this;
-  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-D9Ozdn6_.js"), true ? [] : void 0)).catch(function(t3) {
+  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-Dxcfe1Ev.js"), true ? [] : void 0)).catch(function(t3) {
     return Promise.reject(new Error("Could not load canvg: " + t3));
   }).then(function(t3) {
     return t3.default ? t3.default : t3;
@@ -98481,7 +98481,7 @@ const PrdPage = () => {
       setIsRefining(false);
     }
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(PageBackground, { glowColor: "orange", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8", children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(PageBackground, { glowColor: "orange", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto min-h-full flex flex-col justify-center p-6 md:p-12 animate-fade-in relative z-10 bg-slate-50 dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8", children: [
     showRefineModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full max-w-lg bg-forge-900 border border-forge-700 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 bg-orange-500/20 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-orange-400" }) }),
@@ -98528,7 +98528,7 @@ const PrdPage = () => {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 no-print", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-4xl font-bold text-forge-text mb-2 tracking-tight", children: "Product Requirements" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-forge-muted text-lg", children: "Synthesize your Idea and Research into a structured PRD." })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-600 dark:text-forge-muted text-lg", children: "Synthesize your Idea and Research into a structured PRD." })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [
         state.prdOutput && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
@@ -98536,9 +98536,9 @@ const PrdPage = () => {
             "button",
             {
               onClick: () => setShowRefineModal(true),
-              className: "bg-forge-800 hover:bg-forge-700 text-orange-200 border border-orange-500/20 px-4 py-3 rounded-xl font-bold transition-all flex items-center gap-2",
+              className: "bg-white hover:bg-orange-50 dark:bg-forge-800 dark:hover:bg-forge-700 text-orange-600 dark:text-orange-200 border-2 border-orange-200 dark:border-orange-500/20 px-4 py-3 rounded-xl font-bold transition-all flex items-center gap-2",
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-orange-400" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-orange-500 dark:text-orange-400" }),
                 " Refine"
               ]
             }
@@ -98547,7 +98547,7 @@ const PrdPage = () => {
             "button",
             {
               onClick: () => setIsEditing(!isEditing),
-              className: `px-4 py-3 rounded-xl font-bold transition-all flex items-center gap-2 border ${isEditing ? "bg-orange-500 text-white border-orange-400" : "bg-forge-800 text-forge-muted border-forge-700 hover:text-white"}`,
+              className: `px-4 py-3 rounded-xl font-bold transition-all flex items-center gap-2 border ${isEditing ? "bg-orange-500 text-white border-orange-400" : "bg-gray-100 hover:bg-gray-200 text-slate-700 border-gray-200 dark:bg-forge-800 dark:text-forge-muted dark:border-forge-700 dark:hover:text-white"}`,
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Pen, { className: "w-4 h-4" }),
                 " ",
