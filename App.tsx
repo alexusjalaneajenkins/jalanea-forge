@@ -939,9 +939,9 @@ const RealizationPage = () => {
 
           {/* Progress Bar (Gamification) */}
           {state.roadmapOutput && (
-            <div className="bg-slate-900/50 p-4 rounded-xl border border-white/10 flex items-center gap-4">
+            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/10 flex items-center gap-4">
               <div className="flex-1">
-                <div className="flex justify-between text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">
+                <div className="flex justify-between text-xs font-bold text-slate-900 dark:text-slate-400 mb-2 uppercase tracking-wide">
                   <span>Project Velocity</span>
                   <span className={progressPercent === 100 ? "text-green-400" : "text-blue-400"}>{progressPercent}% Complete</span>
                 </div>
@@ -994,7 +994,7 @@ const RealizationPage = () => {
             {roadmapPhases.map((phase: any, i: number) => {
               const isOpen = expandedPhase === i;
               return (
-                <div key={i} className={`rounded-xl border transition-all duration-300 overflow-hidden ${isOpen ? 'bg-white/5 border-blue-500/30 ring-1 ring-blue-500/20' : 'bg-transparent border-white/10 hover:border-white/20'}`}>
+                <div key={i} className={`rounded-xl border transition-all duration-300 overflow-hidden ${isOpen ? 'bg-white dark:bg-white/5 border-blue-500/30 ring-1 ring-blue-500/20' : 'bg-transparent border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20'}`}>
 
                   {/* Phase Header (Accordion Trigger) */}
                   <button
@@ -1006,7 +1006,7 @@ const RealizationPage = () => {
                         {i + 1}
                       </div>
                       <div>
-                        <h3 className={`text-xl font-bold transition-colors ${isOpen ? 'text-white' : 'text-slate-300'}`}>{phase.phaseName || phase.title}</h3>
+                        <h3 className={`text-xl font-bold transition-colors ${isOpen ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-slate-300'}`}>{phase.phaseName || phase.title}</h3>
                         <p className="text-sm text-slate-500">{phase.description?.substring(0, 60)}...</p>
                       </div>
                     </div>
@@ -1036,12 +1036,12 @@ const RealizationPage = () => {
                           const badge = getBadge(step.stepName);
 
                           return (
-                            <div key={j} className={`group relative p-5 rounded-xl border transition-all duration-300 ${isComplete ? 'bg-green-900/10 border-green-500/30 opacity-75' : 'bg-black/40 border-white/10 hover:border-blue-500/40'}`}>
+                            <div key={j} className={`group relative p-5 rounded-xl border transition-all duration-300 ${isComplete ? 'bg-green-50 dark:bg-green-900/10 border-green-500/30 opacity-75' : 'bg-white dark:bg-black/40 border-slate-200 dark:border-white/10 hover:border-blue-500/40'}`}>
                               <div className="flex items-start gap-4">
                                 {/* Checkbox (Gamification) */}
                                 <button
                                   onClick={() => toggleStepCompletion(stepId)}
-                                  className={`mt-1 w-6 h-6 rounded-md border flex items-center justify-center transition-all ${isComplete ? 'bg-green-500 border-green-500 text-white' : 'bg-slate-900 border-slate-600 hover:border-blue-400 text-transparent'}`}
+                                  className={`mt-1 w-6 h-6 rounded-md border flex items-center justify-center transition-all ${isComplete ? 'bg-green-500 border-green-500 text-white' : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 hover:border-blue-400 text-transparent'}`}
                                 >
                                   <Check className="w-4 h-4" />
                                 </button>
@@ -1049,7 +1049,7 @@ const RealizationPage = () => {
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-3 mb-1">
                                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${badge.color}`}>{badge.label}</span>
-                                    <h5 className={`font-bold text-lg ${isComplete ? 'text-green-200 line-through' : 'text-white'}`}>{step.stepName}</h5>
+                                    <h5 className={`font-bold text-lg ${isComplete ? 'text-green-600 dark:text-green-200 line-through' : 'text-gray-900 dark:text-white'}`}>{step.stepName}</h5>
                                     {/* Outer Copy Button removed to encourage opening details for full context */}
                                   </div>
 
