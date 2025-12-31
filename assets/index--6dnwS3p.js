@@ -58963,6 +58963,51 @@ const AdminPanel = () => {
     ] })
   ] });
 };
+const LandingPage = () => {
+  const navigate = useNavigate();
+  const { signInWithGoogle } = useAuth();
+  const handleTryNow = () => {
+    navigate("/app");
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-forge-950 flex flex-col items-center justify-center relative overflow-hidden px-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-orange-500/20 rounded-full blur-[150px] pointer-events-none" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-indigo-500/20 rounded-full blur-[150px] pointer-events-none" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10 text-center max-w-2xl mx-auto animate-fade-in", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3 mb-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-xl bg-forge-accent flex items-center justify-center shadow-lg shadow-orange-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-7 h-7 text-white" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-2xl tracking-tight text-forge-text", children: "JALANEA FORGE" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-4xl sm:text-5xl md:text-6xl font-bold text-forge-text mb-6 leading-tight", children: [
+        "Turn Ideas into",
+        " ",
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600", children: "Products" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-lg sm:text-xl text-forge-muted mb-10 max-w-lg mx-auto", children: "AI-powered product design. Go from idea to PRD to roadmap in minutes." }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-center gap-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: handleTryNow,
+            className: "group flex items-center gap-2 bg-forge-accent hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-105",
+            children: [
+              "Try it now",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-5 h-5 group-hover:translate-x-1 transition-transform" })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: signInWithGoogle,
+            className: "flex items-center gap-2 bg-forge-800 hover:bg-forge-700 text-forge-text font-medium px-8 py-4 rounded-xl border border-forge-700 hover:border-forge-600 transition-all",
+            children: "Sign in with Google"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-forge-500 mt-8", children: "No credit card required. 25 free AI generations." })
+    ] })
+  ] });
+};
 var html2pdf$1 = { exports: {} };
 const scriptRel = "modulepreload";
 const assetsURL = function(dep) {
@@ -69020,7 +69065,7 @@ function(t2) {
   }, t2.loadImageFile = t2.loadFile;
 }(E.API), function(e) {
   function n() {
-    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-DWMWjE7y.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
+    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-7soBt0Th.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
       return Promise.reject(new Error("Could not load html2canvas: " + t2));
     }).then(function(t2) {
       return t2.default ? t2.default : t2;
@@ -69717,7 +69762,7 @@ function(t2) {
   var h2 = l2.getContext("2d");
   h2.fillStyle = "#fff", h2.fillRect(0, 0, l2.width, l2.height);
   var f2 = { ignoreMouse: true, ignoreAnimation: true, ignoreDimensions: true }, d2 = this;
-  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-T3B7komf.js"), true ? [] : void 0)).catch(function(t3) {
+  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-Dxz-47G2.js"), true ? [] : void 0)).catch(function(t3) {
     return Promise.reject(new Error("Could not load canvg: " + t3));
   }).then(function(t3) {
     return t3.default ? t3.default : t3;
@@ -90473,6 +90518,9 @@ const Layout = () => {
     window.location.hash = path2;
     setMobileMenuOpen(false);
   };
+  if (!user && location2.pathname === "/") {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(LandingPage, {});
+  }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex flex-col bg-forge-900 text-forge-text selection:bg-orange-100 selection:text-orange-900", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#main-content", className: "skip-link", children: "Skip to main content" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Header, { onMenuToggle: () => setMobileMenuOpen(!mobileMenuOpen) }),
@@ -90646,6 +90694,7 @@ const Layout = () => {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("main", { id: "main-content", className: "flex-1 overflow-auto bg-forge-900 relative", role: "main", "aria-label": "Main content", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Routes, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/", element: /* @__PURE__ */ jsxRuntimeExports.jsx(IdeaPage, {}) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/app", element: /* @__PURE__ */ jsxRuntimeExports.jsx(IdeaPage, {}) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/research", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ResearchPage, {}) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/prd", element: /* @__PURE__ */ jsxRuntimeExports.jsx(PrdPage, {}) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/realization", element: /* @__PURE__ */ jsxRuntimeExports.jsx(RealizationPage, {}) }),
