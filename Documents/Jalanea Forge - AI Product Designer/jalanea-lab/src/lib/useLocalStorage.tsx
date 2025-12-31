@@ -32,9 +32,8 @@ export function useLocalStorage() {
     setIsLoading(false);
   }, []);
 
-  // Save data to localStorage whenever it changes
-  const saveData = useCallback((newData: ProjectData) => {
-    setData(newData);
+  // Save to localStorage helper
+  const persistToStorage = useCallback((newData: ProjectData) => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
     } catch (error) {
@@ -42,53 +41,68 @@ export function useLocalStorage() {
     }
   }, []);
 
-  // Update a specific section
+  // Save data to localStorage whenever it changes
+  const saveData = useCallback((newData: ProjectData) => {
+    setData(newData);
+    persistToStorage(newData);
+  }, [persistToStorage]);
+
+  // Update a specific section - uses functional update to avoid stale closures
   const updateSection = useCallback(<K extends keyof ProjectData>(
     section: K,
     updater: (current: ProjectData[K]) => ProjectData[K]
   ) => {
-    if (!data) return;
-    const newData = {
-      ...data,
-      [section]: updater(data[section]),
-    };
-    saveData(newData);
-  }, [data, saveData]);
+    setData(prevData => {
+      if (!prevData) return prevData;
+      const newData = {
+        ...prevData,
+        [section]: updater(prevData[section]),
+      };
+      persistToStorage(newData);
+      return newData;
+    });
+  }, [persistToStorage]);
 
-  // Add activity entry
+  // Add activity entry - uses functional update to avoid stale closures
   const addActivity = useCallback((
     type: 'experiment' | 'client' | 'deploy' | 'tool' | 'note',
     action: string,
     target: string
   ) => {
-    if (!data) return;
-    const newActivity = {
-      id: Date.now().toString(),
-      type,
-      action,
-      target,
-      timestamp: new Date().toISOString(),
-    };
-    const newData = {
-      ...data,
-      activity: [newActivity, ...data.activity.slice(0, 19)], // Keep last 20
-    };
-    saveData(newData);
-  }, [data, saveData]);
+    setData(prevData => {
+      if (!prevData) return prevData;
+      const newActivity = {
+        id: Date.now().toString(),
+        type,
+        action,
+        target,
+        timestamp: new Date().toISOString(),
+      };
+      const newData = {
+        ...prevData,
+        activity: [newActivity, ...prevData.activity.slice(0, 19)], // Keep last 20
+      };
+      persistToStorage(newData);
+      return newData;
+    });
+  }, [persistToStorage]);
 
-  // Recalculate stats based on current data
+  // Recalculate stats based on current data - uses functional update
   const recalculateStats = useCallback(() => {
-    if (!data) return;
-    const lab = data.lab;
-    const newStats = {
-      totalProjects: lab.length,
-      activeExperiments: lab.filter(p => p.status === 'building' || p.status === 'testing').length,
-      liveProducts: lab.filter(p => p.status === 'graduated').length,
-      ideasInQueue: lab.filter(p => p.status === 'idea').length,
-    };
-    const newData = { ...data, stats: newStats };
-    saveData(newData);
-  }, [data, saveData]);
+    setData(prevData => {
+      if (!prevData) return prevData;
+      const lab = prevData.lab;
+      const newStats = {
+        totalProjects: lab.length,
+        activeExperiments: lab.filter(p => p.status === 'building' || p.status === 'testing').length,
+        liveProducts: lab.filter(p => p.status === 'graduated').length,
+        ideasInQueue: lab.filter(p => p.status === 'idea').length,
+      };
+      const newData = { ...prevData, stats: newStats };
+      persistToStorage(newData);
+      return newData;
+    });
+  }, [persistToStorage]);
 
   // Export data as JSON
   const exportData = useCallback(() => {
