@@ -14927,23 +14927,12 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$L = [
+const __iconNode$K = [
   ["path", { d: "M12 17V3", key: "1cwfxf" }],
   ["path", { d: "m6 11 6 6 6-6", key: "12ii2o" }],
   ["path", { d: "M19 21H5", key: "150jfl" }]
 ];
-const ArrowDownToLine = createLucideIcon("arrow-down-to-line", __iconNode$L);
-/**
- * @license lucide-react v0.556.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$K = [
-  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
-  ["path", { d: "M19 12H5", key: "x3x0zl" }]
-];
-const ArrowLeft = createLucideIcon("arrow-left", __iconNode$K);
+const ArrowDownToLine = createLucideIcon("arrow-down-to-line", __iconNode$K);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -14951,10 +14940,10 @@ const ArrowLeft = createLucideIcon("arrow-left", __iconNode$K);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$J = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
+  ["path", { d: "M19 12H5", key: "x3x0zl" }]
 ];
-const ArrowRight = createLucideIcon("arrow-right", __iconNode$J);
+const ArrowLeft = createLucideIcon("arrow-left", __iconNode$J);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -14962,6 +14951,17 @@ const ArrowRight = createLucideIcon("arrow-right", __iconNode$J);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$I = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+];
+const ArrowRight = createLucideIcon("arrow-right", __iconNode$I);
+/**
+ * @license lucide-react v0.556.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$H = [
   ["path", { d: "M12 7v14", key: "1akyts" }],
   [
     "path",
@@ -14971,14 +14971,14 @@ const __iconNode$I = [
     }
   ]
 ];
-const BookOpen = createLucideIcon("book-open", __iconNode$I);
+const BookOpen = createLucideIcon("book-open", __iconNode$H);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$H = [
+const __iconNode$G = [
   ["path", { d: "M12 18V5", key: "adv99a" }],
   ["path", { d: "M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4", key: "1e3is1" }],
   ["path", { d: "M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5", key: "1gqd8o" }],
@@ -14988,14 +14988,14 @@ const __iconNode$H = [
   ["path", { d: "M6 18a4 4 0 0 1-2-7.464", key: "k1g0md" }],
   ["path", { d: "M6.003 5.125a4 4 0 0 0-2.526 5.77", key: "q97ue3" }]
 ];
-const Brain = createLucideIcon("brain", __iconNode$H);
+const Brain = createLucideIcon("brain", __iconNode$G);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$G = [
+const __iconNode$F = [
   ["path", { d: "M12 20v-9", key: "1qisl0" }],
   ["path", { d: "M14 7a4 4 0 0 1 4 4v3a6 6 0 0 1-12 0v-3a4 4 0 0 1 4-4z", key: "uouzyp" }],
   ["path", { d: "M14.12 3.88 16 2", key: "qol33r" }],
@@ -15008,64 +15008,52 @@ const __iconNode$G = [
   ["path", { d: "m8 2 1.88 1.88", key: "fmnt4t" }],
   ["path", { d: "M9 7.13V6a3 3 0 1 1 6 0v1.13", key: "1vgav8" }]
 ];
-const Bug = createLucideIcon("bug", __iconNode$G);
+const Bug = createLucideIcon("bug", __iconNode$F);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$F = [
+const __iconNode$E = [
   ["path", { d: "M3 3v16a2 2 0 0 0 2 2h16", key: "c24i48" }],
   ["path", { d: "M18 17V9", key: "2bz60n" }],
   ["path", { d: "M13 17V5", key: "1frdt8" }],
   ["path", { d: "M8 17v-3", key: "17ska0" }]
 ];
-const ChartColumn = createLucideIcon("chart-column", __iconNode$F);
+const ChartColumn = createLucideIcon("chart-column", __iconNode$E);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$E = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-const Check = createLucideIcon("check", __iconNode$E);
+const __iconNode$D = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$D);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$D = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
-const ChevronDown = createLucideIcon("chevron-down", __iconNode$D);
+const __iconNode$C = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("chevron-down", __iconNode$C);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$C = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
-const ChevronLeft = createLucideIcon("chevron-left", __iconNode$C);
+const __iconNode$B = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
+const ChevronLeft = createLucideIcon("chevron-left", __iconNode$B);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$B = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
-const ChevronRight = createLucideIcon("chevron-right", __iconNode$B);
-/**
- * @license lucide-react v0.556.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$A = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["line", { x1: "12", x2: "12", y1: "8", y2: "12", key: "1pkeuh" }],
-  ["line", { x1: "12", x2: "12.01", y1: "16", y2: "16", key: "4dfq90" }]
-];
-const CircleAlert = createLucideIcon("circle-alert", __iconNode$A);
+const __iconNode$A = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("chevron-right", __iconNode$A);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15074,10 +15062,10 @@ const CircleAlert = createLucideIcon("circle-alert", __iconNode$A);
  */
 const __iconNode$z = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3", key: "1u773s" }],
-  ["path", { d: "M12 17h.01", key: "p32p05" }]
+  ["line", { x1: "12", x2: "12", y1: "8", y2: "12", key: "1pkeuh" }],
+  ["line", { x1: "12", x2: "12.01", y1: "16", y2: "16", key: "4dfq90" }]
 ];
-const CircleQuestionMark = createLucideIcon("circle-question-mark", __iconNode$z);
+const CircleAlert = createLucideIcon("circle-alert", __iconNode$z);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15085,10 +15073,11 @@ const CircleQuestionMark = createLucideIcon("circle-question-mark", __iconNode$z
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$y = [
-  ["path", { d: "M12 6v6l4 2", key: "mmk7yg" }],
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }]
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3", key: "1u773s" }],
+  ["path", { d: "M12 17h.01", key: "p32p05" }]
 ];
-const Clock = createLucideIcon("clock", __iconNode$y);
+const CircleQuestionMark = createLucideIcon("circle-question-mark", __iconNode$y);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15096,11 +15085,10 @@ const Clock = createLucideIcon("clock", __iconNode$y);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$x = [
-  ["path", { d: "m18 16 4-4-4-4", key: "1inbqp" }],
-  ["path", { d: "m6 8-4 4 4 4", key: "15zrgr" }],
-  ["path", { d: "m14.5 4-5 16", key: "e7oirm" }]
+  ["path", { d: "M12 6v6l4 2", key: "mmk7yg" }],
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }]
 ];
-const CodeXml = createLucideIcon("code-xml", __iconNode$x);
+const Clock = createLucideIcon("clock", __iconNode$x);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15108,10 +15096,11 @@ const CodeXml = createLucideIcon("code-xml", __iconNode$x);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$w = [
-  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
-  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+  ["path", { d: "m18 16 4-4-4-4", key: "1inbqp" }],
+  ["path", { d: "m6 8-4 4 4 4", key: "15zrgr" }],
+  ["path", { d: "m14.5 4-5 16", key: "e7oirm" }]
 ];
-const Copy = createLucideIcon("copy", __iconNode$w);
+const CodeXml = createLucideIcon("code-xml", __iconNode$w);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15119,10 +15108,10 @@ const Copy = createLucideIcon("copy", __iconNode$w);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$v = [
-  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
-  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
 ];
-const CreditCard = createLucideIcon("credit-card", __iconNode$v);
+const Copy = createLucideIcon("copy", __iconNode$v);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15130,11 +15119,10 @@ const CreditCard = createLucideIcon("credit-card", __iconNode$v);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$u = [
-  ["path", { d: "M12 15V3", key: "m9g1x1" }],
-  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
-  ["path", { d: "m7 10 5 5 5-5", key: "brsn70" }]
+  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
+  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
 ];
-const Download = createLucideIcon("download", __iconNode$u);
+const CreditCard = createLucideIcon("credit-card", __iconNode$u);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15142,11 +15130,11 @@ const Download = createLucideIcon("download", __iconNode$u);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$t = [
-  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
-  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
-  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
+  ["path", { d: "M12 15V3", key: "m9g1x1" }],
+  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
+  ["path", { d: "m7 10 5 5 5-5", key: "brsn70" }]
 ];
-const ExternalLink = createLucideIcon("external-link", __iconNode$t);
+const Download = createLucideIcon("download", __iconNode$t);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15154,19 +15142,11 @@ const ExternalLink = createLucideIcon("external-link", __iconNode$t);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$s = [
-  [
-    "path",
-    {
-      d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
-      key: "1oefj6"
-    }
-  ],
-  ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
-  ["path", { d: "M10 9H8", key: "b1mrlr" }],
-  ["path", { d: "M16 13H8", key: "t4e002" }],
-  ["path", { d: "M16 17H8", key: "z1uh3a" }]
+  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+  ["path", { d: "M10 14 21 3", key: "gplh6r" }],
+  ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
 ];
-const FileText = createLucideIcon("file-text", __iconNode$s);
+const ExternalLink = createLucideIcon("external-link", __iconNode$s);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15181,9 +15161,12 @@ const __iconNode$r = [
       key: "1oefj6"
     }
   ],
-  ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }]
+  ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
+  ["path", { d: "M10 9H8", key: "b1mrlr" }],
+  ["path", { d: "M16 13H8", key: "t4e002" }],
+  ["path", { d: "M16 17H8", key: "z1uh3a" }]
 ];
-const File$1 = createLucideIcon("file", __iconNode$r);
+const FileText = createLucideIcon("file-text", __iconNode$r);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15194,12 +15177,13 @@ const __iconNode$q = [
   [
     "path",
     {
-      d: "m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2",
-      key: "usdka0"
+      d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+      key: "1oefj6"
     }
-  ]
+  ],
+  ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }]
 ];
-const FolderOpen = createLucideIcon("folder-open", __iconNode$q);
+const File$1 = createLucideIcon("file", __iconNode$q);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15210,12 +15194,12 @@ const __iconNode$p = [
   [
     "path",
     {
-      d: "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z",
-      key: "1kt360"
+      d: "m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2",
+      key: "usdka0"
     }
   ]
 ];
-const Folder = createLucideIcon("folder", __iconNode$p);
+const FolderOpen = createLucideIcon("folder-open", __iconNode$p);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15223,11 +15207,15 @@ const Folder = createLucideIcon("folder", __iconNode$p);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$o = [
-  ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
-  ["path", { d: "M3 3v5h5", key: "1xhq8a" }],
-  ["path", { d: "M12 7v5l4 2", key: "1fdv2h" }]
+  [
+    "path",
+    {
+      d: "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z",
+      key: "1kt360"
+    }
+  ]
 ];
-const History = createLucideIcon("history", __iconNode$o);
+const Folder = createLucideIcon("folder", __iconNode$o);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15235,11 +15223,11 @@ const History = createLucideIcon("history", __iconNode$o);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$n = [
-  ["path", { d: "m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4", key: "g0fldk" }],
-  ["path", { d: "m21 2-9.6 9.6", key: "1j0ho8" }],
-  ["circle", { cx: "7.5", cy: "15.5", r: "5.5", key: "yqb3hr" }]
+  ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
+  ["path", { d: "M3 3v5h5", key: "1xhq8a" }],
+  ["path", { d: "M12 7v5l4 2", key: "1fdv2h" }]
 ];
-const Key = createLucideIcon("key", __iconNode$n);
+const History = createLucideIcon("history", __iconNode$n);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15247,6 +15235,18 @@ const Key = createLucideIcon("key", __iconNode$n);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$m = [
+  ["path", { d: "m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4", key: "g0fldk" }],
+  ["path", { d: "m21 2-9.6 9.6", key: "1j0ho8" }],
+  ["circle", { cx: "7.5", cy: "15.5", r: "5.5", key: "yqb3hr" }]
+];
+const Key = createLucideIcon("key", __iconNode$m);
+/**
+ * @license lucide-react v0.556.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$l = [
   [
     "path",
     {
@@ -15257,27 +15257,15 @@ const __iconNode$m = [
   ["path", { d: "M9 18h6", key: "x1upvd" }],
   ["path", { d: "M10 22h4", key: "ceow96" }]
 ];
-const Lightbulb = createLucideIcon("lightbulb", __iconNode$m);
+const Lightbulb = createLucideIcon("lightbulb", __iconNode$l);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$l = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
-const LoaderCircle = createLucideIcon("loader-circle", __iconNode$l);
-/**
- * @license lucide-react v0.556.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$k = [
-  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
-  ["path", { d: "M21 12H9", key: "dn1m92" }],
-  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
-];
-const LogOut = createLucideIcon("log-out", __iconNode$k);
+const __iconNode$k = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
+const LoaderCircle = createLucideIcon("loader-circle", __iconNode$k);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15285,10 +15273,11 @@ const LogOut = createLucideIcon("log-out", __iconNode$k);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$j = [
-  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
-  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
+  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
+  ["path", { d: "M21 12H9", key: "dn1m92" }],
+  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
 ];
-const Mail = createLucideIcon("mail", __iconNode$j);
+const LogOut = createLucideIcon("log-out", __iconNode$j);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15296,6 +15285,17 @@ const Mail = createLucideIcon("mail", __iconNode$j);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$i = [
+  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
+  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
+];
+const Mail = createLucideIcon("mail", __iconNode$i);
+/**
+ * @license lucide-react v0.556.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$h = [
   [
     "path",
     {
@@ -15306,19 +15306,7 @@ const __iconNode$i = [
   ["path", { d: "M15 5.764v15", key: "1pn4in" }],
   ["path", { d: "M9 3.236v15", key: "1uimfh" }]
 ];
-const Map$1 = createLucideIcon("map", __iconNode$i);
-/**
- * @license lucide-react v0.556.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$h = [
-  ["path", { d: "M4 5h16", key: "1tepv9" }],
-  ["path", { d: "M4 12h16", key: "1lakjw" }],
-  ["path", { d: "M4 19h16", key: "1djgab" }]
-];
-const Menu = createLucideIcon("menu", __iconNode$h);
+const Map$1 = createLucideIcon("map", __iconNode$h);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15326,15 +15314,11 @@ const Menu = createLucideIcon("menu", __iconNode$h);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$g = [
-  [
-    "path",
-    {
-      d: "M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401",
-      key: "kfwtm"
-    }
-  ]
+  ["path", { d: "M4 5h16", key: "1tepv9" }],
+  ["path", { d: "M4 12h16", key: "1lakjw" }],
+  ["path", { d: "M4 19h16", key: "1djgab" }]
 ];
-const Moon = createLucideIcon("moon", __iconNode$g);
+const Menu = createLucideIcon("menu", __iconNode$g);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15345,12 +15329,12 @@ const __iconNode$f = [
   [
     "path",
     {
-      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
-      key: "1a8usu"
+      d: "M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401",
+      key: "kfwtm"
     }
   ]
 ];
-const Pen = createLucideIcon("pen", __iconNode$f);
+const Moon = createLucideIcon("moon", __iconNode$f);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15358,10 +15342,15 @@ const Pen = createLucideIcon("pen", __iconNode$f);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$e = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "M12 5v14", key: "s699le" }]
+  [
+    "path",
+    {
+      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+      key: "1a8usu"
+    }
+  ]
 ];
-const Plus = createLucideIcon("plus", __iconNode$e);
+const Pen = createLucideIcon("pen", __iconNode$e);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15369,12 +15358,10 @@ const Plus = createLucideIcon("plus", __iconNode$e);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$d = [
-  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
-  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
-  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
-  ["path", { d: "M8 16H3v5", key: "1cv678" }]
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
 ];
-const RefreshCw = createLucideIcon("refresh-cw", __iconNode$d);
+const Plus = createLucideIcon("plus", __iconNode$d);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15382,10 +15369,12 @@ const RefreshCw = createLucideIcon("refresh-cw", __iconNode$d);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$c = [
-  ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
-  ["path", { d: "M3 3v5h5", key: "1xhq8a" }]
+  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
+  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
+  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
+  ["path", { d: "M8 16H3v5", key: "1cv678" }]
 ];
-const RotateCcw = createLucideIcon("rotate-ccw", __iconNode$c);
+const RefreshCw = createLucideIcon("refresh-cw", __iconNode$c);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15393,10 +15382,10 @@ const RotateCcw = createLucideIcon("rotate-ccw", __iconNode$c);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$b = [
-  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
-  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+  ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
+  ["path", { d: "M3 3v5h5", key: "1xhq8a" }]
 ];
-const Search = createLucideIcon("search", __iconNode$b);
+const RotateCcw = createLucideIcon("rotate-ccw", __iconNode$b);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15404,16 +15393,10 @@ const Search = createLucideIcon("search", __iconNode$b);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$a = [
-  [
-    "path",
-    {
-      d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915",
-      key: "1i5ecw"
-    }
-  ],
-  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
 ];
-const Settings = createLucideIcon("settings", __iconNode$a);
+const Search = createLucideIcon("search", __iconNode$a);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15424,12 +15407,13 @@ const __iconNode$9 = [
   [
     "path",
     {
-      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
-      key: "oel41y"
+      d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915",
+      key: "1i5ecw"
     }
-  ]
+  ],
+  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
 ];
-const Shield = createLucideIcon("shield", __iconNode$9);
+const Settings = createLucideIcon("settings", __iconNode$9);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -15437,6 +15421,22 @@ const Shield = createLucideIcon("shield", __iconNode$9);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$8 = [
+  [
+    "path",
+    {
+      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+      key: "oel41y"
+    }
+  ]
+];
+const Shield = createLucideIcon("shield", __iconNode$8);
+/**
+ * @license lucide-react v0.556.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$7 = [
   [
     "path",
     {
@@ -15448,14 +15448,14 @@ const __iconNode$8 = [
   ["path", { d: "M22 4h-4", key: "gwowj6" }],
   ["circle", { cx: "4", cy: "20", r: "2", key: "6kqj1y" }]
 ];
-const Sparkles = createLucideIcon("sparkles", __iconNode$8);
+const Sparkles = createLucideIcon("sparkles", __iconNode$7);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$7 = [
+const __iconNode$6 = [
   ["circle", { cx: "12", cy: "12", r: "4", key: "4exip2" }],
   ["path", { d: "M12 2v2", key: "tus03m" }],
   ["path", { d: "M12 20v2", key: "1lh1kg" }],
@@ -15466,18 +15466,7 @@ const __iconNode$7 = [
   ["path", { d: "m6.34 17.66-1.41 1.41", key: "1m8zz5" }],
   ["path", { d: "m19.07 4.93-1.41 1.41", key: "1shlcs" }]
 ];
-const Sun = createLucideIcon("sun", __iconNode$7);
-/**
- * @license lucide-react v0.556.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$6 = [
-  ["path", { d: "M12 19h8", key: "baeox8" }],
-  ["path", { d: "m4 17 6-6-6-6", key: "1yngyt" }]
-];
-const Terminal = createLucideIcon("terminal", __iconNode$6);
+const Sun = createLucideIcon("sun", __iconNode$6);
 /**
  * @license lucide-react v0.556.0 - ISC
  *
@@ -32318,53 +32307,111 @@ ${doc.content}
 const generatePlan = async (prd) => {
   const ai = getClient();
   const prompt = `
-    Based on the following PRD, create a step-by-step Implementation Plan (Roadmap).
+    Based on the following PRD, create a developer-focused Implementation Roadmap.
 
     PRD CONTENT:
     ${prd}
 
     TASK:
-    Create a phased roadmap (Phase 1: MVP, Phase 2: Polish, Phase 3: Scale).
-    
-    CRITICAL OUTPUT FORMAT:
-    You must output a strictly valid JSON array of objects. Do not wrap in markdown or code blocks.
-    Each object must have:
-    - "phaseName": string (e.g., "Phase 1: MVP")
-    - "description": string (Summary of goals)
-    - "steps": array of objects, where each object has:
-        - "stepName": string (e.g., "Setup Authentication")
-        - "description": string (User-facing summary)
-    - "technicalBrief": string (Explanation of complexity)
-        - "systemPrompt": string (Google AI Studio SYSTEM INSTRUCTION. Must define the Persona, Tech Stack, and Coding Standards. e.g. "You are a Senior React Engineer. Stack: Next.js 14, Tailwind. Rules: Use TypeScript, functional components...")
-        - "diyPrompt": string (Google AI Studio USER PROMPT. The specific task instruction. e.g. "Create a responsive Navbar component with the following links...")
-        - "hirePitch": string (A concise reason to hire an expert, e.g., "Authentication security errors can cost $10k+ to fix.")
+    Create a 4-phase development roadmap:
+    - Phase 1: Frontend (UI components, pages, styling, responsive design)
+    - Phase 2: Backend (API routes, authentication, business logic, services)
+    - Phase 3: Database (Schema design, migrations, models, relationships)
+    - Phase 4: Integration (Connecting layers, deployment config, environment setup)
 
-    Example Output Structure:
+    CRITICAL OUTPUT FORMAT:
+    Output a strictly valid JSON array. No markdown code blocks.
+
+    Each phase object must have:
+    - "phaseId": number (1-4)
+    - "phaseName": "Frontend" | "Backend" | "Database" | "Integration"
+    - "phaseIcon": string (emoji: "🎨" for Frontend, "⚙️" for Backend, "🗄️" for Database, "🔗" for Integration)
+    - "description": string (Summary of this phase's goals)
+    - "tasks": array of task objects
+
+    Each task object must have:
+    - "taskId": string (unique, e.g., "fe-1", "be-2", "db-3", "int-4")
+    - "taskName": string (e.g., "Create Navigation Component")
+    - "category": "component" | "page" | "api" | "service" | "schema" | "migration" | "config" | "deployment"
+    - "estimatedMinutes": number (realistic estimate: 15, 30, 45, 60, 90, 120, etc.)
+    - "complexity": 1 | 2 | 3 (1=easy, 2=medium, 3=hard)
+    - "description": string (What this task accomplishes)
+    - "systemInstruction": string (Google AI Studio System Instructions - see format below)
+    - "userPrompt": string (Google AI Studio User Prompt - see format below)
+    - "hirePitch": string (Why hiring an expert helps for this task)
+    - "deliverables": array of strings (What they'd get if hiring, e.g., ["Production-ready component", "Unit tests", "Storybook docs"])
+
+    SYSTEM INSTRUCTION FORMAT (for systemInstruction field):
+    "<role>
+You are an expert [Frontend/Backend/Database] developer specializing in [tech from PRD].
+You write clean, production-ready code following modern best practices.
+</role>
+
+<project_context>
+Project: [Project Name from PRD]
+Tech Stack: [Extract tech stack from PRD]
+</project_context>
+
+<constraints>
+- Use TypeScript with strict mode
+- Follow framework conventions
+- Include error handling and loading states
+- Write accessible HTML (ARIA labels, semantic elements)
+- Mobile-first responsive design
+</constraints>
+
+<output_format>
+1. **File Path**: Where this code should be saved
+2. **Code**: Complete, runnable code block
+3. **Dependencies**: Any packages to install
+4. **Usage**: How to use/import this
+</output_format>"
+
+    USER PROMPT FORMAT (for userPrompt field):
+    "<task>
+[Specific task description]
+</task>
+
+<requirements>
+[List of requirements from PRD for this specific component/feature]
+</requirements>
+
+<specifications>
+[Technical specs like props, inputs, API shape, schema fields]
+</specifications>"
+
+    EXAMPLE OUTPUT:
     [
-      { 
-        "phaseName": "Phase 1: Foundation", 
-        "description": "...", 
-        "steps": [
-           { 
-             "stepName": "Setup Next.js", 
-             "description": "Initialize the app repo.", 
-             "technicalBrief": "...", 
-             "systemPrompt": "Act as a Senior React Engineer. You are building 'DogWalkerAI'.
-Stack: Next.js 14, Supabase, Tailwind, Framer Motion.
-Coding Standards: Functional components, TypeScript, strict types.",
-             "diyPrompt": "Initialize a new Next.js 14 project using the App Router. Remove the default boilerplate css. Setup the folder structure for 'components', 'lib', and 'hooks'.", 
-             "hirePitch": "..." 
-           }
+      {
+        "phaseId": 1,
+        "phaseName": "Frontend",
+        "phaseIcon": "🎨",
+        "description": "Build the user interface components and pages",
+        "tasks": [
+          {
+            "taskId": "fe-1",
+            "taskName": "Create Navigation Component",
+            "category": "component",
+            "estimatedMinutes": 45,
+            "complexity": 1,
+            "description": "Build a responsive navigation bar with logo, links, and mobile menu",
+            "systemInstruction": "<role>\\nYou are an expert Frontend developer specializing in React and Tailwind CSS.\\n</role>\\n\\n<project_context>\\nProject: TaskFlow\\nTech Stack: React, TypeScript, Tailwind CSS\\n</project_context>\\n\\n<constraints>\\n- Use TypeScript with strict mode\\n- Mobile-first responsive design\\n</constraints>\\n\\n<output_format>\\n1. **File Path**: src/components/Navigation.tsx\\n2. **Code**: Complete component\\n3. **Dependencies**: None additional\\n4. **Usage**: Import in layout\\n</output_format>",
+            "userPrompt": "<task>\\nCreate a responsive navigation component\\n</task>\\n\\n<requirements>\\n- Logo on left\\n- Navigation links: Home, Features, Pricing\\n- Mobile hamburger menu\\n</requirements>\\n\\n<specifications>\\n- Props: none (uses router for active state)\\n- Breakpoint: md (768px) for mobile/desktop\\n</specifications>",
+            "hirePitch": "A polished navigation sets the tone for your entire app. An expert ensures pixel-perfect responsive behavior.",
+            "deliverables": ["Responsive Nav component", "Mobile drawer menu", "Active link styling"]
+          }
         ]
       }
     ]
+
+    Generate 3-6 tasks per phase based on the PRD complexity. Be specific to the actual project requirements.
   `;
   const response = await generateContentWithRetry(
     ai,
     "gemini-3-flash-preview",
     prompt,
     {
-      systemInstruction: "You are a Technical Project Manager. You advocate for the 'Hybrid' approach: letting users build simple things (DIY) but identifying high-risk areas where hiring an expert is smarter. Return raw JSON."
+      systemInstruction: "You are a Senior Technical Architect. You create detailed, actionable development roadmaps that help developers build products efficiently. You advocate for the 'Hybrid' approach: DIY for learning, hire experts for high-risk areas. Return raw JSON only."
     }
   );
   let text2 = response.text || "[]";
@@ -69020,7 +69067,7 @@ function(t2) {
   }, t2.loadImageFile = t2.loadFile;
 }(E.API), function(e) {
   function n() {
-    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-DWMWjE7y.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
+    return (i.html2canvas ? Promise.resolve(i.html2canvas) : __vitePreload(() => import("./html2canvas-DJQ7TSNV.js").then((n2) => n2.h), true ? [] : void 0)).catch(function(t2) {
       return Promise.reject(new Error("Could not load html2canvas: " + t2));
     }).then(function(t2) {
       return t2.default ? t2.default : t2;
@@ -69717,7 +69764,7 @@ function(t2) {
   var h2 = l2.getContext("2d");
   h2.fillStyle = "#fff", h2.fillRect(0, 0, l2.width, l2.height);
   var f2 = { ignoreMouse: true, ignoreAnimation: true, ignoreDimensions: true }, d2 = this;
-  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-T3B7komf.js"), true ? [] : void 0)).catch(function(t3) {
+  return (i.canvg ? Promise.resolve(i.canvg) : __vitePreload(() => import("./index.es-DoLA7UfN.js"), true ? [] : void 0)).catch(function(t3) {
     return Promise.reject(new Error("Could not load canvg: " + t3));
   }).then(function(t3) {
     return t3.default ? t3.default : t3;
@@ -90152,93 +90199,253 @@ const PrdPage = () => {
   ] }) });
 };
 const RealizationPage = () => {
+  var _a2;
   const { state, generateArtifact, toggleStepCompletion } = useProject();
-  const [expandedPhase, setExpandedPhase] = reactExports.useState(0);
-  const [showHireModal, setShowHireModal] = reactExports.useState(false);
-  let roadmapPhases = [];
+  const [buildPath, setBuildPath] = reactExports.useState(null);
+  const [activePhase, setActivePhase] = reactExports.useState(0);
+  const [expandedTasks, setExpandedTasks] = reactExports.useState(/* @__PURE__ */ new Set());
+  const [copiedId, setCopiedId] = reactExports.useState(null);
+  let realizationPhases = [];
   try {
     if (state.roadmapOutput) {
       const jsonStr = state.roadmapOutput.replace(/```json/g, "").replace(/```/g, "").trim();
       const parsed = JSON.parse(jsonStr);
-      roadmapPhases = Array.isArray(parsed) ? parsed : parsed.phases || [];
+      realizationPhases = Array.isArray(parsed) ? parsed : parsed.phases || [];
     }
   } catch (e) {
-    console.error("Failed to parse roadmap usage", e);
+    console.error("Failed to parse roadmap", e);
   }
-  const allSteps = roadmapPhases.flatMap((p2, pIdx) => {
-    var _a2;
-    return (_a2 = p2.steps) == null ? void 0 : _a2.map((s2, sIdx) => ({ ...s2, id: `${pIdx}-${sIdx}` }));
-  });
-  const totalSteps = allSteps.length;
+  const allTasks = realizationPhases.flatMap((p2) => p2.tasks || p2.steps || []);
+  const totalTasks = allTasks.length;
   const completedCount = (state.completedRoadmapSteps || []).length;
-  const progressPercent = totalSteps > 0 ? Math.round(completedCount / totalSteps * 100) : 0;
-  const getBadge = (name2) => {
-    const n = name2.toLowerCase();
-    if (n.includes("setup") || n.includes("init") || n.includes("config")) return { label: "Setup", color: "bg-slate-100 text-slate-700 dark:bg-slate-500/20 dark:text-slate-300" };
-    if (n.includes("database") || n.includes("auth") || n.includes("backend") || n.includes("api")) return { label: "Backend", color: "bg-emerald-100 text-emerald-800 dark:bg-green-500/20 dark:text-green-300" };
-    if (n.includes("ui") || n.includes("frontend") || n.includes("component") || n.includes("page")) return { label: "Frontend", color: "bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-300" };
-    return { label: "Task", color: "bg-slate-100 text-slate-700 dark:bg-slate-500/20 dark:text-slate-300" };
+  const progressPercent = totalTasks > 0 ? Math.round(completedCount / totalTasks * 100) : 0;
+  const totalMinutes = allTasks.reduce((sum, t2) => sum + (t2.estimatedMinutes || 30), 0);
+  const totalHours = Math.round(totalMinutes / 60);
+  const phaseIcons = {
+    "Frontend": "🎨",
+    "Backend": "⚙️",
+    "Database": "🗄️",
+    "Integration": "🔗"
+  };
+  const copyToClipboard = async (text2, id) => {
+    try {
+      await navigator.clipboard.writeText(text2);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2e3);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+  const toggleTask = (taskId) => {
+    setExpandedTasks((prev) => {
+      const next = new Set(prev);
+      if (next.has(taskId)) {
+        next.delete(taskId);
+      } else {
+        next.add(taskId);
+      }
+      return next;
+    });
+  };
+  const ComplexityStars = ({ level }) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-0.5", title: `Complexity: ${level === 1 ? "Easy" : level === 2 ? "Medium" : "Hard"}`, children: [1, 2, 3].map((i2) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-2 h-2 rounded-full ${i2 <= level ? "bg-forge-accent" : "bg-forge-700"}` }, i2)) });
+  const currentPhase = realizationPhases[activePhase];
+  const currentTasks = (currentPhase == null ? void 0 : currentPhase.tasks) || (currentPhase == null ? void 0 : currentPhase.steps) || [];
+  const getPhaseProgress = (phaseIndex) => {
+    const phase = realizationPhases[phaseIndex];
+    const tasks = (phase == null ? void 0 : phase.tasks) || (phase == null ? void 0 : phase.steps) || [];
+    const completed = tasks.filter(
+      (_2, idx) => (state.completedRoadmapSteps || []).includes(`${phaseIndex}-${idx}`)
+    ).length;
+    return { completed, total: tasks.length };
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(PageBackground, { glowColor: "blue", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto min-h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10 gap-8 pb-32 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col md:flex-row md:items-end justify-between gap-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-4xl font-bold text-forge-text mb-2 tracking-tight flex items-center gap-3", children: [
-            "Realization Engine",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              HelpTooltip,
-              {
-                content: "Your implementation roadmap broken into phases and tasks. Each task includes AI prompts you can copy directly into Google AI Studio or your preferred coding assistant.",
-                title: "Implementation Guide",
-                size: "md"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-forge-muted text-lg", children: "Execute your plan: Task by task." })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col md:flex-row md:items-end justify-between gap-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-4xl font-bold text-forge-text mb-2 tracking-tight flex items-center gap-3", children: [
+          "Realization Engine",
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            HelpTooltip,
+            {
+              content: "Your implementation roadmap broken into 4 development phases. Choose DIY mode for AI-powered prompts or Hire mode for professional help.",
+              title: "Build Your Product",
+              size: "md"
+            }
+          )
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          state.roadmapOutput && !state.isGenerating && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-forge-muted text-lg", children: "Choose your build path and execute." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+        state.roadmapOutput && !state.isGenerating && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              if (window.confirm("Regenerating will reset your progress. Continue?")) {
+                setBuildPath(null);
+                generateArtifact(ProjectStep.CODE);
+              }
+            },
+            className: "text-slate-400 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-colors text-sm font-medium flex items-center gap-2",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-4 h-4" }),
+              " Regenerate"
+            ]
+          }
+        ),
+        !state.roadmapOutput && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => generateArtifact(ProjectStep.CODE),
+            disabled: state.isGenerating || !state.prdOutput,
+            className: "bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] flex items-center gap-2 group",
+            children: state.isGenerating ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" }),
+              "Generating..."
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 group-hover:rotate-12 transition-transform" }),
+              "Generate Roadmap"
+            ] })
+          }
+        )
+      ] })
+    ] }) }),
+    state.isGenerating ? /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingState, { type: "code", message: "Architecting Solution", subMessage: "Breaking down into Frontend, Backend, Database & Integration phases..." }) : !state.roadmapOutput ? (
+      /* Empty State */
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-forge-muted py-16 border-2 border-dashed border-slate-200 dark:border-white/5 rounded-2xl bg-slate-50 dark:bg-white/5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-6 bg-slate-900 rounded-full mb-6 ring-1 ring-white/10 shadow-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Map$1, { className: "w-12 h-12 text-blue-500" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl font-bold text-forge-text mb-2", children: "Ready to Build?" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-forge-muted max-w-md text-center mb-8", children: "Transform your PRD into a developer-focused roadmap with Frontend, Backend, Database, and Integration phases." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => generateArtifact(ProjectStep.CODE),
+            disabled: !state.prdOutput,
+            className: "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 disabled:grayscale text-white font-bold px-10 py-4 rounded-xl shadow-xl shadow-blue-500/25 transition-all hover:-translate-y-1 flex items-center gap-3",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }),
+              " Initialize Realization Engine"
+            ]
+          }
+        ),
+        !state.prdOutput && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-xs text-red-400 bg-red-900/20 px-3 py-1 rounded-full border border-red-500/20", children: "⚠️ Complete the PRD phase first" })
+      ] })
+    ) : buildPath === null ? (
+      /* Path Selection Screen */
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center py-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-10", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl font-bold text-forge-text mb-3", children: "Choose Your Build Path" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-forge-muted", children: [
+            "Your roadmap has ",
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-forge-accent font-bold", children: [
+              totalTasks,
+              " tasks"
+            ] }),
+            " across 4 development phases",
+            totalHours > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              " (~",
+              totalHours,
+              " hours estimated)"
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              onClick: () => {
-                if (window.confirm("Regenerating the roadmap will overwrite your current progress and tasks. Are you sure?")) {
-                  generateArtifact(ProjectStep.CODE);
-                }
-              },
-              className: "text-slate-400 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-colors text-sm font-medium flex items-center gap-2",
+              onClick: () => setBuildPath("diy"),
+              className: "group relative p-8 rounded-2xl border-2 border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/10 transition-all text-left",
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-4 h-4" }),
-                " Regenerate Plan"
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[60px] pointer-events-none" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-4xl mb-4", children: "🛠️" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-xl font-bold text-forge-text mb-2", children: "Build It Yourself" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "text-sm text-forge-muted space-y-2 mb-6", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-blue-500" }),
+                      " Get AI-powered prompts"
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-blue-500" }),
+                      " Step-by-step guides"
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-blue-500" }),
+                      " Learn as you build"
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3 rounded-xl text-center transition-colors group-hover:shadow-lg group-hover:shadow-blue-500/30", children: "Select This Path" })
+                ] })
               ]
             }
           ),
-          !state.roadmapOutput && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              onClick: () => generateArtifact(ProjectStep.CODE),
-              disabled: state.isGenerating || !state.prdOutput,
-              className: "bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] flex items-center gap-2 group",
-              children: state.isGenerating ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" }),
-                "Generating Plan..."
-              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 group-hover:rotate-12 transition-transform" }),
-                "Generate Roadmap"
-              ] })
+              onClick: () => setBuildPath("hire"),
+              className: "group relative p-8 rounded-2xl border-2 border-slate-200 dark:border-orange-500/30 bg-white dark:bg-white/5 hover:border-orange-500 hover:shadow-xl hover:shadow-orange-500/10 transition-all text-left",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-[60px] pointer-events-none" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-4xl mb-4", children: "🚀" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-xl font-bold text-forge-text mb-2", children: "Hire Jalanea Venture" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "text-sm text-forge-muted space-y-2 mb-6", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-orange-500" }),
+                      " Professional team"
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-orange-500" }),
+                      " Faster delivery"
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-orange-500" }),
+                      " Production-ready code"
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white font-bold px-6 py-3 rounded-xl text-center transition-all flex items-center justify-center gap-2", children: [
+                    "Get a Quote ",
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-4 h-4" })
+                  ] })
+                ] })
+              ]
             }
           )
         ] })
-      ] }),
-      state.roadmapOutput && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/10 flex items-center gap-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+      ] })
+    ) : buildPath === "diy" ? (
+      /* DIY Mode View */
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col gap-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "🛠️" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-bold text-forge-text", children: "Build It Yourself Mode" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => setBuildPath("hire"),
+              className: "text-sm text-forge-muted hover:text-orange-400 transition-colors flex items-center gap-2",
+              children: [
+                "Switch to Hire Mode ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-4 h-4" })
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/10", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs font-bold text-slate-900 dark:text-slate-400 mb-2 uppercase tracking-wide", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Project Velocity" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "Progress: ",
+              completedCount,
+              "/",
+              totalTasks,
+              " tasks"
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: progressPercent === 100 ? "text-green-400" : "text-blue-400", children: [
               progressPercent,
-              "% Complete"
+              "%"
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-2 bg-slate-800 rounded-full overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             "div",
             {
               className: `h-full transition-all duration-700 ease-out ${progressPercent === 100 ? "bg-green-500" : "bg-blue-500"}`,
@@ -90246,166 +90453,267 @@ const RealizationPage = () => {
             }
           ) })
         ] }),
-        progressPercent === 100 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 bg-green-500/10 rounded-full animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-400" }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: realizationPhases.map((phase, idx) => {
+          const progress = getPhaseProgress(idx);
+          const phaseName = phase.phaseName || `Phase ${idx + 1}`;
+          const icon = phase.phaseIcon || phaseIcons[phaseName] || "📦";
+          const isActive = activePhase === idx;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => setActivePhase(idx),
+              className: `flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all ${isActive ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30" : "bg-slate-100 dark:bg-slate-800 text-forge-muted hover:bg-slate-200 dark:hover:bg-slate-700"}`,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: icon }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: phaseName }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `text-xs px-2 py-0.5 rounded-full ${isActive ? "bg-white/20" : "bg-slate-200 dark:bg-slate-700"}`, children: [
+                  progress.completed,
+                  "/",
+                  progress.total
+                ] })
+              ]
+            },
+            idx
+          );
+        }) }),
+        currentPhase && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-white/10", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-forge-muted", children: currentPhase.description }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "a",
+            {
+              href: "https://aistudio.google.com/",
+              target: "_blank",
+              rel: "noopener noreferrer",
+              className: "text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 border border-blue-500/30 px-3 py-1.5 rounded-full hover:bg-blue-500/10 transition-colors whitespace-nowrap",
+              children: [
+                "Open AI Studio ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-3 h-3" })
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: currentTasks.map((task, idx) => {
+          const taskId = task.taskId || `${activePhase}-${idx}`;
+          const stepId = `${activePhase}-${idx}`;
+          const isComplete = (state.completedRoadmapSteps || []).includes(stepId);
+          const isExpanded = expandedTasks.has(taskId);
+          const taskName = task.taskName || task.stepName || `Task ${idx + 1}`;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              className: `rounded-xl border transition-all overflow-hidden ${isComplete ? "bg-green-50 dark:bg-green-900/10 border-green-500/30" : "bg-white dark:bg-slate-800/50 border-slate-200 dark:border-white/10 hover:border-blue-500/30"}`,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 flex items-center gap-4", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      onClick: () => toggleStepCompletion(stepId),
+                      className: `w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all flex-shrink-0 ${isComplete ? "bg-green-500 border-green-500 text-white" : "border-slate-300 dark:border-slate-600 hover:border-blue-400"}`,
+                      children: isComplete && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" })
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: () => toggleTask(taskId),
+                      className: "flex-1 flex items-center justify-between text-left",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-semibold ${isComplete ? "line-through text-green-600 dark:text-green-400" : "text-forge-text"}`, children: taskName }),
+                          task.category && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 uppercase", children: task.category })
+                        ] }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
+                          task.estimatedMinutes && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-forge-muted", children: [
+                            task.estimatedMinutes,
+                            "min"
+                          ] }),
+                          task.complexity && /* @__PURE__ */ jsxRuntimeExports.jsx(ComplexityStars, { level: task.complexity }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: `w-5 h-5 text-forge-muted transition-transform ${isExpanded ? "rotate-90" : ""}` })
+                        ] })
+                      ]
+                    }
+                  )
+                ] }),
+                isExpanded && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pb-4 pt-2 border-t border-slate-100 dark:border-white/5 space-y-4 animate-in slide-in-from-top-2", children: [
+                  task.description && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-forge-muted", children: task.description }),
+                  (task.systemInstruction || task.systemPrompt) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-indigo-500/30 overflow-hidden", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-100 dark:bg-indigo-500/10 px-3 py-2 flex justify-between items-center", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-2", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 rounded-full bg-indigo-500" }),
+                        " System Instruction"
+                      ] }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "button",
+                        {
+                          onClick: () => copyToClipboard(task.systemInstruction || task.systemPrompt, `sys-${taskId}`),
+                          className: "text-xs flex items-center gap-1 text-slate-500 hover:text-indigo-500 transition-colors",
+                          children: copiedId === `sys-${taskId}` ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3 h-3" }),
+                            " Copied!"
+                          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-3 h-3" }),
+                            " Copy"
+                          ] })
+                        }
+                      )
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "p-3 text-xs font-mono text-slate-700 dark:text-indigo-200/80 whitespace-pre-wrap overflow-x-auto max-h-48 overflow-y-auto", children: task.systemInstruction || task.systemPrompt })
+                  ] }),
+                  (task.userPrompt || task.diyPrompt || task.technicalBrief) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-white/10 overflow-hidden", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-100 dark:bg-white/5 px-3 py-2 flex justify-between items-center", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 rounded-full bg-slate-400" }),
+                        " User Prompt"
+                      ] }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "button",
+                        {
+                          onClick: () => copyToClipboard(task.userPrompt || task.diyPrompt || task.technicalBrief, `usr-${taskId}`),
+                          className: "text-xs flex items-center gap-1 text-slate-500 hover:text-blue-500 transition-colors",
+                          children: copiedId === `usr-${taskId}` ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3 h-3" }),
+                            " Copied!"
+                          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-3 h-3" }),
+                            " Copy"
+                          ] })
+                        }
+                      )
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "p-3 text-xs font-mono text-slate-700 dark:text-slate-300 whitespace-pre-wrap overflow-x-auto max-h-48 overflow-y-auto", children: task.userPrompt || task.diyPrompt || task.technicalBrief })
+                  ] }),
+                  !isComplete && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: () => toggleStepCompletion(stepId),
+                      className: "w-full py-2 rounded-lg border border-green-500/30 text-green-600 dark:text-green-400 hover:bg-green-500/10 transition-colors text-sm font-medium flex items-center justify-center gap-2",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+                        " Mark Complete"
+                      ]
+                    }
+                  )
+                ] })
+              ]
+            },
+            taskId
+          );
+        }) })
       ] })
-    ] }),
-    state.isGenerating ? /* @__PURE__ */ jsxRuntimeExports.jsx(LoadingState, { type: "code", message: "Architecting Solution", subMessage: "Breaking down the plan into DIY modules vs Expert tasks..." }) : !state.roadmapOutput ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center text-forge-muted py-16 border-2 border-dashed border-slate-200 dark:border-white/5 rounded-2xl bg-slate-50 dark:bg-white/5 group hover:border-blue-500/20 transition-colors", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-6 bg-slate-900 rounded-full mb-6 group-hover:scale-110 transition-transform duration-500 ring-1 ring-white/10 shadow-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Map$1, { className: "w-12 h-12 text-blue-500" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl font-bold text-forge-text mb-2", children: "Ready to Build?" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-forge-muted max-w-md text-center mb-8", children: "Transform your PRD into a step-by-step technical roadmap. The AI will break down every feature into copy-pasteable code tasks." }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          onClick: () => generateArtifact(ProjectStep.CODE),
-          disabled: !state.prdOutput,
-          className: "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 disabled:grayscale text-white font-bold px-10 py-4 rounded-xl shadow-xl shadow-blue-500/25 transition-all hover:-translate-y-1 flex items-center gap-3",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }),
-            " Initialize Realization Engine"
-          ]
-        }
-      ),
-      !state.prdOutput && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-xs text-red-400 bg-red-900/20 px-3 py-1 rounded-full border border-red-500/20", children: "⚠️ Complete the PRD phase first" })
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-      roadmapPhases.map((phase, i2) => {
-        var _a2, _b2;
-        const isOpen = expandedPhase === i2;
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `rounded-xl border transition-all duration-300 overflow-hidden ${isOpen ? "bg-white dark:bg-white/5 border-blue-500/30 ring-1 ring-blue-500/20" : "bg-transparent border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20"}`, children: [
+    ) : (
+      /* Hire Mode View */
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col gap-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "🚀" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-bold text-forge-text", children: "Hire Jalanea Venture" })
+          ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
-              onClick: () => setExpandedPhase(isOpen ? null : i2),
-              className: "w-full flex items-center justify-between p-6 text-left focus:outline-none",
+              onClick: () => setBuildPath("diy"),
+              className: "text-sm text-forge-muted hover:text-blue-400 transition-colors flex items-center gap-2",
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `p-3 rounded-lg flex items-center justify-center font-bold text-lg w-12 h-12 transition-colors ${isOpen ? "bg-blue-600 text-white" : "bg-slate-800 text-slate-400"}`, children: i2 + 1 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: `text-xl font-bold transition-colors ${isOpen ? "text-gray-900 dark:text-white" : "text-gray-600 dark:text-slate-300"}`, children: phase.phaseName || phase.title }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-500", children: [
-                      (_a2 = phase.description) == null ? void 0 : _a2.substring(0, 60),
-                      "..."
-                    ] })
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `p-2 rounded-full transition-transform duration-300 ${isOpen ? "bg-white/10 rotate-180" : "bg-transparent rotate-0"}`, children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "custom-scrol", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowDownToLine, { className: "w-5 h-5 text-slate-400" }) }),
-                  " "
-                ] })
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-4 h-4 rotate-180" }),
+                " Switch to DIY Mode"
               ]
             }
-          ),
-          isOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-6 pb-6 animate-in slide-in-from-top-4 duration-300", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4 pt-4 border-t border-white/10", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h4", { className: "text-sm font-bold text-gray-500 dark:text-blue-300 uppercase tracking-widest flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(CodeXml, { className: "w-4 h-4" }),
-                " Phase Tasks"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: "https://aistudio.google.com/", target: "_blank", rel: "noopener noreferrer", className: "text-xs text-blue-400 hover:text-white flex items-center gap-1 border border-blue-500/20 px-3 py-1.5 rounded-full hover:bg-blue-500/20 transition-colors", children: [
-                "Open AI Studio ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-3 h-3" })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 gap-4", children: (_b2 = phase.steps) == null ? void 0 : _b2.map((step, j2) => {
-              const stepId = `${i2}-${j2}`;
-              const isComplete = (state.completedRoadmapSteps || []).includes(stepId);
-              const badge = getBadge(step.stepName);
-              return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `group relative p-5 rounded-xl border transition-all duration-300 ${isComplete ? "bg-green-50 dark:bg-green-900/10 border-green-500/30 opacity-75" : "bg-white dark:bg-black/40 border-slate-200 dark:border-white/10 hover:border-blue-500/40"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    onClick: () => toggleStepCompletion(stepId),
-                    className: `mt-1 w-6 h-6 rounded-md border flex items-center justify-center transition-all ${isComplete ? "bg-green-500 border-green-500 text-white" : "bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 hover:border-blue-400 text-transparent"}`,
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" })
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-1", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${badge.color}`, children: badge.label }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h5", { className: `font-bold text-lg ${isComplete ? "text-green-600 dark:text-green-200 line-through" : "text-gray-900 dark:text-white"}`, children: step.stepName })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("details", { className: "group/details", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("summary", { className: "cursor-pointer list-none text-xs font-mono text-slate-400 hover:text-blue-300 transition-colors flex items-center gap-2 mt-2", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Terminal, { className: "w-3 h-3" }),
-                      " View AI Studio Prompts"
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 space-y-3 animate-in slide-in-from-top-2 duration-200", children: [
-                      step.systemPrompt && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-gray-50 dark:bg-slate-950 rounded-lg border border-gray-200 dark:border-indigo-500/30 overflow-hidden", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-white dark:bg-indigo-500/10 px-3 py-1.5 flex justify-between items-center border-b border-gray-200 dark:border-indigo-500/10", children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-bold text-indigo-400 tracking-wider flex items-center gap-2", children: [
-                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-indigo-400" }),
-                            " System Instructions"
-                          ] }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx(CopyButton, { text: step.systemPrompt, className: "hover:text-indigo-300" })
-                        ] }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "text-xs font-mono text-gray-800 dark:text-indigo-200/80 whitespace-pre-wrap leading-relaxed", children: step.systemPrompt }) })
-                      ] }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-gray-50 dark:bg-slate-950 rounded-lg border border-gray-200 dark:border-white/10 overflow-hidden", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-white dark:bg-white/5 px-3 py-1.5 flex justify-between items-center border-b border-gray-200 dark:border-white/5", children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider flex items-center gap-2", children: [
-                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-slate-400" }),
-                            " User Prompt"
-                          ] }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx(CopyButton, { text: step.diyPrompt || step.technicalBrief, className: "text-gray-400 hover:text-gray-600 dark:hover:text-white" })
-                        ] }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 overflow-x-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { className: "text-xs font-mono text-gray-800 dark:text-slate-300 whitespace-pre-wrap leading-relaxed", children: step.diyPrompt || step.technicalBrief }) })
-                      ] })
-                    ] })
-                  ] })
-                ] })
-              ] }) }, j2);
-            }) })
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800/50", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-bold text-forge-text mb-2", children: state.title || "Your Project" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-forge-muted", children: [
+            ((_a2 = state.synthesizedIdea) == null ? void 0 : _a2.substring(0, 200)) || "AI-generated implementation ready for professional development.",
+            "..."
           ] })
-        ] }, i2);
-      }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-12 pt-8 border-t border-white/10 pb-20", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden rounded-2xl border border-gray-200 dark:border-orange-400/50 bg-white dark:bg-slate-900 group transition-all duration-300 hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/20", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px]" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 right-0 w-64 h-64 bg-orange-500/10 dark:bg-orange-500/20 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2 group-hover:bg-orange-500/30 transition-colors duration-500" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-0 left-0 w-64 h-64 bg-amber-500/5 dark:bg-amber-500/10 rounded-full blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2 group-hover:bg-amber-500/20 transition-colors duration-500" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 rounded-full text-[10px] font-bold bg-orange-500 text-white uppercase tracking-widest shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow", children: "Premium" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-orange-300 uppercase tracking-widest group-hover:text-orange-200 transition-colors", children: "Done For You" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-3xl font-bold text-gray-900 dark:text-white mb-3 group-hover:drop-shadow-[0_2px_10px_rgba(249,115,22,0.3)] transition-all", children: "Fast Track Your Launch" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-600 dark:text-slate-300 leading-relaxed mb-6 max-w-xl group-hover:text-gray-900 dark:group-hover:text-white transition-colors", children: "Skip the DIY learning curve. Instead of building from scratch, let our expert team handle the technical heavy lifting so you can focus on scale." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "text-sm text-gray-600 dark:text-slate-400 space-y-2 mb-2 group-hover:text-gray-900 dark:group-hover:text-slate-200 transition-colors", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-orange-500 group-hover:text-orange-400" }),
-                " Professional Implementation"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-orange-500 group-hover:text-orange-400" }),
-                " Scalable Architecture"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-orange-500 group-hover:text-orange-400" }),
-                " 14-Day Delivery Guarantee"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800/50", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-bold text-forge-text mb-4", children: "Scope Breakdown" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+            realizationPhases.map((phase, idx) => {
+              const tasks = phase.tasks || phase.steps || [];
+              const minutes = tasks.reduce((sum, t2) => sum + (t2.estimatedMinutes || 30), 0);
+              const hours = Math.round(minutes / 60);
+              const phaseName = phase.phaseName || `Phase ${idx + 1}`;
+              const icon = phase.phaseIcon || phaseIcons[phaseName] || "📦";
+              return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between py-2 border-b border-slate-100 dark:border-white/5 last:border-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: icon }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-forge-text", children: phaseName })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-sm text-forge-muted", children: [
+                  tasks.length,
+                  " tasks, ~",
+                  hours,
+                  "hrs"
+                ] })
+              ] }, idx);
+            }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between pt-3 border-t-2 border-slate-200 dark:border-white/10 font-bold", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-forge-text", children: "Total" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-forge-accent", children: [
+                totalTasks,
+                " tasks, ~",
+                totalHours,
+                "hrs"
               ] })
             ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 rounded-2xl border border-orange-500/30 bg-orange-50 dark:bg-orange-500/5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-bold text-forge-text mb-4", children: "What You Get" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-3 text-forge-text", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-orange-500" }),
+              " Production-ready codebase"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-3 text-forge-text", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-orange-500" }),
+              " Deployment to your preferred platform"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-3 text-forge-text", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-orange-500" }),
+              " 30-day support after delivery"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-3 text-forge-text", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-orange-500" }),
+              " Documentation & handoff session"
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
             "a",
             {
-              href: "mailto:contact@jalanea.com?subject=Fast%20Track%20Build%20Quote&body=I%20am%20interested%20in%20fast-tracking%20my%20project.",
-              className: "group/btn relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-orange-600 font-lg rounded-2xl focus:outline-none hover:bg-orange-500 hover:scale-[1.03] hover:shadow-2xl hover:shadow-orange-500/40 border border-orange-400/20",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "relative z-10 flex items-center gap-2", children: [
-                "Get a Quote ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-5 h-5 group-hover/btn:translate-x-1 transition-transform" })
-              ] })
+              href: "https://jalaneaventure.com",
+              target: "_blank",
+              rel: "noopener noreferrer",
+              className: "flex-1 bg-orange-600 hover:bg-orange-500 text-white font-bold px-8 py-4 rounded-xl text-center transition-all hover:scale-[1.02] shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2",
+              children: "🚀 Get Started with Jalanea Venture"
             }
-          ) })
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => window.print(),
+              className: "px-6 py-4 rounded-xl border border-slate-200 dark:border-white/10 text-forge-muted hover:text-forge-text hover:border-slate-300 dark:hover:border-white/20 transition-colors flex items-center justify-center gap-2",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Download, { className: "w-5 h-5" }),
+                " Download Brief"
+              ]
+            }
+          )
         ] })
-      ] }) })
-    ] }),
-    !state.isGenerating && state.roadmapOutput && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed bottom-8 right-8 z-50 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-1000", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "a",
+      ] })
+    ),
+    buildPath === "diy" && !state.isGenerating && state.roadmapOutput && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed bottom-8 right-8 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
       {
-        href: "mailto:contact@jalanea.com",
-        className: "group relative flex items-center gap-3 bg-slate-900/80 backdrop-blur-md border border-orange-500/50 text-white pl-4 pr-2 py-2 rounded-full shadow-2xl hover:scale-105 transition-all hover:border-orange-400 hover:shadow-orange-500/20",
+        onClick: () => setBuildPath("hire"),
+        className: "group flex items-center gap-3 bg-slate-900/90 backdrop-blur-md border border-orange-500/50 text-white pl-4 pr-2 py-2 rounded-full shadow-2xl hover:scale-105 transition-all hover:border-orange-400",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-orange-400 group-hover:text-amber-300 transition-colors", children: "Stuck?" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-4 py-2 rounded-full shadow-lg", children: "Fast Track ⚡️" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-orange-400", children: "Stuck?" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-4 py-2 rounded-full", children: "Get Help ⚡️" })
         ]
       }
     ) })
