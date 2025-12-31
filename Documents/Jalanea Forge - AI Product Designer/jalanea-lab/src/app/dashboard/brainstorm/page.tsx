@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Trash2, Sparkles, Bot, Loader2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import { Button } from '@/components';
 
 interface Message {
@@ -190,7 +191,13 @@ export default function BrainstormPage() {
                       : 'bg-lab-bg text-lab-text border border-lab-border'
                   }`}
                 >
-                  <p className="whitespace-pre-wrap text-sm sm:text-base leading-relaxed">{msg.content}</p>
+                  {msg.role === 'user' ? (
+                    <p className="whitespace-pre-wrap text-sm sm:text-base leading-relaxed">{msg.content}</p>
+                  ) : (
+                    <div className="prose prose-invert prose-sm sm:prose-base max-w-none prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-0.5 prose-headings:my-3 prose-pre:bg-lab-card prose-pre:border prose-pre:border-lab-border prose-code:text-purple-400 prose-code:before:content-none prose-code:after:content-none">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
