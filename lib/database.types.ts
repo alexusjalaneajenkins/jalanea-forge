@@ -7,6 +7,7 @@ export interface Profile {
   id: string;
   email: string | null;
   display_name: string | null;
+  avatar_url: string | null;
   role: UserRole;
   api_key_encrypted: string | null;
   ai_generations_used: number;
@@ -45,28 +46,26 @@ export interface Database {
     Tables: {
       profiles: {
         Row: Profile;
-        Insert: Omit<Profile, 'created_at'> & {
-          created_at?: string;
-        };
-        Update: Partial<Omit<Profile, 'id' | 'created_at'>>;
+        Insert: Partial<Profile> & { id: string };
+        Update: Partial<Profile>;
+        Relationships: [];
       };
       projects: {
         Row: Project;
-        Insert: Omit<Project, 'id' | 'created_at' | 'updated_at'> & {
-          id?: string;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: Partial<Omit<Project, 'id' | 'user_id' | 'created_at'>>;
+        Insert: Partial<Project> & { user_id: string };
+        Update: Partial<Project>;
+        Relationships: [];
       };
       usage_logs: {
         Row: UsageLog;
-        Insert: Omit<UsageLog, 'id' | 'created_at'> & {
-          id?: string;
-          created_at?: string;
-        };
-        Update: Partial<Omit<UsageLog, 'id' | 'created_at'>>;
+        Insert: Partial<UsageLog> & { user_id: string; action_type: string };
+        Update: Partial<UsageLog>;
+        Relationships: [];
       };
     };
+    Views: {};
+    Functions: {};
+    Enums: {};
+    CompositeTypes: {};
   };
 }

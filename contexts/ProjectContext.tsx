@@ -24,6 +24,7 @@ interface ProjectContextType {
     openPricing: () => void;
     setCurrentStep: (step: ProjectStep) => void;
     revertToPrdVersion: (versionId: string) => void;
+    toggleStepCompletion: (stepId: string) => void;
     currentProjectId?: string;
 }
 

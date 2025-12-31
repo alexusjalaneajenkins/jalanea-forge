@@ -36,18 +36,22 @@ import {
   Menu,
   History,
   RotateCcw,
-  Shield
+  Shield,
+  LogOut,
+  CreditCard,
+  ChevronDown
 } from 'lucide-react';
 import { ProjectState, ProjectStep, ResearchDocument, NavItem, ProjectMetadata, RoadmapPhase } from './types';
 import * as GeminiService from './services/geminiService';
 import { MarkdownRenderer } from './components/MarkdownRenderer';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
-import { saveProjectState, getProject, createProject, getUserProjects, deleteProject } from './services/supabaseService';
+import { getProject, createProject, getUserProjects, deleteProject } from './services/supabaseService';
 import { ProjectListDialog } from './components/ProjectListDialog';
 import { SettingsModal } from './components/SettingsModal';
 import { SupportModal } from './components/SupportModal';
 import { MISSING_API_KEY_ERROR } from './services/geminiService';
+import { createPortalSession } from './services/stripeService';
 import { ProjectProvider, useProject } from './contexts/ProjectContext';
 import { PageBackground } from './components/PageBackground';
 import { GlassCard } from './components/GlassCard';
@@ -93,6 +97,7 @@ const initialState: ProjectState = {
   researchMissionPrompt: "",
   reportGenerationPrompt: "",
   isGenerating: false,
+  completedRoadmapSteps: [],
 };
 
 // --- Components ---
@@ -174,13 +179,54 @@ const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
   const { openProjectList, state, updateTitle, openSettings, openPricing } = useProject();
   const showUpgrade = profile && (profile.role === 'free' || !profile.role);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [billingLoading, setBillingLoading] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isEditingTitle && titleInputRef.current) {
       titleInputRef.current.focus();
     }
   }, [isEditingTitle]);
+
+  // Close profile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setShowProfileMenu(false);
+      }
+    };
+
+    if (showProfileMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showProfileMenu]);
+
+  const handleManageBilling = async () => {
+    if (!user) return;
+    setBillingLoading(true);
+    try {
+      const baseUrl = window.location.href.split('#')[0];
+      const result = await createPortalSession(user.id, baseUrl);
+      if ('url' in result) {
+        window.location.href = result.url;
+      } else {
+        console.error('Failed to open billing portal:', result.error);
+      }
+    } catch (error) {
+      console.error('Error opening billing portal:', error);
+    } finally {
+      setBillingLoading(false);
+      setShowProfileMenu(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    setShowProfileMenu(false);
+    await logOut();
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') setIsEditingTitle(false);
@@ -271,17 +317,55 @@ const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
               <FolderOpen className="w-5 h-5" />
             </button>
 
-            <div
-              onClick={logOut}
-              className="h-9 w-9 rounded-full bg-forge-800 flex items-center justify-center text-xs font-bold border border-forge-700 text-forge-muted overflow-hidden cursor-pointer hover:border-red-500 hover:text-red-500 transition-all shadow-sm"
-              title="Sign Out"
-              role="button"
-              aria-label="Sign out"
-            >
-              {(profile?.avatar_url || user.user_metadata?.avatar_url) ? (
-                <img src={profile?.avatar_url || user.user_metadata?.avatar_url} alt="Profile" className="h-full w-full object-cover" />
-              ) : (
-                (profile?.display_name || user.user_metadata?.full_name || user.email)?.charAt(0) || 'U'
+            {/* Profile Menu */}
+            <div className="relative" ref={profileMenuRef}>
+              <button
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="flex items-center gap-1.5 rounded-full bg-forge-800 border border-forge-700 hover:border-forge-600 transition-all shadow-sm pl-1 pr-2 py-1"
+                title="Account Menu"
+                aria-label="Open account menu"
+                aria-expanded={showProfileMenu}
+              >
+                <div className="h-7 w-7 rounded-full bg-forge-700 flex items-center justify-center text-xs font-bold text-forge-muted overflow-hidden">
+                  {(profile?.avatar_url || user.user_metadata?.avatar_url) ? (
+                    <img src={profile?.avatar_url || user.user_metadata?.avatar_url} alt="Profile" className="h-full w-full object-cover" />
+                  ) : (
+                    (profile?.display_name || user.user_metadata?.full_name || user.email)?.charAt(0) || 'U'
+                  )}
+                </div>
+                <ChevronDown className={`w-3.5 h-3.5 text-forge-muted transition-transform ${showProfileMenu ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Dropdown Menu */}
+              {showProfileMenu && (
+                <div className="absolute right-0 mt-2 w-56 bg-forge-900 border border-forge-700 rounded-xl shadow-xl shadow-black/20 py-2 z-50 animate-fade-in">
+                  {/* User Info */}
+                  <div className="px-4 py-2 border-b border-forge-700">
+                    <p className="text-sm font-medium text-forge-text truncate">
+                      {profile?.display_name || user.user_metadata?.full_name || 'User'}
+                    </p>
+                    <p className="text-xs text-forge-muted truncate">{user.email}</p>
+                  </div>
+
+                  {/* Menu Items */}
+                  <div className="py-1">
+                    <button
+                      onClick={handleManageBilling}
+                      disabled={billingLoading}
+                      className="w-full px-4 py-2.5 text-left text-sm text-forge-text hover:bg-forge-800 transition-colors flex items-center gap-3 disabled:opacity-50"
+                    >
+                      <CreditCard className="w-4 h-4 text-forge-muted" />
+                      {billingLoading ? 'Loading...' : 'Manage Billing'}
+                    </button>
+                    <button
+                      onClick={handleSignOut}
+                      className="w-full px-4 py-2.5 text-left text-sm text-red-400 hover:bg-forge-800 transition-colors flex items-center gap-3"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>
