@@ -250,44 +250,104 @@ export const generatePRD = async (idea: string, research: ResearchDocument[]): P
 export const generatePlan = async (prd: string): Promise<string> => {
   const ai = getClient();
   const prompt = `
-    Based on the following PRD, create a step-by-step Implementation Plan (Roadmap).
+    Based on the following PRD, create a developer-focused Implementation Roadmap.
 
     PRD CONTENT:
     ${prd}
 
     TASK:
-    Create a phased roadmap (Phase 1: MVP, Phase 2: Polish, Phase 3: Scale).
-    
-    CRITICAL OUTPUT FORMAT:
-    You must output a strictly valid JSON array of objects. Do not wrap in markdown or code blocks.
-    Each object must have:
-    - "phaseName": string (e.g., "Phase 1: MVP")
-    - "description": string (Summary of goals)
-    - "steps": array of objects, where each object has:
-        - "stepName": string (e.g., "Setup Authentication")
-        - "description": string (User-facing summary)
-    - "technicalBrief": string (Explanation of complexity)
-        - "systemPrompt": string (Google AI Studio SYSTEM INSTRUCTION. Must define the Persona, Tech Stack, and Coding Standards. e.g. "You are a Senior React Engineer. Stack: Next.js 14, Tailwind. Rules: Use TypeScript, functional components...")
-        - "diyPrompt": string (Google AI Studio USER PROMPT. The specific task instruction. e.g. "Create a responsive Navbar component with the following links...")
-        - "hirePitch": string (A concise reason to hire an expert, e.g., "Authentication security errors can cost $10k+ to fix.")
+    Create a 4-phase development roadmap:
+    - Phase 1: Frontend (UI components, pages, styling, responsive design)
+    - Phase 2: Backend (API routes, authentication, business logic, services)
+    - Phase 3: Database (Schema design, migrations, models, relationships)
+    - Phase 4: Integration (Connecting layers, deployment config, environment setup)
 
-    Example Output Structure:
+    CRITICAL OUTPUT FORMAT:
+    Output a strictly valid JSON array. No markdown code blocks.
+
+    Each phase object must have:
+    - "phaseId": number (1-4)
+    - "phaseName": "Frontend" | "Backend" | "Database" | "Integration"
+    - "phaseIcon": string (emoji: "🎨" for Frontend, "⚙️" for Backend, "🗄️" for Database, "🔗" for Integration)
+    - "description": string (Summary of this phase's goals)
+    - "tasks": array of task objects
+
+    Each task object must have:
+    - "taskId": string (unique, e.g., "fe-1", "be-2", "db-3", "int-4")
+    - "taskName": string (e.g., "Create Navigation Component")
+    - "category": "component" | "page" | "api" | "service" | "schema" | "migration" | "config" | "deployment"
+    - "estimatedMinutes": number (realistic estimate: 15, 30, 45, 60, 90, 120, etc.)
+    - "complexity": 1 | 2 | 3 (1=easy, 2=medium, 3=hard)
+    - "description": string (What this task accomplishes)
+    - "systemInstruction": string (Google AI Studio System Instructions - see format below)
+    - "userPrompt": string (Google AI Studio User Prompt - see format below)
+    - "hirePitch": string (Why hiring an expert helps for this task)
+    - "deliverables": array of strings (What they'd get if hiring, e.g., ["Production-ready component", "Unit tests", "Storybook docs"])
+
+    SYSTEM INSTRUCTION FORMAT (for systemInstruction field):
+    "<role>
+You are an expert [Frontend/Backend/Database] developer specializing in [tech from PRD].
+You write clean, production-ready code following modern best practices.
+</role>
+
+<project_context>
+Project: [Project Name from PRD]
+Tech Stack: [Extract tech stack from PRD]
+</project_context>
+
+<constraints>
+- Use TypeScript with strict mode
+- Follow framework conventions
+- Include error handling and loading states
+- Write accessible HTML (ARIA labels, semantic elements)
+- Mobile-first responsive design
+</constraints>
+
+<output_format>
+1. **File Path**: Where this code should be saved
+2. **Code**: Complete, runnable code block
+3. **Dependencies**: Any packages to install
+4. **Usage**: How to use/import this
+</output_format>"
+
+    USER PROMPT FORMAT (for userPrompt field):
+    "<task>
+[Specific task description]
+</task>
+
+<requirements>
+[List of requirements from PRD for this specific component/feature]
+</requirements>
+
+<specifications>
+[Technical specs like props, inputs, API shape, schema fields]
+</specifications>"
+
+    EXAMPLE OUTPUT:
     [
-      { 
-        "phaseName": "Phase 1: Foundation", 
-        "description": "...", 
-        "steps": [
-           { 
-             "stepName": "Setup Next.js", 
-             "description": "Initialize the app repo.", 
-             "technicalBrief": "...", 
-             "systemPrompt": "Act as a Senior React Engineer. You are building 'DogWalkerAI'.\nStack: Next.js 14, Supabase, Tailwind, Framer Motion.\nCoding Standards: Functional components, TypeScript, strict types.",
-             "diyPrompt": "Initialize a new Next.js 14 project using the App Router. Remove the default boilerplate css. Setup the folder structure for 'components', 'lib', and 'hooks'.", 
-             "hirePitch": "..." 
-           }
+      {
+        "phaseId": 1,
+        "phaseName": "Frontend",
+        "phaseIcon": "🎨",
+        "description": "Build the user interface components and pages",
+        "tasks": [
+          {
+            "taskId": "fe-1",
+            "taskName": "Create Navigation Component",
+            "category": "component",
+            "estimatedMinutes": 45,
+            "complexity": 1,
+            "description": "Build a responsive navigation bar with logo, links, and mobile menu",
+            "systemInstruction": "<role>\\nYou are an expert Frontend developer specializing in React and Tailwind CSS.\\n</role>\\n\\n<project_context>\\nProject: TaskFlow\\nTech Stack: React, TypeScript, Tailwind CSS\\n</project_context>\\n\\n<constraints>\\n- Use TypeScript with strict mode\\n- Mobile-first responsive design\\n</constraints>\\n\\n<output_format>\\n1. **File Path**: src/components/Navigation.tsx\\n2. **Code**: Complete component\\n3. **Dependencies**: None additional\\n4. **Usage**: Import in layout\\n</output_format>",
+            "userPrompt": "<task>\\nCreate a responsive navigation component\\n</task>\\n\\n<requirements>\\n- Logo on left\\n- Navigation links: Home, Features, Pricing\\n- Mobile hamburger menu\\n</requirements>\\n\\n<specifications>\\n- Props: none (uses router for active state)\\n- Breakpoint: md (768px) for mobile/desktop\\n</specifications>",
+            "hirePitch": "A polished navigation sets the tone for your entire app. An expert ensures pixel-perfect responsive behavior.",
+            "deliverables": ["Responsive Nav component", "Mobile drawer menu", "Active link styling"]
+          }
         ]
       }
     ]
+
+    Generate 3-6 tasks per phase based on the PRD complexity. Be specific to the actual project requirements.
   `;
 
   const response = await generateContentWithRetry(
@@ -295,7 +355,7 @@ export const generatePlan = async (prd: string): Promise<string> => {
     'gemini-3-flash-preview',
     prompt,
     {
-      systemInstruction: "You are a Technical Project Manager. You advocate for the 'Hybrid' approach: letting users build simple things (DIY) but identifying high-risk areas where hiring an expert is smarter. Return raw JSON.",
+      systemInstruction: "You are a Senior Technical Architect. You create detailed, actionable development roadmaps that help developers build products efficiently. You advocate for the 'Hybrid' approach: DIY for learning, hire experts for high-risk areas. Return raw JSON only.",
     }
   );
 

@@ -66,6 +66,33 @@ export interface RoadmapPhase {
   steps: RoadmapStep[];
 }
 
+// Enhanced Realization Engine Types
+export type TaskCategory = 'component' | 'page' | 'api' | 'service' | 'schema' | 'migration' | 'config' | 'deployment';
+export type TaskComplexity = 1 | 2 | 3; // 1=easy, 2=medium, 3=hard
+export type BuildPath = 'diy' | 'hire' | null;
+export type RealizationPhaseName = 'Frontend' | 'Backend' | 'Database' | 'Integration';
+
+export interface RealizationTask {
+  taskId: string;
+  taskName: string;
+  category: TaskCategory;
+  estimatedMinutes: number;
+  complexity: TaskComplexity;
+  description: string;
+  systemInstruction: string;  // Goes in System Instructions panel
+  userPrompt: string;         // Goes in the chat input
+  hirePitch: string;          // Why this task benefits from expert help
+  deliverables: string[];     // What they'd get if hiring
+}
+
+export interface RealizationPhase {
+  phaseId: number;
+  phaseName: RealizationPhaseName;
+  phaseIcon: string; // emoji
+  description: string;
+  tasks: RealizationTask[];
+}
+
 export interface GenerationRequest {
   model: string;
   systemInstruction: string;

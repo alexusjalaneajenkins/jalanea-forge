@@ -1203,72 +1203,122 @@ const PrdPage = () => {
 
 const RealizationPage = () => {
   const { state, generateArtifact, toggleStepCompletion } = useProject();
-  const [expandedPhase, setExpandedPhase] = useState<number | null>(0); // Default open first phase
-  const [showHireModal, setShowHireModal] = useState(false);
+  const [buildPath, setBuildPath] = useState<'diy' | 'hire' | null>(null);
+  const [activePhase, setActivePhase] = useState<number>(0);
+  const [expandedTasks, setExpandedTasks] = useState<Set<string>>(new Set());
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // Safe parsing
-  let roadmapPhases: any[] = [];
+  // Safe parsing for new phase structure
+  let realizationPhases: any[] = [];
   try {
     if (state.roadmapOutput) {
       const jsonStr = state.roadmapOutput.replace(/```json/g, '').replace(/```/g, '').trim();
       const parsed = JSON.parse(jsonStr);
-      roadmapPhases = Array.isArray(parsed) ? parsed : (parsed.phases || []);
+      realizationPhases = Array.isArray(parsed) ? parsed : (parsed.phases || []);
     }
   } catch (e) {
-    console.error("Failed to parse roadmap usage", e);
+    console.error("Failed to parse roadmap", e);
   }
 
-  // Calculate Progress
-  const allSteps = roadmapPhases.flatMap((p, pIdx) => p.steps?.map((s: any, sIdx: number) => ({ ...s, id: `${pIdx}-${sIdx}` })));
-  const totalSteps = allSteps.length;
+  // Calculate totals
+  const allTasks = realizationPhases.flatMap((p: any) => p.tasks || p.steps || []);
+  const totalTasks = allTasks.length;
   const completedCount = (state.completedRoadmapSteps || []).length;
-  const progressPercent = totalSteps > 0 ? Math.round((completedCount / totalSteps) * 100) : 0;
+  const progressPercent = totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0;
 
-  // Helper for Badges
-  const getBadge = (name: string) => {
-    const n = name.toLowerCase();
-    if (n.includes('setup') || n.includes('init') || n.includes('config')) return { label: 'Setup', color: 'bg-slate-100 text-slate-700 dark:bg-slate-500/20 dark:text-slate-300' };
-    if (n.includes('database') || n.includes('auth') || n.includes('backend') || n.includes('api')) return { label: 'Backend', color: 'bg-emerald-100 text-emerald-800 dark:bg-green-500/20 dark:text-green-300' };
-    if (n.includes('ui') || n.includes('frontend') || n.includes('component') || n.includes('page')) return { label: 'Frontend', color: 'bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-300' };
-    return { label: 'Task', color: 'bg-slate-100 text-slate-700 dark:bg-slate-500/20 dark:text-slate-300' };
+  // Calculate total estimated time
+  const totalMinutes = allTasks.reduce((sum: number, t: any) => sum + (t.estimatedMinutes || 30), 0);
+  const totalHours = Math.round(totalMinutes / 60);
+
+  // Phase icons mapping
+  const phaseIcons: Record<string, string> = {
+    'Frontend': '🎨',
+    'Backend': '⚙️',
+    'Database': '🗄️',
+    'Integration': '🔗'
+  };
+
+  // Copy to clipboard with feedback
+  const copyToClipboard = async (text: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  // Toggle task expansion
+  const toggleTask = (taskId: string) => {
+    setExpandedTasks(prev => {
+      const next = new Set(prev);
+      if (next.has(taskId)) {
+        next.delete(taskId);
+      } else {
+        next.add(taskId);
+      }
+      return next;
+    });
+  };
+
+  // Complexity stars
+  const ComplexityStars = ({ level }: { level: number }) => (
+    <div className="flex items-center gap-0.5" title={`Complexity: ${level === 1 ? 'Easy' : level === 2 ? 'Medium' : 'Hard'}`}>
+      {[1, 2, 3].map(i => (
+        <div key={i} className={`w-2 h-2 rounded-full ${i <= level ? 'bg-forge-accent' : 'bg-forge-700'}`} />
+      ))}
+    </div>
+  );
+
+  // Get tasks for current phase
+  const currentPhase = realizationPhases[activePhase];
+  const currentTasks = currentPhase?.tasks || currentPhase?.steps || [];
+
+  // Count completed per phase
+  const getPhaseProgress = (phaseIndex: number) => {
+    const phase = realizationPhases[phaseIndex];
+    const tasks = phase?.tasks || phase?.steps || [];
+    const completed = tasks.filter((_: any, idx: number) =>
+      (state.completedRoadmapSteps || []).includes(`${phaseIndex}-${idx}`)
+    ).length;
+    return { completed, total: tasks.length };
   };
 
   return (
     <PageBackground glowColor="blue">
       <div className="max-w-5xl mx-auto min-h-full flex flex-col p-6 md:p-12 animate-fade-in relative z-10 gap-8 pb-32 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl shadow-xl my-8">
 
-        {/* Header with Progress */}
+        {/* Header */}
         <div className="flex flex-col gap-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <h2 className="text-4xl font-bold text-forge-text mb-2 tracking-tight flex items-center gap-3">
                 Realization Engine
                 <HelpTooltip
-                  content="Your implementation roadmap broken into phases and tasks. Each task includes AI prompts you can copy directly into Google AI Studio or your preferred coding assistant."
-                  title="Implementation Guide"
+                  content="Your implementation roadmap broken into 4 development phases. Choose DIY mode for AI-powered prompts or Hire mode for professional help."
+                  title="Build Your Product"
                   size="md"
                 />
               </h2>
-              <p className="text-forge-muted text-lg">Execute your plan: Task by task.</p>
+              <p className="text-forge-muted text-lg">Choose your build path and execute.</p>
             </div>
 
-            {/* Actions: Generate or Regenerate */}
+            {/* Actions */}
             <div className="flex items-center gap-3">
-              {/* Show 'Regenerate' if output exists (Secondary action) */}
               {state.roadmapOutput && !state.isGenerating && (
                 <button
                   onClick={() => {
-                    if (window.confirm("Regenerating the roadmap will overwrite your current progress and tasks. Are you sure?")) {
+                    if (window.confirm("Regenerating will reset your progress. Continue?")) {
+                      setBuildPath(null);
                       generateArtifact(ProjectStep.CODE);
                     }
                   }}
                   className="text-slate-400 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-colors text-sm font-medium flex items-center gap-2"
                 >
-                  <RefreshCw className="w-4 h-4" /> Regenerate Plan
+                  <RefreshCw className="w-4 h-4" /> Regenerate
                 </button>
               )}
-
-              {/* Show Primary 'Generate' if no output (Header version) */}
               {!state.roadmapOutput && (
                 <button
                   onClick={() => generateArtifact(ProjectStep.CODE)}
@@ -1277,8 +1327,8 @@ const RealizationPage = () => {
                 >
                   {state.isGenerating ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Generating Plan...
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Generating...
                     </>
                   ) : (
                     <>
@@ -1290,45 +1340,21 @@ const RealizationPage = () => {
               )}
             </div>
           </div>
-
-          {/* Progress Bar (Gamification) */}
-          {state.roadmapOutput && (
-            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/10 flex items-center gap-4">
-              <div className="flex-1">
-                <div className="flex justify-between text-xs font-bold text-slate-900 dark:text-slate-400 mb-2 uppercase tracking-wide">
-                  <span>Project Velocity</span>
-                  <span className={progressPercent === 100 ? "text-green-400" : "text-blue-400"}>{progressPercent}% Complete</span>
-                </div>
-                <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full transition-all duration-700 ease-out ${progressPercent === 100 ? 'bg-green-500' : 'bg-blue-500'}`}
-                    style={{ width: `${progressPercent}%` }}
-                  />
-                </div>
-              </div>
-              {progressPercent === 100 && (
-                <div className="p-2 bg-green-500/10 rounded-full animate-bounce">
-                  <Check className="w-5 h-5 text-green-400" />
-                </div>
-              )}
-            </div>
-          )}
         </div>
 
         {/* Content Area */}
         {state.isGenerating ? (
-          <LoadingState type="code" message="Architecting Solution" subMessage="Breaking down the plan into DIY modules vs Expert tasks..." />
+          <LoadingState type="code" message="Architecting Solution" subMessage="Breaking down into Frontend, Backend, Database & Integration phases..." />
         ) : !state.roadmapOutput ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-forge-muted py-16 border-2 border-dashed border-slate-200 dark:border-white/5 rounded-2xl bg-slate-50 dark:bg-white/5 group hover:border-blue-500/20 transition-colors">
-            <div className="p-6 bg-slate-900 rounded-full mb-6 group-hover:scale-110 transition-transform duration-500 ring-1 ring-white/10 shadow-2xl">
+          /* Empty State */
+          <div className="flex-1 flex flex-col items-center justify-center text-forge-muted py-16 border-2 border-dashed border-slate-200 dark:border-white/5 rounded-2xl bg-slate-50 dark:bg-white/5">
+            <div className="p-6 bg-slate-900 rounded-full mb-6 ring-1 ring-white/10 shadow-2xl">
               <Map className="w-12 h-12 text-blue-500" />
             </div>
             <h3 className="text-2xl font-bold text-forge-text mb-2">Ready to Build?</h3>
             <p className="text-forge-muted max-w-md text-center mb-8">
-              Transform your PRD into a step-by-step technical roadmap.
-              The AI will break down every feature into copy-pasteable code tasks.
+              Transform your PRD into a developer-focused roadmap with Frontend, Backend, Database, and Integration phases.
             </p>
-
             <button
               onClick={() => generateArtifact(ProjectStep.CODE)}
               disabled={!state.prdOutput}
@@ -1336,182 +1362,374 @@ const RealizationPage = () => {
             >
               <Sparkles className="w-5 h-5" /> Initialize Realization Engine
             </button>
-
             {!state.prdOutput && (
               <p className="mt-4 text-xs text-red-400 bg-red-900/20 px-3 py-1 rounded-full border border-red-500/20">
                 ⚠️ Complete the PRD phase first
               </p>
             )}
           </div>
-        ) : (
-          <div className="space-y-4">
-            {roadmapPhases.map((phase: any, i: number) => {
-              const isOpen = expandedPhase === i;
-              return (
-                <div key={i} className={`rounded-xl border transition-all duration-300 overflow-hidden ${isOpen ? 'bg-white dark:bg-white/5 border-blue-500/30 ring-1 ring-blue-500/20' : 'bg-transparent border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20'}`}>
+        ) : buildPath === null ? (
+          /* Path Selection Screen */
+          <div className="flex-1 flex flex-col items-center py-8">
+            <div className="text-center mb-10">
+              <h3 className="text-2xl font-bold text-forge-text mb-3">Choose Your Build Path</h3>
+              <p className="text-forge-muted">
+                Your roadmap has <span className="text-forge-accent font-bold">{totalTasks} tasks</span> across 4 development phases
+                {totalHours > 0 && <span> (~{totalHours} hours estimated)</span>}
+              </p>
+            </div>
 
-                  {/* Phase Header (Accordion Trigger) */}
-                  <button
-                    onClick={() => setExpandedPhase(isOpen ? null : i)}
-                    className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-lg flex items-center justify-center font-bold text-lg w-12 h-12 transition-colors ${isOpen ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400'}`}>
-                        {i + 1}
-                      </div>
-                      <div>
-                        <h3 className={`text-xl font-bold transition-colors ${isOpen ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-slate-300'}`}>{phase.phaseName || phase.title}</h3>
-                        <p className="text-sm text-slate-500">{phase.description?.substring(0, 60)}...</p>
-                      </div>
-                    </div>
-                    <div className={`p-2 rounded-full transition-transform duration-300 ${isOpen ? 'bg-white/10 rotate-180' : 'bg-transparent rotate-0'}`}>
-                      <div className="custom-scrol"><ArrowDownToLine className="w-5 h-5 text-slate-400" /></div> {/* Reusing Icon as Chevron-ish */}
-                    </div>
-                  </button>
-
-                  {/* Phase Body (Expanded) */}
-                  {isOpen && (
-                    <div className="px-6 pb-6 animate-in slide-in-from-top-4 duration-300">
-                      {/* DIY Header */}
-                      <div className="flex items-center justify-between mb-4 pt-4 border-t border-white/10">
-                        <h4 className="text-sm font-bold text-gray-500 dark:text-blue-300 uppercase tracking-widest flex items-center gap-2">
-                          <Code2 className="w-4 h-4" /> Phase Tasks
-                        </h4>
-                        <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" className="text-xs text-blue-400 hover:text-white flex items-center gap-1 border border-blue-500/20 px-3 py-1.5 rounded-full hover:bg-blue-500/20 transition-colors">
-                          Open AI Studio <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-
-                      {/* Task Grid */}
-                      <div className="grid grid-cols-1 gap-4">
-                        {phase.steps?.map((step: any, j: number) => {
-                          const stepId = `${i}-${j}`;
-                          const isComplete = (state.completedRoadmapSteps || []).includes(stepId);
-                          const badge = getBadge(step.stepName);
-
-                          return (
-                            <div key={j} className={`group relative p-5 rounded-xl border transition-all duration-300 ${isComplete ? 'bg-green-50 dark:bg-green-900/10 border-green-500/30 opacity-75' : 'bg-white dark:bg-black/40 border-slate-200 dark:border-white/10 hover:border-blue-500/40'}`}>
-                              <div className="flex items-start gap-4">
-                                {/* Checkbox (Gamification) */}
-                                <button
-                                  onClick={() => toggleStepCompletion(stepId)}
-                                  className={`mt-1 w-6 h-6 rounded-md border flex items-center justify-center transition-all ${isComplete ? 'bg-green-500 border-green-500 text-white' : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 hover:border-blue-400 text-transparent'}`}
-                                >
-                                  <Check className="w-4 h-4" />
-                                </button>
-
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-3 mb-1">
-                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${badge.color}`}>{badge.label}</span>
-                                    <h5 className={`font-bold text-lg ${isComplete ? 'text-green-600 dark:text-green-200 line-through' : 'text-gray-900 dark:text-white'}`}>{step.stepName}</h5>
-                                    {/* Outer Copy Button removed to encourage opening details for full context */}
-                                  </div>
-
-                                  {/* Collapsible Prompt (Progressive Disclosure) */}
-                                  <details className="group/details">
-                                    <summary className="cursor-pointer list-none text-xs font-mono text-slate-400 hover:text-blue-300 transition-colors flex items-center gap-2 mt-2">
-                                      <Terminal className="w-3 h-3" /> View AI Studio Prompts
-                                    </summary>
-                                    <div className="mt-3 space-y-3 animate-in slide-in-from-top-2 duration-200">
-                                      {/* System Instructions (AI Studio) */}
-                                      {step.systemPrompt && (
-                                        <div className="bg-gray-50 dark:bg-slate-950 rounded-lg border border-gray-200 dark:border-indigo-500/30 overflow-hidden">
-                                          <div className="bg-white dark:bg-indigo-500/10 px-3 py-1.5 flex justify-between items-center border-b border-gray-200 dark:border-indigo-500/10">
-                                            <span className="text-[10px] uppercase font-bold text-indigo-400 tracking-wider flex items-center gap-2">
-                                              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> System Instructions
-                                            </span>
-                                            <CopyButton text={step.systemPrompt} className="hover:text-indigo-300" />
-                                          </div>
-                                          <div className="p-3 overflow-x-auto">
-                                            <pre className="text-xs font-mono text-gray-800 dark:text-indigo-200/80 whitespace-pre-wrap leading-relaxed">{step.systemPrompt}</pre>
-                                          </div>
-                                        </div>
-                                      )}
-
-                                      {/* User Prompt */}
-                                      <div className="bg-gray-50 dark:bg-slate-950 rounded-lg border border-gray-200 dark:border-white/10 overflow-hidden">
-                                        <div className="bg-white dark:bg-white/5 px-3 py-1.5 flex justify-between items-center border-b border-gray-200 dark:border-white/5">
-                                          <span className="text-[10px] uppercase font-bold text-gray-500 dark:text-slate-400 tracking-wider flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-slate-400"></span> User Prompt
-                                          </span>
-                                          <CopyButton text={step.diyPrompt || step.technicalBrief} className="text-gray-400 hover:text-gray-600 dark:hover:text-white" />
-                                        </div>
-                                        <div className="p-3 overflow-x-auto">
-                                          <pre className="text-xs font-mono text-gray-800 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
-                                            {step.diyPrompt || step.technicalBrief}
-                                          </pre>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </details>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
+              {/* DIY Card */}
+              <button
+                onClick={() => setBuildPath('diy')}
+                className="group relative p-8 rounded-2xl border-2 border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/10 transition-all text-left"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[60px] pointer-events-none" />
+                <div className="relative z-10">
+                  <div className="text-4xl mb-4">🛠️</div>
+                  <h4 className="text-xl font-bold text-forge-text mb-2">Build It Yourself</h4>
+                  <ul className="text-sm text-forge-muted space-y-2 mb-6">
+                    <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Get AI-powered prompts</li>
+                    <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Step-by-step guides</li>
+                    <li className="flex items-center gap-2"><Check className="w-4 h-4 text-blue-500" /> Learn as you build</li>
+                  </ul>
+                  <div className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3 rounded-xl text-center transition-colors group-hover:shadow-lg group-hover:shadow-blue-500/30">
+                    Select This Path
+                  </div>
                 </div>
-              );
-            })}
+              </button>
 
-            {/* GLOBAL HIRE CTA - Footer */}
-            <div className="mt-12 pt-8 border-t border-white/10 pb-20">
-              <div className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-orange-400/50 bg-white dark:bg-slate-900 group transition-all duration-300 hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/20">
+              {/* Hire Card */}
+              <button
+                onClick={() => setBuildPath('hire')}
+                className="group relative p-8 rounded-2xl border-2 border-slate-200 dark:border-orange-500/30 bg-white dark:bg-white/5 hover:border-orange-500 hover:shadow-xl hover:shadow-orange-500/10 transition-all text-left"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-[60px] pointer-events-none" />
+                <div className="relative z-10">
+                  <div className="text-4xl mb-4">🚀</div>
+                  <h4 className="text-xl font-bold text-forge-text mb-2">Hire Jalanea Venture</h4>
+                  <ul className="text-sm text-forge-muted space-y-2 mb-6">
+                    <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500" /> Professional team</li>
+                    <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500" /> Faster delivery</li>
+                    <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500" /> Production-ready code</li>
+                  </ul>
+                  <div className="border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white font-bold px-6 py-3 rounded-xl text-center transition-all flex items-center justify-center gap-2">
+                    Get a Quote <ArrowRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+        ) : buildPath === 'diy' ? (
+          /* DIY Mode View */
+          <div className="flex-1 flex flex-col gap-6">
+            {/* Mode Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🛠️</span>
+                <h3 className="text-xl font-bold text-forge-text">Build It Yourself Mode</h3>
+              </div>
+              <button
+                onClick={() => setBuildPath('hire')}
+                className="text-sm text-forge-muted hover:text-orange-400 transition-colors flex items-center gap-2"
+              >
+                Switch to Hire Mode <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
 
-                {/* Full Card Hover Glow (Active on Group Hover) */}
-                <div className="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px]"></div>
+            {/* Progress Bar */}
+            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/10">
+              <div className="flex justify-between text-xs font-bold text-slate-900 dark:text-slate-400 mb-2 uppercase tracking-wide">
+                <span>Progress: {completedCount}/{totalTasks} tasks</span>
+                <span className={progressPercent === 100 ? "text-green-400" : "text-blue-400"}>{progressPercent}%</span>
+              </div>
+              <div className="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-700 ease-out ${progressPercent === 100 ? 'bg-green-500' : 'bg-blue-500'}`}
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+            </div>
 
-                {/* Background Ambient Glows */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 dark:bg-orange-500/20 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2 group-hover:bg-orange-500/30 transition-colors duration-500"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/5 dark:bg-amber-500/10 rounded-full blur-[80px] pointer-events-none translate-y-1/2 -translate-x-1/2 group-hover:bg-amber-500/20 transition-colors duration-500"></div>
+            {/* Phase Tabs */}
+            <div className="flex flex-wrap gap-2">
+              {realizationPhases.map((phase: any, idx: number) => {
+                const progress = getPhaseProgress(idx);
+                const phaseName = phase.phaseName || `Phase ${idx + 1}`;
+                const icon = phase.phaseIcon || phaseIcons[phaseName] || '📦';
+                const isActive = activePhase === idx;
 
-                {/* Content Container (Padding applied here so bg covers full card) */}
-                <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-orange-500 text-white uppercase tracking-widest shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow">Premium</span>
-                      <span className="text-xs font-bold text-orange-300 uppercase tracking-widest group-hover:text-orange-200 transition-colors">Done For You</span>
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setActivePhase(idx)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all ${
+                      isActive
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
+                        : 'bg-slate-100 dark:bg-slate-800 text-forge-muted hover:bg-slate-200 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    <span>{icon}</span>
+                    <span>{phaseName}</span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${
+                      isActive ? 'bg-white/20' : 'bg-slate-200 dark:bg-slate-700'
+                    }`}>
+                      {progress.completed}/{progress.total}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Phase Description */}
+            {currentPhase && (
+              <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-white/10">
+                <p className="text-sm text-forge-muted">{currentPhase.description}</p>
+                <a
+                  href="https://aistudio.google.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 border border-blue-500/30 px-3 py-1.5 rounded-full hover:bg-blue-500/10 transition-colors whitespace-nowrap"
+                >
+                  Open AI Studio <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            )}
+
+            {/* Task List */}
+            <div className="space-y-3">
+              {currentTasks.map((task: any, idx: number) => {
+                const taskId = task.taskId || `${activePhase}-${idx}`;
+                const stepId = `${activePhase}-${idx}`;
+                const isComplete = (state.completedRoadmapSteps || []).includes(stepId);
+                const isExpanded = expandedTasks.has(taskId);
+                const taskName = task.taskName || task.stepName || `Task ${idx + 1}`;
+
+                return (
+                  <div
+                    key={taskId}
+                    className={`rounded-xl border transition-all overflow-hidden ${
+                      isComplete
+                        ? 'bg-green-50 dark:bg-green-900/10 border-green-500/30'
+                        : 'bg-white dark:bg-slate-800/50 border-slate-200 dark:border-white/10 hover:border-blue-500/30'
+                    }`}
+                  >
+                    {/* Task Header */}
+                    <div className="p-4 flex items-center gap-4">
+                      <button
+                        onClick={() => toggleStepCompletion(stepId)}
+                        className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all flex-shrink-0 ${
+                          isComplete
+                            ? 'bg-green-500 border-green-500 text-white'
+                            : 'border-slate-300 dark:border-slate-600 hover:border-blue-400'
+                        }`}
+                      >
+                        {isComplete && <Check className="w-4 h-4" />}
+                      </button>
+
+                      <button
+                        onClick={() => toggleTask(taskId)}
+                        className="flex-1 flex items-center justify-between text-left"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className={`font-semibold ${isComplete ? 'line-through text-green-600 dark:text-green-400' : 'text-forge-text'}`}>
+                            {taskName}
+                          </span>
+                          {task.category && (
+                            <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 uppercase">
+                              {task.category}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-4">
+                          {task.estimatedMinutes && (
+                            <span className="text-xs text-forge-muted">{task.estimatedMinutes}min</span>
+                          )}
+                          {task.complexity && <ComplexityStars level={task.complexity} />}
+                          <ChevronRight className={`w-5 h-5 text-forge-muted transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+                        </div>
+                      </button>
                     </div>
-                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-3 group-hover:drop-shadow-[0_2px_10px_rgba(249,115,22,0.3)] transition-all">Fast Track Your Launch</h3>
-                    <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6 max-w-xl group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                      Skip the DIY learning curve. Instead of building from scratch, let our expert team handle the technical heavy lifting so you can focus on scale.
-                    </p>
-                    <ul className="text-sm text-gray-600 dark:text-slate-400 space-y-2 mb-2 group-hover:text-gray-900 dark:group-hover:text-slate-200 transition-colors">
-                      <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500 group-hover:text-orange-400" /> Professional Implementation</li>
-                      <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500 group-hover:text-orange-400" /> Scalable Architecture</li>
-                      <li className="flex items-center gap-2"><Check className="w-4 h-4 text-orange-500 group-hover:text-orange-400" /> 14-Day Delivery Guarantee</li>
-                    </ul>
+
+                    {/* Expanded Content */}
+                    {isExpanded && (
+                      <div className="px-4 pb-4 pt-2 border-t border-slate-100 dark:border-white/5 space-y-4 animate-in slide-in-from-top-2">
+                        {/* Description */}
+                        {task.description && (
+                          <p className="text-sm text-forge-muted">{task.description}</p>
+                        )}
+
+                        {/* System Instruction */}
+                        {(task.systemInstruction || task.systemPrompt) && (
+                          <div className="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-indigo-500/30 overflow-hidden">
+                            <div className="bg-slate-100 dark:bg-indigo-500/10 px-3 py-2 flex justify-between items-center">
+                              <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-indigo-500" /> System Instruction
+                              </span>
+                              <button
+                                onClick={() => copyToClipboard(task.systemInstruction || task.systemPrompt, `sys-${taskId}`)}
+                                className="text-xs flex items-center gap-1 text-slate-500 hover:text-indigo-500 transition-colors"
+                              >
+                                {copiedId === `sys-${taskId}` ? (
+                                  <><Check className="w-3 h-3" /> Copied!</>
+                                ) : (
+                                  <><Copy className="w-3 h-3" /> Copy</>
+                                )}
+                              </button>
+                            </div>
+                            <pre className="p-3 text-xs font-mono text-slate-700 dark:text-indigo-200/80 whitespace-pre-wrap overflow-x-auto max-h-48 overflow-y-auto">
+                              {task.systemInstruction || task.systemPrompt}
+                            </pre>
+                          </div>
+                        )}
+
+                        {/* User Prompt */}
+                        {(task.userPrompt || task.diyPrompt || task.technicalBrief) && (
+                          <div className="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-white/10 overflow-hidden">
+                            <div className="bg-slate-100 dark:bg-white/5 px-3 py-2 flex justify-between items-center">
+                              <span className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-slate-400" /> User Prompt
+                              </span>
+                              <button
+                                onClick={() => copyToClipboard(task.userPrompt || task.diyPrompt || task.technicalBrief, `usr-${taskId}`)}
+                                className="text-xs flex items-center gap-1 text-slate-500 hover:text-blue-500 transition-colors"
+                              >
+                                {copiedId === `usr-${taskId}` ? (
+                                  <><Check className="w-3 h-3" /> Copied!</>
+                                ) : (
+                                  <><Copy className="w-3 h-3" /> Copy</>
+                                )}
+                              </button>
+                            </div>
+                            <pre className="p-3 text-xs font-mono text-slate-700 dark:text-slate-300 whitespace-pre-wrap overflow-x-auto max-h-48 overflow-y-auto">
+                              {task.userPrompt || task.diyPrompt || task.technicalBrief}
+                            </pre>
+                          </div>
+                        )}
+
+                        {/* Mark Complete Button */}
+                        {!isComplete && (
+                          <button
+                            onClick={() => toggleStepCompletion(stepId)}
+                            className="w-full py-2 rounded-lg border border-green-500/30 text-green-600 dark:text-green-400 hover:bg-green-500/10 transition-colors text-sm font-medium flex items-center justify-center gap-2"
+                          >
+                            <Check className="w-4 h-4" /> Mark Complete
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  <div>
-                    <a
-                      href="mailto:contact@jalanea.com?subject=Fast%20Track%20Build%20Quote&body=I%20am%20interested%20in%20fast-tracking%20my%20project."
-                      className="group/btn relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-orange-600 font-lg rounded-2xl focus:outline-none hover:bg-orange-500 hover:scale-[1.03] hover:shadow-2xl hover:shadow-orange-500/40 border border-orange-400/20"
-                    >
-                      <span className="relative z-10 flex items-center gap-2">
-                        Get a Quote <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                      </span>
-                    </a>
-                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          /* Hire Mode View */
+          <div className="flex-1 flex flex-col gap-6">
+            {/* Mode Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🚀</span>
+                <h3 className="text-xl font-bold text-forge-text">Hire Jalanea Venture</h3>
+              </div>
+              <button
+                onClick={() => setBuildPath('diy')}
+                className="text-sm text-forge-muted hover:text-blue-400 transition-colors flex items-center gap-2"
+              >
+                <ArrowRight className="w-4 h-4 rotate-180" /> Switch to DIY Mode
+              </button>
+            </div>
+
+            {/* Project Summary */}
+            <div className="p-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800/50">
+              <h4 className="font-bold text-forge-text mb-2">{state.title || 'Your Project'}</h4>
+              <p className="text-sm text-forge-muted">
+                {state.synthesizedIdea?.substring(0, 200) || 'AI-generated implementation ready for professional development.'}...
+              </p>
+            </div>
+
+            {/* Scope Breakdown */}
+            <div className="p-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800/50">
+              <h4 className="font-bold text-forge-text mb-4">Scope Breakdown</h4>
+              <div className="space-y-3">
+                {realizationPhases.map((phase: any, idx: number) => {
+                  const tasks = phase.tasks || phase.steps || [];
+                  const minutes = tasks.reduce((sum: number, t: any) => sum + (t.estimatedMinutes || 30), 0);
+                  const hours = Math.round(minutes / 60);
+                  const phaseName = phase.phaseName || `Phase ${idx + 1}`;
+                  const icon = phase.phaseIcon || phaseIcons[phaseName] || '📦';
+
+                  return (
+                    <div key={idx} className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-white/5 last:border-0">
+                      <div className="flex items-center gap-3">
+                        <span>{icon}</span>
+                        <span className="text-forge-text">{phaseName}</span>
+                      </div>
+                      <div className="text-sm text-forge-muted">
+                        {tasks.length} tasks, ~{hours}hrs
+                      </div>
+                    </div>
+                  );
+                })}
+                <div className="flex items-center justify-between pt-3 border-t-2 border-slate-200 dark:border-white/10 font-bold">
+                  <span className="text-forge-text">Total</span>
+                  <span className="text-forge-accent">{totalTasks} tasks, ~{totalHours}hrs</span>
                 </div>
               </div>
+            </div>
+
+            {/* What You Get */}
+            <div className="p-6 rounded-2xl border border-orange-500/30 bg-orange-50 dark:bg-orange-500/5">
+              <h4 className="font-bold text-forge-text mb-4">What You Get</h4>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-3 text-forge-text">
+                  <Check className="w-5 h-5 text-orange-500" /> Production-ready codebase
+                </li>
+                <li className="flex items-center gap-3 text-forge-text">
+                  <Check className="w-5 h-5 text-orange-500" /> Deployment to your preferred platform
+                </li>
+                <li className="flex items-center gap-3 text-forge-text">
+                  <Check className="w-5 h-5 text-orange-500" /> 30-day support after delivery
+                </li>
+                <li className="flex items-center gap-3 text-forge-text">
+                  <Check className="w-5 h-5 text-orange-500" /> Documentation & handoff session
+                </li>
+              </ul>
+            </div>
+
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="https://jalaneaventure.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-orange-600 hover:bg-orange-500 text-white font-bold px-8 py-4 rounded-xl text-center transition-all hover:scale-[1.02] shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2"
+              >
+                🚀 Get Started with Jalanea Venture
+              </a>
+              <button
+                onClick={() => window.print()}
+                className="px-6 py-4 rounded-xl border border-slate-200 dark:border-white/10 text-forge-muted hover:text-forge-text hover:border-slate-300 dark:hover:border-white/20 transition-colors flex items-center justify-center gap-2"
+              >
+                <Download className="w-5 h-5" /> Download Brief
+              </button>
             </div>
           </div>
         )}
 
-        {/* Floating Fast Track Toggle (Sticky) - Hidden when scrolling near bottom? Simple logic: Always bottom right but with backdrop */}
-        {!state.isGenerating && state.roadmapOutput && (
-          <div className="fixed bottom-8 right-8 z-50 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-1000">
-            <a
-              href="mailto:contact@jalanea.com"
-              className="group relative flex items-center gap-3 bg-slate-900/80 backdrop-blur-md border border-orange-500/50 text-white pl-4 pr-2 py-2 rounded-full shadow-2xl hover:scale-105 transition-all hover:border-orange-400 hover:shadow-orange-500/20"
+        {/* Floating Help Button */}
+        {buildPath === 'diy' && !state.isGenerating && state.roadmapOutput && (
+          <div className="fixed bottom-8 right-8 z-50">
+            <button
+              onClick={() => setBuildPath('hire')}
+              className="group flex items-center gap-3 bg-slate-900/90 backdrop-blur-md border border-orange-500/50 text-white pl-4 pr-2 py-2 rounded-full shadow-2xl hover:scale-105 transition-all hover:border-orange-400"
             >
-              <span className="text-sm font-bold text-orange-400 group-hover:text-amber-300 transition-colors">Stuck?</span>
-              <span className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-4 py-2 rounded-full shadow-lg">
-                Fast Track ⚡️
+              <span className="text-sm font-bold text-orange-400">Stuck?</span>
+              <span className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold px-4 py-2 rounded-full">
+                Get Help ⚡️
               </span>
-            </a>
+            </button>
           </div>
         )}
       </div>
