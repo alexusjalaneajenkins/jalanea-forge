@@ -33,3 +33,11 @@ supabase/.temp/
 
 # Vercel
 .vercel
+
+# Next.js
+.next/
+
+# Playwright
+playwright-report/
+test-results/
+.auth/

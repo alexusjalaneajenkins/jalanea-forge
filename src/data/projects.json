@@ -1,0 +1,360 @@
+{
+  "lab": [
+    {
+      "id": "1",
+      "name": "Jalanea ATS",
+      "description": "AI-powered ATS score checker. Users paste their resume + job description and see what score they'd get from applicant tracking systems before applying. Helps job seekers optimize their resumes.",
+      "status": "idea",
+      "category": "Career/Job",
+      "url": "",
+      "checklist": {
+        "ideaDocumented": true,
+        "mvpDefined": false,
+        "domainSecured": false,
+        "uiDesigned": false,
+        "coreBuilt": false,
+        "deployedStaging": false,
+        "testedMobile": false,
+        "launchedProduction": false
+      },
+      "createdAt": "2024-12-31",
+      "updatedAt": "2024-12-31"
+    },
+    {
+      "id": "2",
+      "name": "Jalanea Astro",
+      "description": "Astrology insights platform. Users get personalized astro readings and can schedule live readings with me in the future. Birth chart analysis, daily/weekly insights, compatibility readings.",
+      "status": "idea",
+      "category": "Spirituality",
+      "url": "",
+      "checklist": {
+        "ideaDocumented": true,
+        "mvpDefined": false,
+        "domainSecured": false,
+        "uiDesigned": false,
+        "coreBuilt": false,
+        "deployedStaging": false,
+        "testedMobile": false,
+        "launchedProduction": false
+      },
+      "createdAt": "2024-12-31",
+      "updatedAt": "2024-12-31"
+    },
+    {
+      "id": "3",
+      "name": "Jalanea Prints",
+      "description": "Creative marketplace connecting designers with entrepreneurs. Creatives upload their designs/ideas, entrepreneurs buy them to start businesses. Think 99designs meets Shopify starter kits.",
+      "status": "idea",
+      "category": "Marketplace",
+      "url": "",
+      "checklist": {
+        "ideaDocumented": true,
+        "mvpDefined": false,
+        "domainSecured": false,
+        "uiDesigned": false,
+        "coreBuilt": false,
+        "deployedStaging": false,
+        "testedMobile": false,
+        "launchedProduction": false
+      },
+      "createdAt": "2024-12-31",
+      "updatedAt": "2024-12-31"
+    },
+    {
+      "id": "4",
+      "name": "Jalanea Finance",
+      "description": "Personal finance AI advisor. Analyzes user's financial situation and gives actionable suggestions on investments, property ownership, car purchases, savings strategies, debt payoff plans.",
+      "status": "idea",
+      "category": "Finance",
+      "url": "",
+      "checklist": {
+        "ideaDocumented": true,
+        "mvpDefined": false,
+        "domainSecured": false,
+        "uiDesigned": false,
+        "coreBuilt": false,
+        "deployedStaging": false,
+        "testedMobile": false,
+        "launchedProduction": false
+      },
+      "createdAt": "2024-12-31",
+      "updatedAt": "2024-12-31"
+    },
+    {
+      "id": "5",
+      "name": "Jalanea Fit",
+      "description": "AI fitness coach that learns your preferences. Gathers data about what you enjoy, your schedule, limitations, and creates personalized workout plans you'll actually stick to. No cookie-cutter routines.",
+      "status": "idea",
+      "category": "Health",
+      "url": "",
+      "checklist": {
+        "ideaDocumented": true,
+        "mvpDefined": false,
+        "domainSecured": false,
+        "uiDesigned": false,
+        "coreBuilt": false,
+        "deployedStaging": false,
+        "testedMobile": false,
+        "launchedProduction": false
+      },
+      "createdAt": "2024-12-31",
+      "updatedAt": "2024-12-31"
+    },
+    {
+      "id": "6",
+      "name": "Jalanea Spirit",
+      "description": "Spiritual growth companion based on the Map of Consciousness. A reflection space for spiritual seekers to journal about books/texts they read, track their consciousness level journey, and draw their own conclusions.",
+      "status": "idea",
+      "category": "Spirituality",
+      "url": "",
+      "checklist": {
+        "ideaDocumented": true,
+        "mvpDefined": false,
+        "domainSecured": false,
+        "uiDesigned": false,
+        "coreBuilt": false,
+        "deployedStaging": false,
+        "testedMobile": false,
+        "launchedProduction": false
+      },
+      "createdAt": "2024-12-31",
+      "updatedAt": "2024-12-31"
+    },
+    {
+      "id": "7",
+      "name": "Jalanea Forge",
+      "description": "AI Product Designer. Transform product ideas into reality with AI-powered 4-step workflow. Vibe design with vision.",
+      "status": "graduated",
+      "category": "Design/AI",
+      "url": "https://forge.jalanea.dev",
+      "checklist": {
+        "ideaDocumented": true,
+        "mvpDefined": true,
+        "domainSecured": true,
+        "uiDesigned": true,
+        "coreBuilt": true,
+        "deployedStaging": true,
+        "testedMobile": true,
+        "launchedProduction": true
+      },
+      "createdAt": "2024-11-01",
+      "updatedAt": "2024-12-30"
+    },
+    {
+      "id": "8",
+      "name": "Jalanea Works",
+      "description": "Career matching platform for Valencia & UCF grads. Matches fresh talent with Orlando employers looking for entry-level candidates.",
+      "status": "graduated",
+      "category": "Career/Job",
+      "url": "https://jalanea.works",
+      "checklist": {
+        "ideaDocumented": true,
+        "mvpDefined": true,
+        "domainSecured": true,
+        "uiDesigned": true,
+        "coreBuilt": true,
+        "deployedStaging": true,
+        "testedMobile": true,
+        "launchedProduction": true
+      },
+      "createdAt": "2024-09-15",
+      "updatedAt": "2024-12-28"
+    }
+  ],
+  "tools": [
+    {
+      "id": "1",
+      "name": "Daily Learning Queue",
+      "description": "Save articles, videos, courses to consume. Track what you've learned.",
+      "icon": "book-open",
+      "category": "Learning",
+      "isComingSoon": false
+    },
+    {
+      "id": "2",
+      "name": "Skill Tracker",
+      "description": "Track skills you're building, rate proficiency, set goals.",
+      "icon": "trending-up",
+      "category": "Learning",
+      "isComingSoon": false
+    },
+    {
+      "id": "3",
+      "name": "Content Notes",
+      "description": "Quick notes from books, podcasts, videos you consume.",
+      "icon": "file-text",
+      "category": "Learning",
+      "isComingSoon": false
+    },
+    {
+      "id": "4",
+      "name": "Quick Capture",
+      "description": "Fast way to jot down ideas that come to you.",
+      "icon": "zap",
+      "category": "Productivity",
+      "isComingSoon": false
+    },
+    {
+      "id": "5",
+      "name": "Weekly Review",
+      "description": "Guided weekly reflection: wins, lessons, next week priorities.",
+      "icon": "calendar-check",
+      "category": "Productivity",
+      "isComingSoon": true
+    },
+    {
+      "id": "6",
+      "name": "Project Ideas Backlog",
+      "description": "All your random project ideas, ranked by excitement/feasibility.",
+      "icon": "lightbulb",
+      "category": "Productivity",
+      "isComingSoon": false
+    },
+    {
+      "id": "7",
+      "name": "Revenue Tracker",
+      "description": "Simple tracker for income across all your projects.",
+      "icon": "dollar-sign",
+      "category": "Business",
+      "isComingSoon": true
+    },
+    {
+      "id": "8",
+      "name": "Client CRM",
+      "description": "Basic info about clients, last contact, project status.",
+      "icon": "users",
+      "category": "Business",
+      "isComingSoon": true
+    },
+    {
+      "id": "9",
+      "name": "Invoice Generator",
+      "description": "Quick invoices you can send to clients.",
+      "icon": "file-invoice",
+      "category": "Business",
+      "isComingSoon": true
+    },
+    {
+      "id": "10",
+      "name": "Code Snippets Library",
+      "description": "Save reusable code snippets you use often.",
+      "icon": "code",
+      "category": "Development",
+      "isComingSoon": false
+    },
+    {
+      "id": "11",
+      "name": "API Keys Vault",
+      "description": "Secure place to reference your API keys (masked, copy to clipboard).",
+      "icon": "key",
+      "category": "Development",
+      "isComingSoon": true
+    },
+    {
+      "id": "12",
+      "name": "Deploy Checklist",
+      "description": "Checklist to run through before every deployment.",
+      "icon": "check-square",
+      "category": "Development",
+      "isComingSoon": true
+    },
+    {
+      "id": "13",
+      "name": "Competitor Watch",
+      "description": "Track competitors and inspiration for each project.",
+      "icon": "eye",
+      "category": "Research",
+      "isComingSoon": false
+    },
+    {
+      "id": "14",
+      "name": "Trend Radar",
+      "description": "Things you're watching in tech, design, AI.",
+      "icon": "radar",
+      "category": "Research",
+      "isComingSoon": false
+    }
+  ],
+  "clients": [],
+  "dev": [
+    {
+      "id": "1",
+      "projectName": "Jalanea Works",
+      "description": "Career matching platform - LIVE",
+      "branch": "main",
+      "previewUrl": "https://jalanea.works",
+      "status": "production",
+      "repoUrl": "https://github.com/alexusjalaneajenkins/jalanea-works",
+      "lastDeployedAt": "2024-12-28T16:00:00Z",
+      "updatedAt": "2024-12-28"
+    },
+    {
+      "id": "2",
+      "projectName": "Jalanea Forge",
+      "description": "AI Product Designer - LIVE",
+      "branch": "main",
+      "previewUrl": "https://forge.jalanea.dev",
+      "status": "production",
+      "repoUrl": "https://github.com/alexusjalaneajenkins/jalanea-forge",
+      "lastDeployedAt": "2024-12-30T14:30:00Z",
+      "updatedAt": "2024-12-30"
+    },
+    {
+      "id": "3",
+      "projectName": "Jalnaea Dev",
+      "description": "Private dev environment - LIVE",
+      "branch": "main",
+      "previewUrl": "https://jalnaea.dev",
+      "status": "production",
+      "repoUrl": "https://github.com/alexusjalaneajenkins/jalanea-forge",
+      "lastDeployedAt": "2024-12-31T09:00:00Z",
+      "updatedAt": "2024-12-31"
+    }
+  ],
+  "stats": {
+    "totalProjects": 8,
+    "activeExperiments": 0,
+    "liveProducts": 2,
+    "ideasInQueue": 6
+  },
+  "activity": [
+    {
+      "id": "1",
+      "type": "deploy",
+      "action": "Deployed",
+      "target": "Jalnaea Dev to production",
+      "timestamp": "2024-12-31T09:00:00Z"
+    },
+    {
+      "id": "2",
+      "type": "experiment",
+      "action": "Added idea",
+      "target": "Jalanea ATS",
+      "timestamp": "2024-12-31T08:30:00Z"
+    },
+    {
+      "id": "3",
+      "type": "deploy",
+      "action": "Deployed",
+      "target": "Jalanea Forge update",
+      "timestamp": "2024-12-30T14:30:00Z"
+    },
+    {
+      "id": "4",
+      "type": "experiment",
+      "action": "Graduated",
+      "target": "Jalanea Forge",
+      "timestamp": "2024-12-30T12:00:00Z"
+    }
+  ],
+  "internalTools": {
+    "quickCaptures": [],
+    "learningQueue": [],
+    "skills": [],
+    "contentNotes": [],
+    "projectIdeas": [],
+    "codeSnippets": [],
+    "competitors": [],
+    "trends": []
+  }
+}
