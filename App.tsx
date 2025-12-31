@@ -60,6 +60,7 @@ import { OnboardingTour } from './components/OnboardingTour';
 import { Confetti, useConfetti } from './components/Confetti';
 import { HelpTooltip } from './components/HelpTooltip';
 import { AdminPanel } from './pages/AdminPanel';
+import { LandingPage } from './pages/LandingPage';
 import html2pdf from 'html2pdf.js';
 
 // --- Utils ---
@@ -1598,6 +1599,11 @@ const Layout = () => {
     setMobileMenuOpen(false);
   };
 
+  // Show landing page for logged-out users at root
+  if (!user && location.pathname === '/') {
+    return <LandingPage />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-forge-900 text-forge-text selection:bg-orange-100 selection:text-orange-900">
       {/* Skip link for keyboard/screen reader users */}
@@ -1773,6 +1779,7 @@ const Layout = () => {
           <div className="h-full">
             <Routes>
               <Route path="/" element={<IdeaPage />} />
+              <Route path="/app" element={<IdeaPage />} />
               <Route path="/research" element={<ResearchPage />} />
               <Route path="/prd" element={<PrdPage />} />
               <Route path="/realization" element={<RealizationPage />} />
