@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   FlaskConical,
   Wrench,
+  Sparkles,
   Users,
   Code,
   Settings,
@@ -25,6 +26,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
   { label: 'Lab / Sandbox', href: '/dashboard/lab', icon: <FlaskConical className="w-5 h-5" /> },
+  { label: 'Brainstorm', href: '/dashboard/brainstorm', icon: <Sparkles className="w-5 h-5" /> },
   { label: 'Internal Tools', href: '/dashboard/tools', icon: <Wrench className="w-5 h-5" /> },
   { label: 'Client Previews', href: '/dashboard/clients', icon: <Users className="w-5 h-5" /> },
   { label: 'Dev Environment', href: '/dashboard/dev', icon: <Code className="w-5 h-5" /> },

@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   FlaskConical,
   Wrench,
+  Sparkles,
   Users,
   MoreHorizontal,
   Code,
@@ -24,6 +25,7 @@ const mainNavItems = [
 ];
 
 const moreItems = [
+  { label: 'Brainstorm', href: '/dashboard/brainstorm', icon: <Sparkles className="w-5 h-5" /> },
   { label: 'Dev Environment', href: '/dashboard/dev', icon: <Code className="w-5 h-5" /> },
   { label: 'Settings', href: '/dashboard/settings', icon: <Settings className="w-5 h-5" /> },
 ];
