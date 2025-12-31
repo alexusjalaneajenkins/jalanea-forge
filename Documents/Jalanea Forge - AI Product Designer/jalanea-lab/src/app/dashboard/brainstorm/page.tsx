@@ -2,12 +2,27 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Trash2, Sparkles, Bot, Loader2 } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import { marked } from 'marked';
 import { Button } from '@/components';
+
+// Configure marked for safety and styling
+marked.setOptions({
+  breaks: true,
+  gfm: true,
+});
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+}
+
+// Function to render markdown to HTML
+function renderMarkdown(content: string): string {
+  try {
+    return marked.parse(content) as string;
+  } catch {
+    return content;
+  }
 }
 
 export default function BrainstormPage() {
@@ -194,27 +209,10 @@ export default function BrainstormPage() {
                   {msg.role === 'user' ? (
                     <p className="whitespace-pre-wrap text-sm sm:text-base leading-relaxed">{msg.content}</p>
                   ) : (
-                    <div className="text-sm sm:text-base leading-relaxed">
-                      <ReactMarkdown
-                        components={{
-                          p: ({children}) => <p className="mb-3 last:mb-0">{children}</p>,
-                          strong: ({children}) => <strong className="font-semibold text-white">{children}</strong>,
-                          em: ({children}) => <em className="italic text-lab-muted">{children}</em>,
-                          ul: ({children}) => <ul className="list-disc list-inside mb-3 space-y-1 ml-2">{children}</ul>,
-                          ol: ({children}) => <ol className="list-decimal list-inside mb-3 space-y-1 ml-2">{children}</ol>,
-                          li: ({children}) => <li className="text-lab-text">{children}</li>,
-                          h1: ({children}) => <h1 className="text-xl font-bold mb-3 mt-4 first:mt-0 text-white">{children}</h1>,
-                          h2: ({children}) => <h2 className="text-lg font-bold mb-2 mt-3 first:mt-0 text-white">{children}</h2>,
-                          h3: ({children}) => <h3 className="text-base font-bold mb-2 mt-3 first:mt-0 text-white">{children}</h3>,
-                          code: ({children}) => <code className="bg-lab-border px-1.5 py-0.5 rounded text-sm text-purple-400">{children}</code>,
-                          pre: ({children}) => <pre className="bg-lab-border p-3 rounded-lg overflow-x-auto mb-3 text-sm">{children}</pre>,
-                          a: ({children, href}) => <a href={href} className="text-purple-400 hover:underline" target="_blank" rel="noopener noreferrer">{children}</a>,
-                          blockquote: ({children}) => <blockquote className="border-l-2 border-purple-500 pl-4 italic text-lab-muted mb-3">{children}</blockquote>,
-                        }}
-                      >
-                        {msg.content}
-                      </ReactMarkdown>
-                    </div>
+                    <div
+                      className="markdown-content text-sm sm:text-base leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: renderMarkdown(msg.content) }}
+                    />
                   )}
                 </div>
               </div>
@@ -256,6 +254,93 @@ export default function BrainstormPage() {
           <Send className="w-4 h-4 sm:w-5 sm:h-5" />
         </Button>
       </div>
+
+      {/* Markdown Styles */}
+      <style jsx global>{`
+        .markdown-content p {
+          margin-bottom: 0.75rem;
+        }
+        .markdown-content p:last-child {
+          margin-bottom: 0;
+        }
+        .markdown-content strong {
+          font-weight: 600;
+          color: white;
+        }
+        .markdown-content em {
+          font-style: italic;
+          color: #9ca3af;
+        }
+        .markdown-content ul {
+          list-style-type: disc;
+          list-style-position: inside;
+          margin-bottom: 0.75rem;
+          margin-left: 0.5rem;
+        }
+        .markdown-content ol {
+          list-style-type: decimal;
+          list-style-position: inside;
+          margin-bottom: 0.75rem;
+          margin-left: 0.5rem;
+        }
+        .markdown-content li {
+          margin-bottom: 0.25rem;
+        }
+        .markdown-content h1 {
+          font-size: 1.25rem;
+          font-weight: 700;
+          margin-bottom: 0.75rem;
+          margin-top: 1rem;
+          color: white;
+        }
+        .markdown-content h2 {
+          font-size: 1.125rem;
+          font-weight: 700;
+          margin-bottom: 0.5rem;
+          margin-top: 0.75rem;
+          color: white;
+        }
+        .markdown-content h3 {
+          font-size: 1rem;
+          font-weight: 700;
+          margin-bottom: 0.5rem;
+          margin-top: 0.75rem;
+          color: white;
+        }
+        .markdown-content code {
+          background-color: #1e1e2e;
+          padding: 0.125rem 0.375rem;
+          border-radius: 0.25rem;
+          font-size: 0.875rem;
+          color: #a855f7;
+        }
+        .markdown-content pre {
+          background-color: #1e1e2e;
+          padding: 0.75rem;
+          border-radius: 0.5rem;
+          overflow-x: auto;
+          margin-bottom: 0.75rem;
+        }
+        .markdown-content pre code {
+          background: none;
+          padding: 0;
+          color: #e5e7eb;
+        }
+        .markdown-content a {
+          color: #a855f7;
+          text-decoration: underline;
+        }
+        .markdown-content a:hover {
+          color: #c084fc;
+        }
+        .markdown-content blockquote {
+          border-left: 2px solid #a855f7;
+          padding-left: 1rem;
+          font-style: italic;
+          color: #9ca3af;
+          margin-bottom: 0.75rem;
+        }
+      `}</style>
     </div>
   );
 }
