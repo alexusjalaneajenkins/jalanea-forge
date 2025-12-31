@@ -1,6 +1,6 @@
-# Jalanea Lab
+# Jalnaea Dev
 
-Private command center dashboard for managing projects, experiments, client previews, and internal tools.
+Your private dev environment for managing projects, experiments, client previews, and internal tools.
 
 ## Features
 
@@ -105,7 +105,7 @@ In a production app, you'd want to use a database (Supabase, Planetscale, etc.) 
 
 ## Easter Egg
 
-If someone visits the dashboard without being logged in, they'll see a fun "You found the secret door!" animation with sparkles before being redirected to jalanea.dev.
+If someone visits the dashboard without being logged in, they'll see a fun "You found the secret door!" animation with sparkles before being redirected to jalnaea.dev.
 
 ## License
 

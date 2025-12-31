@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Jalanea Lab - Private Command Center",
-  description: "Personal internal hub for managing projects, experiments, and tools",
+  title: "Jalnaea Dev - Your Private Dev Environment",
+  description: "Personal dev environment for managing projects, experiments, and tools",
   icons: {
     icon: "/favicon.ico",
   },

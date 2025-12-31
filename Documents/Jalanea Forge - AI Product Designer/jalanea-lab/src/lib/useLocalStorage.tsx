@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import type { ProjectData } from './types';
 import initialData from '@/data/projects.json';
 
-const STORAGE_KEY = 'jalanea-lab-data';
+const STORAGE_KEY = 'jalnaea-dev-data';
 
 export function useLocalStorage() {
   const [data, setData] = useState<ProjectData | null>(null);
@@ -98,7 +98,7 @@ export function useLocalStorage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `jalanea-lab-backup-${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `jalnaea-dev-backup-${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

@@ -66,8 +66,8 @@ export function PasswordGate() {
           <div className="w-16 h-16 bg-lab-accent rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-lab-accent/20">
             <FlaskConical className="w-8 h-8 text-lab-bg" />
           </div>
-          <h1 className="text-2xl font-bold text-lab-text">Jalanea Lab</h1>
-          <p className="text-sm text-lab-muted mt-1">Private Command Center</p>
+          <h1 className="text-2xl font-bold text-lab-text">Jalnaea Dev</h1>
+          <p className="text-sm text-lab-muted mt-1">Your private dev environment</p>
         </div>
 
         {/* Form */}
@@ -89,7 +89,7 @@ export function PasswordGate() {
             size="lg"
             loading={isLoading}
           >
-            Enter Lab
+            Enter
           </Button>
         </form>
 

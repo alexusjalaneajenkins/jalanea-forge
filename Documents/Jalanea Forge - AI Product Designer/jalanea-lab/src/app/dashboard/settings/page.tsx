@@ -40,7 +40,7 @@ export default function SettingsPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'jalanea-lab-data.json';
+    link.download = 'jalnaea-dev-data.json';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -82,7 +82,7 @@ export default function SettingsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-lab-text">Settings</h1>
-        <p className="text-sm text-lab-muted mt-1">Manage your Jalanea Lab preferences</p>
+        <p className="text-sm text-lab-muted mt-1">Manage your Jalnaea Dev preferences</p>
       </div>
 
       {/* Change Password */}
@@ -204,9 +204,9 @@ export default function SettingsPage() {
 
       {/* About */}
       <div className="bg-lab-card border border-lab-border rounded-xl p-5">
-        <h2 className="font-semibold text-lab-text mb-2">About Jalanea Lab</h2>
+        <h2 className="font-semibold text-lab-text mb-2">About Jalnaea Dev</h2>
         <p className="text-sm text-lab-muted mb-4">
-          Your private command center for managing projects, experiments, and tools.
+          Your private dev environment for managing projects, experiments, and tools.
         </p>
         <div className="text-xs text-lab-muted-dark space-y-1">
           <p>Version: 1.0.0</p>

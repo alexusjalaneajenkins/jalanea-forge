@@ -33,7 +33,7 @@ export function EasterEgg() {
     const timer1 = setTimeout(() => setPhase('message'), 1500);
     const timer2 = setTimeout(() => setPhase('redirect'), 3000);
     const timer3 = setTimeout(() => {
-      window.location.href = 'https://jalanea.dev';
+      window.location.href = 'https://jalnaea.dev';
     }, 4500);
 
     return () => {

@@ -301,12 +301,12 @@
     },
     {
       "id": "3",
-      "projectName": "Jalanea Lab",
-      "description": "Private command center - LIVE",
+      "projectName": "Jalnaea Dev",
+      "description": "Private dev environment - LIVE",
       "branch": "main",
       "previewUrl": "https://jalnaea.dev",
       "status": "production",
-      "repoUrl": "https://github.com/alexusjalaneajenkins/jalanea-lab",
+      "repoUrl": "https://github.com/alexusjalaneajenkins/jalanea-forge",
       "lastDeployedAt": "2024-12-31T09:00:00Z",
       "updatedAt": "2024-12-31"
     }
@@ -322,7 +322,7 @@
       "id": "1",
       "type": "deploy",
       "action": "Deployed",
-      "target": "Jalanea Lab to production",
+      "target": "Jalnaea Dev to production",
       "timestamp": "2024-12-31T09:00:00Z"
     },
     {

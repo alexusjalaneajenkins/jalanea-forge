@@ -34,13 +34,13 @@ export function Header({ onMenuClick, onSearchClick }: HeaderProps) {
             <div className="w-8 h-8 bg-lab-accent rounded-lg flex items-center justify-center">
               <FlaskConical className="w-5 h-5 text-lab-bg" />
             </div>
-            <span className="font-bold text-lab-text">Jalanea Lab</span>
+            <span className="font-bold text-lab-text">Jalnaea Dev</span>
           </Link>
 
           {/* Welcome message for desktop */}
           <div className="hidden md:block">
-            <h1 className="text-lg font-semibold text-lab-text">Welcome back, Jalanea</h1>
-            <p className="text-sm text-lab-muted">Here&apos;s what&apos;s happening in your lab</p>
+            <h1 className="text-lg font-semibold text-lab-text">Welcome back</h1>
+            <p className="text-sm text-lab-muted">Your private dev environment</p>
           </div>
         </div>
 
