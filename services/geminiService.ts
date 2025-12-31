@@ -1,117 +1,81 @@
-import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 import { ProjectState, ResearchDocument } from "../types";
 
 export const MISSING_API_KEY_ERROR = "MISSING_API_KEY";
 
+// API route base URL - works both locally and on Vercel
+const getApiUrl = () => {
+  // In production, use relative URL (same domain)
+  // In development, Vite dev server will proxy to Vercel dev
+  return '/api/gemini';
+};
+
 // Test if an API key is valid by making a minimal request
 export const testApiKey = async (apiKey: string): Promise<{ success: boolean; error?: string }> => {
   try {
-    const ai = new GoogleGenAI({ apiKey });
-    // Make a minimal request to validate the key
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
-      contents: 'Say "OK" in one word.',
-      config: {
-        maxOutputTokens: 5,
-        temperature: 0,
-      }
+    const response = await fetch(getApiUrl(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'testKey',
+        testApiKey: apiKey
+      })
     });
-    if (response.text) {
-      return { success: true };
+
+    if (!response.ok) {
+      const error = await response.json();
+      return { success: false, error: error.error || 'Failed to test API key' };
     }
-    return { success: false, error: 'No response received' };
+
+    return await response.json();
   } catch (error: any) {
-    const message = error.message || 'Unknown error';
-    if (message.includes('API_KEY_INVALID') || message.includes('API key not valid')) {
-      return { success: false, error: 'Invalid API key. Please check and try again.' };
-    }
-    if (message.includes('PERMISSION_DENIED')) {
-      return { success: false, error: 'Permission denied. The API key may not have access to Gemini.' };
-    }
-    if (message.includes('429') || message.includes('RESOURCE_EXHAUSTED')) {
-      // Rate limit actually means the key is valid
-      return { success: true };
-    }
-    return { success: false, error: message };
+    return { success: false, error: error.message || 'Network error' };
   }
 };
 
-const getClient = () => {
-  const storedKey = localStorage.getItem('jalanea_gemini_key');
-  if (storedKey) {
-    return new GoogleGenAI({ apiKey: storedKey });
-  }
-
-  const apiKey = (import.meta as any).env.VITE_API_KEY || process.env.API_KEY;
-  if (!apiKey) {
-    throw new Error(MISSING_API_KEY_ERROR);
-  }
-  return new GoogleGenAI({ apiKey });
-};
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-const generateContentWithRetry = async (
-  ai: GoogleGenAI,
-  modelName: string,
+// Helper to call the Gemini API proxy
+const callGeminiApi = async (
   contents: any,
-  config?: any,
-  maxRetries = 3
-): Promise<GenerateContentResponse> => {
-  let attempt = 0;
-  while (attempt < maxRetries) {
-    try {
-      // Use ai.models.generateContent which is the correct API for @google/genai SDK
-      const response = await ai.models.generateContent({
-        model: modelName,
-        contents: contents,
-        config: config
-      });
-      return response;
-    } catch (error: any) {
-      // Check for 429 (Resource Exhausted) or 503 (Service Unavailable)
-      const isRateLimit = error.message?.includes('429') || error.status === 429 || error.code === 429;
+  config?: {
+    systemInstruction?: string;
+    temperature?: number;
+    maxOutputTokens?: number;
+  },
+  model: string = 'gemini-3-flash-preview'
+): Promise<string> => {
+  const response = await fetch(getApiUrl(), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      contents,
+      config
+    })
+  });
 
-      console.error(`Gemini API Error (Attempt ${attempt + 1}/${maxRetries}):`, error.message || error);
-
-      if (isRateLimit && attempt < maxRetries - 1) {
-        let waitTime = Math.pow(2, attempt) * 1000; // Default: 1s, 2s, 4s...
-
-        // Try to parse the specific retry time from the error message
-        // Example: "Please retry in 53.024661139s."
-        const match = error.message?.match(/Please retry in ([0-9.]+)s/);
-        if (match && match[1]) {
-          waitTime = Math.ceil(parseFloat(match[1]) * 1000) + 1000; // Add 1s buffer
-        }
-
-        console.warn(`Gemini API 429 hit. Retrying in ${waitTime}ms... (Attempt ${attempt + 1}/${maxRetries})`);
-        await delay(waitTime);
-        attempt++;
-      } else {
-        console.error(`Gemini API Error (Model: ${modelName}):`, error);
-        throw error;
-      }
-    }
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to generate content');
   }
-  throw new Error(`Max retries exceeded for model ${modelName}`);
+
+  const data = await response.json();
+  return data.text || '';
 };
 
 const formatResearchContext = (docs: ResearchDocument[]): string => {
   if (docs.length === 0) return "No specific research documents provided.";
   return docs
-    .filter(d => d.mimeType.startsWith('text')) // Only format text docs here if used
+    .filter(d => d.mimeType.startsWith('text'))
     .map(d => `--- SOURCE: ${d.name} ---\n${d.content}\n--- END SOURCE ---`)
     .join("\n\n");
 };
 
 export const refineIdea = async (rawInput: string): Promise<string> => {
-  const ai = getClient();
   const prompt = `
     Analyze the following raw product idea and synthesize it into a clear, professional Product Vision Statement.
-    
+
     RAW IDEA:
     ${rawInput}
-    
+
     TASK:
     Create a structured Vision Statement including:
     1. Product Name Suggestion
@@ -119,56 +83,42 @@ export const refineIdea = async (rawInput: string): Promise<string> => {
     3. Target Users (The "Who")
     4. Key Differentiators (The "How")
     5. Elevator Pitch (One concise sentence)
-    
+
     Output in Markdown. Keep it professional and inspiring.
   `;
 
-  const response = await generateContentWithRetry(
-    ai,
-    'gemini-3-flash-preview',
-    prompt, // Pass string directly
+  const text = await callGeminiApi(
+    prompt,
     {
       systemInstruction: "You are a Chief Product Officer. Your goal is to clarify and elevate raw ideas into actionable product visions.",
       temperature: 0.7,
     }
   );
 
-  return response.text || "Failed to refine idea.";
+  return text || "Failed to refine idea.";
 };
 
 export const generateResearchPrompt = async (synthesizedIdea: string): Promise<{ mission: string, report: string }> => {
-  const ai = getClient();
-
   // 1. Generate the "Deep Research Mission" (The instruction for the Agent)
   const missionPrompt = `
     Based on the following Product Vision, generate a specific, high-level "Deep Research Mission" prompt for an autonomous AI research agent (like Google NotebookLM Deep Research).
-    
+
     The mission should instruct the agent to:
     1. Find direct and indirect competitors.
     2. Uncover recent trends in the specific market.
     3. Identify user demographics and pain points.
     4. Look for technical feasibility and similar existing implementations.
-    
+
     Keep the mission prompt concise (under 3 sentences) but directive. Start with "Your mission is to..."
     refer explicitly to the product concept described below. Do NOT invent a fake company name (like "VentureSpark") unless the vision explicitly names one. Use "this product" or "the proposed solution" instead.
-    
+
     Product Vision:
     ${synthesizedIdea}
   `;
 
-  const missionResponse = await generateContentWithRetry(
-    ai,
-    'gemini-3-flash-preview',
-    missionPrompt,
-    {
-      temperature: 0.7,
-    }
-  );
-
-  const mission = (missionResponse.text || "").trim();
+  const mission = (await callGeminiApi(missionPrompt, { temperature: 0.7 })).trim();
 
   // 2. Construct the "Report Generation Prompt" (The template for the Chat)
-  // This uses the user's specific template, injecting the vision at the top.
   const report = `Please generate a detailed research report addressing the following sections:
 
 **1. Competitor Analysis:**
@@ -190,8 +140,6 @@ Identify strategic opportunities or underserved gaps in the market that this pro
 };
 
 export const generatePRD = async (idea: string, research: ResearchDocument[]): Promise<string> => {
-  const ai = getClient();
-
   // Construct the Parts array for Multimodal Input
   const parts: any[] = [];
 
@@ -199,7 +147,7 @@ export const generatePRD = async (idea: string, research: ResearchDocument[]): P
   parts.push({
     text: `
     Analyze the following product vision and the provided research documents (if any).
-    
+
     PRODUCT VISION:
     ${idea}
 
@@ -234,21 +182,18 @@ export const generatePRD = async (idea: string, research: ResearchDocument[]): P
     }
   });
 
-  const response = await generateContentWithRetry(
-    ai,
-    'gemini-3-flash-preview',
-    { parts }, // Pass object with parts
+  const text = await callGeminiApi(
+    { parts },
     {
       systemInstruction: `You are a world-class Product Manager. You are strict, detailed, and focus on viability and user value. Current Date: ${new Date().toLocaleDateString()}`,
       temperature: 0.7,
     }
   );
 
-  return response.text || "Failed to generate PRD.";
+  return text || "Failed to generate PRD.";
 };
 
 export const generatePlan = async (prd: string): Promise<string> => {
-  const ai = getClient();
   const prompt = `
     Based on the following PRD, create a developer-focused Implementation Roadmap.
 
@@ -350,26 +295,21 @@ Tech Stack: [Extract tech stack from PRD]
     Generate 3-6 tasks per phase based on the PRD complexity. Be specific to the actual project requirements.
   `;
 
-  const response = await generateContentWithRetry(
-    ai,
-    'gemini-3-flash-preview',
+  const text = await callGeminiApi(
     prompt,
     {
       systemInstruction: "You are a Senior Technical Architect. You create detailed, actionable development roadmaps that help developers build products efficiently. You advocate for the 'Hybrid' approach: DIY for learning, hire experts for high-risk areas. Return raw JSON only.",
     }
   );
 
-  let text = response.text || "[]";
   // Clean markdown if present
-  text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-  return text;
+  return (text || "[]").replace(/```json/g, '').replace(/```/g, '').trim();
 };
 
 export const refineBugReport = async (error: string, context: string): Promise<{ subject: string, body: string }> => {
-  const ai = getClient();
   const prompt = `
     Analyze the following error report from a user building an AI app.
-    
+
     PROJECT CONTEXT:
     ${context}
 
@@ -385,29 +325,25 @@ export const refineBugReport = async (error: string, context: string): Promise<{
     Strict valid JSON: { "subject": "...", "body": "..." }
   `;
 
-  const response = await generateContentWithRetry(
-    ai,
-    'gemini-3-flash-preview',
+  const text = await callGeminiApi(
     prompt,
     {
       systemInstruction: "You are a Senior Support Engineer. Translate user errors into actionable technical bug reports. Return raw JSON."
     }
   );
 
-  let text = response.text || "{}";
-  text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+  const cleaned = (text || "{}").replace(/```json/g, '').replace(/```/g, '').trim();
   try {
-    return JSON.parse(text);
+    return JSON.parse(cleaned);
   } catch (e) {
     return { subject: "Error Report", body: error };
   }
 };
 
 export const refinePrd = async (currentPrd: string, instructions: string): Promise<string> => {
-  const ai = getClient();
   const prompt = `
       You are an expert Product Manager.
-      
+
       CURRENT PRD:
       ${currentPrd}
 
@@ -421,9 +357,7 @@ export const refinePrd = async (currentPrd: string, instructions: string): Promi
       Return the FULL updated PRD.
     `;
 
-  const response = await generateContentWithRetry(
-    ai,
-    'gemini-3-flash-preview',
+  const text = await callGeminiApi(
     prompt,
     {
       systemInstruction: "You are an AI Product Editor. Your goal is to refine the PRD exactly as requested while maintaining structural integrity.",
@@ -431,76 +365,72 @@ export const refinePrd = async (currentPrd: string, instructions: string): Promi
     }
   );
 
-  return response.text || currentPrd;
+  return text || currentPrd;
 };
 
 export const generateDesignPrompts = async (prd: string, plan: string): Promise<{ stitch: string, opal: string }> => {
-  const ai = getClient();
-
   // 1. Generate Stitch (Frontend/Visual) Prompt
   const stitchPrompt = `
     Based on the following PRD and Roadmap, create a detailed prompt for "Stitch", a frontend generation tool.
-    
+
     PRD CONTEXT: ${prd.substring(0, 1500)}...
-    
+
     TASK:
     Write a prompt that instructs Stitch to:
     1. Define the Visual Identity (Color Palette, Typography, Vibe).
     2. Create the Component Library (Buttons, Cards, Inputs).
     3. Generate the Page Layouts (Home, Dashboard, Settings).
     4. Focus on modern, premium aesthetics (Glassmorphism/Neo-brutalism/Clean).
-    
+
     Output ONLY the raw prompt text for Stitch.
   `;
 
   // 2. Generate Opal (Backend/Logic) Prompt
   const opalPrompt = `
     Based on the following PRD and Roadmap, create a detailed prompt for "Opal", a backend logic generation tool.
-    
+
     PRD CONTEXT: ${prd.substring(0, 1500)}...
-    
+
     TASK:
     Write a prompt that instructs Opal to:
     1. Define the Data Schema (Users, Projects, Items).
     2. Outline the API Endpoints (REST/GraphQL).
     3. Describe the Business Logic flows (Authentication, Data Processing).
     4. Ensure security and scalability.
-    
+
     Output ONLY the raw prompt text for Opal.
   `;
 
   const [stitchRes, opalRes] = await Promise.all([
-    generateContentWithRetry(ai, 'gemini-3-flash-preview', stitchPrompt, { temperature: 0.7 }),
-    generateContentWithRetry(ai, 'gemini-3-flash-preview', opalPrompt, { temperature: 0.7 })
+    callGeminiApi(stitchPrompt, { temperature: 0.7 }),
+    callGeminiApi(opalPrompt, { temperature: 0.7 })
   ]);
 
   return {
-    stitch: stitchRes.text || "Failed to generate Stitch prompt.",
-    opal: opalRes.text || "Failed to generate Opal prompt."
+    stitch: stitchRes || "Failed to generate Stitch prompt.",
+    opal: opalRes || "Failed to generate Opal prompt."
   };
 };
 
 export const generateCodePrompt = async (projectState: ProjectState): Promise<string> => {
-  const ai = getClient();
-
   const prompt = `
     ACT AS: Lead Software Engineer & Integrator.
-    
+
     CONTEXT:
     We are building a web application using the Stitch (Frontend) and Opal (Backend) workflow.
-    
+
     PROJECT IDEA:
     ${projectState.synthesizedIdea || projectState.ideaInput}
-    
+
     FRONTEND (Stitch) DIRECTION:
     ${projectState.stitchPrompt}
-    
+
     BACKEND (Opal) DIRECTION:
     ${projectState.opalPrompt}
-    
+
     ROADMAP (JSON):
     ${projectState.roadmapOutput}
-    
+
     TASK:
     Write a master "Integration Prompt" that the user can copy and paste into Google Gemini (or their IDE) to start building the application.
     This prompt must:
@@ -508,18 +438,16 @@ export const generateCodePrompt = async (projectState: ProjectState): Promise<st
     2. Explain how to implement the Stitch components (give structure).
     3. Explain how to wire up the Opal logic/APIs.
     4. Define the folder structure.
-    
+
     CRITICAL: Return ONLY the raw prompt text suitable for copy-pasting.
   `;
 
-  const response = await generateContentWithRetry(
-    ai,
-    'gemini-3-flash-preview',
+  const text = await callGeminiApi(
     prompt,
     {
       systemInstruction: "You are a Lead Software Engineer. You write precise, technical specifications for other developers.",
     }
   );
 
-  return response.text || "Failed to generate Integration Prompt.";
+  return text || "Failed to generate Integration Prompt.";
 };
