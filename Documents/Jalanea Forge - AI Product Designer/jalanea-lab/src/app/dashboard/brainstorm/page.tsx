@@ -194,8 +194,26 @@ export default function BrainstormPage() {
                   {msg.role === 'user' ? (
                     <p className="whitespace-pre-wrap text-sm sm:text-base leading-relaxed">{msg.content}</p>
                   ) : (
-                    <div className="prose prose-invert prose-sm sm:prose-base max-w-none prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-0.5 prose-headings:my-3 prose-pre:bg-lab-card prose-pre:border prose-pre:border-lab-border prose-code:text-purple-400 prose-code:before:content-none prose-code:after:content-none">
-                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    <div className="text-sm sm:text-base leading-relaxed">
+                      <ReactMarkdown
+                        components={{
+                          p: ({children}) => <p className="mb-3 last:mb-0">{children}</p>,
+                          strong: ({children}) => <strong className="font-semibold text-white">{children}</strong>,
+                          em: ({children}) => <em className="italic text-lab-muted">{children}</em>,
+                          ul: ({children}) => <ul className="list-disc list-inside mb-3 space-y-1 ml-2">{children}</ul>,
+                          ol: ({children}) => <ol className="list-decimal list-inside mb-3 space-y-1 ml-2">{children}</ol>,
+                          li: ({children}) => <li className="text-lab-text">{children}</li>,
+                          h1: ({children}) => <h1 className="text-xl font-bold mb-3 mt-4 first:mt-0 text-white">{children}</h1>,
+                          h2: ({children}) => <h2 className="text-lg font-bold mb-2 mt-3 first:mt-0 text-white">{children}</h2>,
+                          h3: ({children}) => <h3 className="text-base font-bold mb-2 mt-3 first:mt-0 text-white">{children}</h3>,
+                          code: ({children}) => <code className="bg-lab-border px-1.5 py-0.5 rounded text-sm text-purple-400">{children}</code>,
+                          pre: ({children}) => <pre className="bg-lab-border p-3 rounded-lg overflow-x-auto mb-3 text-sm">{children}</pre>,
+                          a: ({children, href}) => <a href={href} className="text-purple-400 hover:underline" target="_blank" rel="noopener noreferrer">{children}</a>,
+                          blockquote: ({children}) => <blockquote className="border-l-2 border-purple-500 pl-4 italic text-lab-muted mb-3">{children}</blockquote>,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
                     </div>
                   )}
                 </div>
