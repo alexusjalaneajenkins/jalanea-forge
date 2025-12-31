@@ -1950,11 +1950,25 @@ const Layout = () => {
             </div>
             <div className="bg-forge-800/30 p-3 rounded-lg border border-forge-700/50">
               <p className="text-[10px] text-forge-500 uppercase tracking-wider mb-2 font-semibold">Keyboard Shortcuts</p>
-              <div className="grid grid-cols-2 gap-1 text-xs text-forge-muted">
-                <span className="font-mono bg-forge-800 px-1.5 py-0.5 rounded">⌘1</span><span>Idea</span>
-                <span className="font-mono bg-forge-800 px-1.5 py-0.5 rounded">⌘2</span><span>Research</span>
-                <span className="font-mono bg-forge-800 px-1.5 py-0.5 rounded">⌘3</span><span>PRD</span>
-                <span className="font-mono bg-forge-800 px-1.5 py-0.5 rounded">⌘4</span><span>Realization</span>
+              <div className="flex flex-col gap-1.5">
+                {[
+                  { key: '1', label: 'Idea' },
+                  { key: '2', label: 'Research' },
+                  { key: '3', label: 'PRD' },
+                  { key: '4', label: 'Realization' },
+                ].map(({ key, label }) => (
+                  <div key={key} className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1">
+                      <kbd className="inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-medium text-forge-300 bg-forge-700 border border-forge-600 rounded shadow-sm font-sans">
+                        ⌘
+                      </kbd>
+                      <kbd className="inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-medium text-forge-300 bg-forge-700 border border-forge-600 rounded shadow-sm font-mono">
+                        {key}
+                      </kbd>
+                    </div>
+                    <span className="text-xs text-forge-muted">{label}</span>
+                  </div>
+                ))}
               </div>
             </div>
             <a
