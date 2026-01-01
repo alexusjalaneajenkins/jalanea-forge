@@ -175,12 +175,55 @@
 @media (max-width: 767px) {
   /* Smooth tap highlight */
   button, a, [role="button"] {
-    -webkit-tap-highlight-color: rgba(249, 115, 22, 0.1);
+    -webkit-tap-highlight-color: rgba(249, 115, 22, 0.15);
   }
 
   /* Prevent double-tap zoom on buttons */
   button, a {
     touch-action: manipulation;
+  }
+
+  /* Minimum touch target sizes for all interactive elements */
+  button,
+  [role="button"],
+  a:not(.inline-link) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Icon-only buttons need proper sizing */
+  button:has(svg:only-child),
+  button:has(> div > svg:only-child) {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Primary action buttons - larger and more prominent */
+  .btn-primary,
+  button[class*="bg-gradient"],
+  button[class*="bg-forge-accent"],
+  button[class*="from-orange"] {
+    min-height: 48px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    font-size: 1rem;
+  }
+
+  /* Active/pressed states for touch feedback */
+  button:active:not(:disabled),
+  [role="button"]:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+
+  /* Chip/tag buttons - ensure touchable */
+  button[class*="rounded-full"][class*="px-4"] {
+    min-height: 40px;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
   }
 
   /* Optimize modal for mobile */
@@ -196,6 +239,35 @@
   input[type="password"],
   textarea {
     font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+
+  /* Better button spacing in flex containers */
+  .flex.gap-2 {
+    gap: 0.625rem; /* 10px - better for touch */
+  }
+
+  .flex.gap-3 {
+    gap: 0.875rem; /* 14px */
+  }
+
+  /* Larger header actions on mobile */
+  header button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Improve sidebar button touch targets */
+  .mobile-sidebar button {
+    min-height: 48px;
+    padding: 0.875rem 1rem;
+  }
+
+  /* Copy buttons need good touch targets */
+  button[title*="Copy"],
+  button[title*="copy"] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.625rem;
   }
 }
 

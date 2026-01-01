@@ -138,7 +138,7 @@ const CopyButton = ({ text, className = "", title = "Copy to Clipboard", variant
   return (
     <button
       onClick={handleCopy}
-      className={`relative p-2 rounded-lg transition-all duration-200 shadow-sm border group ${copied ? copiedStyles : baseStyles} ${className}`}
+      className={`relative p-2.5 md:p-2 rounded-lg transition-all duration-200 shadow-sm border group min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 ${copied ? copiedStyles : baseStyles} ${className}`}
       title={copied ? "Copied!" : title}
     >
       <div className={`flex items-center ${label ? 'gap-2' : ''}`}>
@@ -162,7 +162,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm no-print"
+      className="p-2.5 md:p-2 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm no-print min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95"
       title="Toggle Theme"
     >
       <div className="relative w-5 h-5">
@@ -238,7 +238,7 @@ const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
         {/* Mobile hamburger menu */}
         <button
           onClick={onMenuToggle}
-          className="md:hidden p-2.5 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm flex-shrink-0"
+          className="md:hidden p-2.5 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm flex-shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95"
           title="Menu"
           aria-label="Open navigation menu"
         >
@@ -295,7 +295,7 @@ const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
         )}
         <button
           onClick={openSettings}
-          className="p-2.5 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm"
+          className="p-2.5 rounded-lg bg-forge-800 border border-forge-700 text-forge-muted hover:text-forge-text hover:border-forge-600 transition-all shadow-sm min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95"
           title="AI Settings"
           aria-label="Open AI settings"
         >
@@ -372,7 +372,7 @@ const Header = ({ onMenuToggle }: { onMenuToggle?: () => void }) => {
         ) : (
           <button
             onClick={signInWithGoogle}
-            className="text-xs md:text-sm font-semibold bg-forge-accent hover:bg-orange-600 text-white px-3 md:px-5 py-2.5 rounded-lg transition-colors shadow-lg shadow-orange-500/20 flex items-center gap-2"
+            className="text-sm font-semibold bg-forge-accent hover:bg-orange-600 text-white px-4 md:px-5 py-3 md:py-2.5 rounded-lg transition-colors shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 min-h-[44px] active:scale-95"
           >
             <span className="hidden sm:inline">Sign in with Google</span>
             <span className="sm:hidden">Sign in</span>
@@ -449,7 +449,7 @@ const IdeaPage = () => {
                 <button
                   onClick={handleRefine}
                   disabled={!state.ideaInput.trim() || state.isGenerating}
-                  className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-white font-semibold px-6 py-2.5 rounded-full shadow-lg shadow-orange-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-white font-semibold px-5 md:px-6 py-3 md:py-2.5 rounded-full shadow-lg shadow-orange-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 min-h-[48px] text-sm md:text-base"
                 >
                   {state.isGenerating ? (
                     <>Thinking...</>
@@ -461,13 +461,13 @@ const IdeaPage = () => {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-3 animate-fade-in-up delay-100">
-            <span className="text-sm text-forge-muted mr-1 self-center">Try example:</span>
+          <div className="mt-8 flex flex-wrap justify-center gap-2 md:gap-3 animate-fade-in-up delay-100">
+            <span className="text-sm text-forge-muted mr-1 self-center hidden md:inline">Try example:</span>
             {quickStarts.map((text, i) => (
               <button
                 key={i}
                 onClick={() => updateIdea(text)}
-                className="px-4 py-1.5 text-xs font-medium text-forge-muted hover:text-forge-text dark:text-forge-300 dark:hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 rounded-full transition-all"
+                className="px-4 py-2.5 md:py-1.5 text-xs font-medium text-forge-muted hover:text-forge-text dark:text-forge-300 dark:hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 rounded-full transition-all active:bg-white/15"
               >
                 {text}
               </button>
@@ -491,7 +491,7 @@ const IdeaPage = () => {
             </div>
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 text-sm font-medium text-forge-300 bg-forge-800/50 hover:bg-forge-800 border border-forge-700 rounded-lg transition-colors flex items-center gap-2"
+              className="px-4 py-2.5 md:py-2 text-sm font-medium text-forge-300 bg-forge-800/50 hover:bg-forge-800 border border-forge-700 rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[44px] active:scale-95"
             >
               <Edit2 className="w-4 h-4" /> Edit Input
             </button>
@@ -609,7 +609,7 @@ const IdeaPage = () => {
                 triggerConfetti();
                 setTimeout(() => navigate('/research'), 300);
               }}
-              className="bg-forge-text text-forge-950 hover:bg-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center gap-2 group"
+              className="bg-forge-text text-forge-950 hover:bg-white px-5 md:px-6 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center justify-center gap-2 group min-h-[48px] active:scale-95 text-sm md:text-base"
             >
               Continue to Research
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -734,10 +734,10 @@ const ResearchPage = () => {
               triggerConfetti();
               setTimeout(() => navigate('/prd'), 300);
             }}
-            className="group relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 font-bold text-white shadow-lg shadow-purple-500/25 transition-all hover:scale-[1.02] hover:shadow-purple-500/40"
+            className="group relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-6 md:px-8 py-3.5 md:py-4 font-bold text-white shadow-lg shadow-purple-500/25 transition-all hover:scale-[1.02] hover:shadow-purple-500/40 min-h-[48px] active:scale-95 text-sm md:text-base"
           >
             <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 origin-left" />
-            <span className="relative flex items-center gap-2">
+            <span className="relative flex items-center justify-center gap-2">
               Next: Generate PRD <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </span>
           </button>
@@ -966,7 +966,7 @@ const PrdPage = () => {
             <button
               onClick={handleGenerate}
               disabled={state.isGenerating}
-              className="bg-orange-600 hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-orange-500/20 transition-all flex items-center gap-2"
+              className="bg-orange-600 hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-5 md:px-6 py-3 rounded-xl shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2 min-h-[48px] active:scale-95 text-sm md:text-base"
             >
               {state.isGenerating ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -1323,7 +1323,7 @@ const RealizationPage = () => {
                 <button
                   onClick={() => generateArtifact(ProjectStep.CODE)}
                   disabled={state.isGenerating || !state.prdOutput}
-                  className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] flex items-center gap-2 group"
+                  className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-6 md:px-8 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] flex items-center justify-center gap-2 group min-h-[48px] active:scale-95 text-sm md:text-base"
                 >
                   {state.isGenerating ? (
                     <>
