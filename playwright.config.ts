@@ -1,9 +1,4 @@
 import { defineConfig, devices } from '@playwright/test';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const authFile = path.join(__dirname, '.auth/user.json');
 
 export default defineConfig({
   testDir: './tests',
@@ -11,31 +6,28 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,
   workers: process.env.CI ? 1 : undefined,
+  timeout: 60000, // 60 seconds per test
   reporter: [
     ['html', { open: 'never' }],
     ['json', { outputFile: 'test-results/results.json' }],
     ['list']
   ],
   use: {
-    baseURL: 'https://jalnaea.dev',
+    baseURL: 'https://forge.jalanea.dev',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
   projects: [
-    // Setup project - runs first to authenticate
+    // Desktop Chrome
     {
-      name: 'setup',
-      testMatch: /auth\.setup\.ts/,
+      name: 'desktop',
+      use: { ...devices['Desktop Chrome'] },
     },
-    // Main tests - depend on setup
+    // Mobile Chrome (iPhone 12 - 390px width)
     {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: authFile,
-      },
-      dependencies: ['setup'],
+      name: 'mobile',
+      use: { ...devices['iPhone 12'] },
     },
   ],
   outputDir: 'test-results/',
