@@ -136,8 +136,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     console.log('signInWithGoogle called');
     setError(null);
     try {
-      // Build redirect URL with base path for GitHub Pages
-      const redirectUrl = `${window.location.origin}/jalanea-forge/`;
+      // Build redirect URL - use current origin (works for both Vercel and GitHub Pages)
+      const redirectUrl = window.location.origin + '/';
       console.log('Redirect URL:', redirectUrl);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
