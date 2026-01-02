@@ -87,6 +87,7 @@ function ProjectCard({
   onToggleChecklist: (key: keyof LaunchChecklist) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
 
   return (
     <div className="bg-lab-card border border-lab-border rounded-xl overflow-hidden hover:border-lab-accent/30 transition-colors">
@@ -106,7 +107,16 @@ function ProjectCard({
         </div>
 
         {/* Description */}
-        <p className="text-sm text-lab-muted mb-3 line-clamp-2">{project.description}</p>
+        <p className={`text-sm text-lab-muted mb-1 ${descriptionExpanded ? '' : 'line-clamp-2'}`}>{project.description}</p>
+        {project.description && project.description.length > 100 && (
+          <button
+            onClick={() => setDescriptionExpanded(!descriptionExpanded)}
+            className="text-xs text-lab-accent hover:underline mb-3"
+          >
+            {descriptionExpanded ? 'Show less' : 'Show more'}
+          </button>
+        )}
+        {(!project.description || project.description.length <= 100) && <div className="mb-2" />}
 
         {/* URL if available */}
         {project.url && (
