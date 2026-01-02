@@ -41,3 +41,4 @@ supabase/.temp/
 playwright-report/
 test-results/
 .auth/
+.env*.local

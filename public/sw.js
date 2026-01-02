@@ -1,5 +1,5 @@
-// Jalanea Forge Service Worker
-const CACHE_NAME = 'forge-v1';
+// Jalnaea Dev Service Worker
+const CACHE_NAME = 'jaldev-v2';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
