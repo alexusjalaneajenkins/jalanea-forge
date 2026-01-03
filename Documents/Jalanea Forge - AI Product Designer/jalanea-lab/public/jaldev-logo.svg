@@ -1,0 +1,32 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark slate background with rounded corners -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="flask" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+
+  <!-- Flask/Beaker icon - simplified and bold -->
+  <g transform="translate(120, 80)" fill="none" stroke="url(#flask)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Flask neck -->
+    <path d="M100 0 L100 100"/>
+    <path d="M172 0 L172 100"/>
+
+    <!-- Flask body -->
+    <path d="M100 100 L40 280 Q20 330 60 350 L212 350 Q252 330 232 280 L172 100"/>
+
+    <!-- Liquid inside (filled) -->
+    <path d="M60 260 Q40 310 60 330 L212 330 Q232 310 212 260 L180 180 L92 180 Z" fill="#f97316" stroke="none" opacity="0.6"/>
+
+    <!-- Bubbles -->
+    <circle cx="100" cy="280" r="12" fill="#f97316" stroke="none"/>
+    <circle cx="150" cy="260" r="8" fill="#f97316" stroke="none"/>
+    <circle cx="180" cy="300" r="10" fill="#f97316" stroke="none"/>
+  </g>
+</svg>
