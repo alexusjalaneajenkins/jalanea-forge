@@ -1,0 +1,48 @@
+{
+  "name": "Jalnaea Dev",
+  "short_name": "JalDev",
+  "description": "Your private dev environment. Track ideas, experiments, and product launches.",
+  "start_url": "/dashboard/lab",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "business", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Lab / Sandbox",
+      "short_name": "Lab",
+      "description": "View your project ideas",
+      "url": "/dashboard/lab",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Brainstorm",
+      "short_name": "Ideas",
+      "description": "AI brainstorming assistant",
+      "url": "/dashboard/brainstorm",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Home",
+      "description": "Overview dashboard",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}

@@ -17,8 +17,23 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Jalnaea Dev - Your Private Dev Environment",
   description: "Personal dev environment for managing projects, experiments, and tools",
+  manifest: "/manifest.json",
+  themeColor: "#0f172a",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "JalDev",
+  },
   icons: {
     icon: "/favicon.ico",
+    apple: "/icon-192x192.png",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    viewportFit: "cover",
   },
 };
 
@@ -39,6 +54,23 @@ export default function RootLayout({
         }>
           {children}
         </Suspense>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                      console.log('SW registered:', registration.scope);
+                    })
+                    .catch(function(error) {
+                      console.log('SW registration failed:', error);
+                    });
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );
